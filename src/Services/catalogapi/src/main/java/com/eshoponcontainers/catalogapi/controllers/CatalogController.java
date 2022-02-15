@@ -2,6 +2,7 @@ package com.eshoponcontainers.catalogapi.controllers;
 
 import java.security.InvalidParameterException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -15,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,4 +47,16 @@ public class CatalogController {
             return ResponseEntity.ok(items);
         }
     }
+
+    @GetMapping("/items/{id}")
+    public ResponseEntity<CatalogItem> getItemsById(@PathVariable("id") Integer id) {
+        Optional<CatalogItem> item = catalogItemRepository.findById(id);
+        if(item.isPresent())
+            return ResponseEntity.ok(item.get());
+
+        return ResponseEntity.notFound().build();
+        
+    }
+
+
 }

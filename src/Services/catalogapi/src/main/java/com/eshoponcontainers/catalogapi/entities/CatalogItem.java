@@ -18,7 +18,7 @@ import lombok.Data;
 public class CatalogItem {
     @Id
     @Column(name = "Id")
-    private int id;
+    private Integer id;
 
     @Column(name = "Name", nullable = false, columnDefinition = "nvarchar(50)")
     private String name;
