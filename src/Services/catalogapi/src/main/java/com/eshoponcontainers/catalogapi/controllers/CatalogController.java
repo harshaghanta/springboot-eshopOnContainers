@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.validation.constraints.Min;
+
 import com.eshoponcontainers.catalogapi.controllers.viewmodels.PaginatedItemViewModel;
 import com.eshoponcontainers.catalogapi.entities.CatalogItem;
 import com.eshoponcontainers.catalogapi.repositories.CatalogItemRepository;
@@ -36,7 +38,7 @@ public class CatalogController {
         }
 
         if(ids == null) {
-            Page<CatalogItem> pageResults = catalogItemRepository.findAll(PageRequest.of(pageIndex, pageSize, Sort.by("name").ascending()));
+            Page<CatalogItem> pageResults = catalogItemRepository.findAll(PageRequest.of(pageIndex, pageSize, Sort.by("id").ascending()));
             PaginatedItemViewModel<CatalogItem> paginatedItemViewModel = new PaginatedItemViewModel<CatalogItem>(pageIndex, pageSize, (int) pageResults.getTotalElements(), pageResults.getContent());
             return ResponseEntity.ok(paginatedItemViewModel);
         }
@@ -58,5 +60,38 @@ public class CatalogController {
         
     }
 
+    @GetMapping("/items/withname/{name}")
+    public ResponseEntity<PaginatedItemViewModel<CatalogItem>> getItemsByName(@PathVariable(name =  "name") @Min(1) String name, 
+        @RequestParam(name =  "pageIndex", defaultValue = "0")Integer pageIndex, 
+        @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) 
+    {
+        PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by("id").ascending());    
+        Page<CatalogItem> items = catalogItemRepository.findByNameStartsWith(name, pageRequest);
+        
+        PaginatedItemViewModel<CatalogItem> paginatedItemViewModel = new PaginatedItemViewModel<CatalogItem>(pageIndex, pageSize, (int) items.getTotalElements(), items.getContent());
+        return ResponseEntity.ok(paginatedItemViewModel);
+        
+    }
 
+    //TODO: NEED TO VERIFY WHY API IS NOT GETTING HIT WHILE SKIPPING catalogBrandId
+
+    @GetMapping("/items/type/{catalogTypeId}/brand/{catalogBrandId}")
+    public ResponseEntity<PaginatedItemViewModel<CatalogItem>> getItemsByCatalogTypeAndName(@PathVariable(name = "catalogTypeId") Integer catalogTypeId, @PathVariable(name = "catalogBrandId", required = false) Integer catalogBrandId, 
+        @RequestParam(name = "pageIndex", required = false, defaultValue = "0")Integer pageIndex, 
+        @RequestParam(name = "pageSize", required = false,  defaultValue = "10") Integer pageSize) 
+    {
+        PaginatedItemViewModel<CatalogItem> paginatedItemViewModel = null;
+        PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by("id").ascending());
+        Page<CatalogItem> catalogItems = null;
+        if(catalogBrandId == null) {
+            
+            catalogItems = catalogItemRepository.findAllByCatalogType_Id(catalogTypeId, pageRequest);            
+        }
+        else {
+            catalogItems = catalogItemRepository.findByCatalogType_IdAndCatalogBrand_Id(catalogTypeId, catalogBrandId, pageRequest);
+        }
+        paginatedItemViewModel = new PaginatedItemViewModel<CatalogItem>(pageIndex, pageSize, (int) catalogItems.getTotalElements(), catalogItems.getContent());
+       return ResponseEntity.ok(paginatedItemViewModel);
+        
+    }
 }

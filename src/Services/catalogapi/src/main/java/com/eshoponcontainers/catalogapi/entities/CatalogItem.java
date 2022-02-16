@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Entity
@@ -35,10 +37,12 @@ public class CatalogItem {
     @Transient
     private String pictureUri;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "CatalogTypeId", referencedColumnName = "Id")
     private CatalogType catalogType;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="CatalogBrandId", referencedColumnName="Id")
     private CatalogBrand catalogBrand;
@@ -54,4 +58,20 @@ public class CatalogItem {
 
     @Column(name = "OnReorder", nullable = false)
     private boolean onReorder;
+
+    @Transient
+    private Integer catalogBrandId;
+
+    @Transient
+    private Integer catalogTypeId;
+
+    public Integer getCatalogBrandId() {
+        return catalogBrand.getId();
+    }
+
+    public Integer getCatalogTypeId() {
+        return catalogType.getId();
+    }
+
+
 }
