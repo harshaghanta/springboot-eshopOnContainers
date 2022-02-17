@@ -12,9 +12,10 @@ public interface CatalogItemRepository extends JpaRepository<CatalogItem, Intege
 
     Page<CatalogItem> findByNameStartsWith(String name, Pageable pageable);
 
-    Page<CatalogItem> findAllByCatalogType_Id(Integer catalogTypeId, Pageable pageable);
+    Page<CatalogItem> findByCatalogType_IdAndCatalogBrand_Id(Integer catalogTypeId, Integer catalogBrandId, Pageable pageable);
 
-    Page<CatalogItem> findByCatalogType_IdAndCatalogBrand_Id(Integer catalogTypeId, Integer catalogBrandId,
-    Pageable pageable);
+    Page<CatalogItem> findByCatalogType_Id(Integer catalogTypeId, Pageable pageable);
+
+    Page<CatalogItem> findByCatalogBrand_Id(Integer catalogBrandId, Pageable pageRequest);
 
 }
