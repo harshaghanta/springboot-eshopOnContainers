@@ -1,5 +1,6 @@
 package com.eshoponcontainers.catalogapi.controllers;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.security.InvalidParameterException;
 import java.util.List;
@@ -13,13 +14,16 @@ import com.eshoponcontainers.catalogapi.controllers.viewmodels.PaginatedItemView
 import com.eshoponcontainers.catalogapi.entities.CatalogBrand;
 import com.eshoponcontainers.catalogapi.entities.CatalogItem;
 import com.eshoponcontainers.catalogapi.entities.CatalogType;
+import com.eshoponcontainers.catalogapi.integrationevents.events.ProductPriceChangedIntegrationEvent;
 import com.eshoponcontainers.catalogapi.repositories.CatalogBrandRepository;
 import com.eshoponcontainers.catalogapi.repositories.CatalogItemRepository;
 import com.eshoponcontainers.catalogapi.repositories.CatalogTypeRepository;
+import com.eshoponcontainers.catalogapi.services.CatalogIntegrationService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,6 +43,7 @@ public class CatalogController {
     private final CatalogItemRepository catalogItemRepository;
     private final CatalogTypeRepository catalogTypeRepository;
     private final CatalogBrandRepository catalogBrandRepository;
+    private final CatalogIntegrationService catalogIntegrationService;
     
     @GetMapping("/items")
     public ResponseEntity<?> getItems(@RequestParam( name = "pageIndex", required = false, defaultValue = "0") Integer pageIndex, @RequestParam(required = false, defaultValue = "10") Integer pageSize, @RequestParam (required = false, name = "ids" ) String ids) {
@@ -133,18 +138,29 @@ public class CatalogController {
 
     @PutMapping("/items")
     public ResponseEntity<?> updateProduct(@RequestBody CatalogItem requestedItem) {
-        Optional<CatalogItem> retrievedItem = catalogItemRepository.findById(requestedItem.getId());
-        if(retrievedItem.isPresent()) {
-            retrievedItem.get().setPrice(requestedItem.getPrice());
-            CatalogItem savedItem = catalogItemRepository.save(retrievedItem.get());
 
-            //TODO: HIGH : NEED TO RAISE PRICE CHANGE EVENT
-            URI location = URI.create("/items/"+ savedItem.getId());
-            return ResponseEntity.created(location).build();
+        Optional<CatalogItem> catalogItem = catalogItemRepository.findById(requestedItem.getId());
+        if(!catalogItem.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item with id " + requestedItem.getId() +" not found.");
+        }
+
+        BigDecimal oldPrice = catalogItem.get().getPrice();
+        BigDecimal newPrice = requestedItem.getPrice();
+
+        boolean raisePriceChangedEvent = oldPrice != newPrice;
+
+        if(raisePriceChangedEvent) {
+            ProductPriceChangedIntegrationEvent productPriceChangedIntegrationEvent = new ProductPriceChangedIntegrationEvent(requestedItem.getId(), requestedItem.getPrice(), oldPrice);
+            catalogIntegrationService.saveEventAndCatalogChanges(productPriceChangedIntegrationEvent, requestedItem);
+            catalogIntegrationService.publishThroughEventBus(productPriceChangedIntegrationEvent);
         }
         else {
-            return ResponseEntity.notFound().build();
+            catalogItemRepository.save(requestedItem);
         }
+
+        URI location = URI.create("/items/"+ requestedItem.getId());
+        return ResponseEntity.created(location).build();
+      
     }
     
 }

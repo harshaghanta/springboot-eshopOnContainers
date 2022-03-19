@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "src\\Services\\catalogapi"
+		},
+		{
+			"path": "src\\BuildingBlocks\\EventBus\\eventbus-rabbitmq"
+		},
+		{
+			"path": "src\\BuildingBlocks\\EventBus\\integration-eventlog"
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "automatic"
+	}
+}

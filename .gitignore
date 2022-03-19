@@ -1,0 +1,9 @@
+src/Services/catalogapi/.mvn/
+src/Services/catalogapi/mvnw
+src/Services/catalogapi/mvnw.cmd
+src/BuildingBlocks/EventBus/eventbus/.gitattributes
+src/BuildingBlocks/EventBus/eventbus-rabbitmq/.gitattributes
+src/BuildingBlocks/EventBus/eventbus-rabbitmq/.travis.yml
+src/Services/catalogapi/.mvn/wrapper/maven-wrapper.jar
+src/BuildingBlocks/EventBus/integration-eventlog/.gitattributes
+src/BuildingBlocks/EventBus/integration-eventlog/.travis.yml
