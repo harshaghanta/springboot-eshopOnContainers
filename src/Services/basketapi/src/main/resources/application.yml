@@ -1,0 +1,6 @@
+
+spring:
+  redis:
+    host: localhost
+    client-name: basketapi
+    

@@ -1,0 +1,30 @@
+POST http://localhost:8080/api/v1/basket HTTP/1.1
+Content-Type: application/json
+
+{
+    "buyerId": "BBBDF976-D8EB-4D5E-BE19-0B9D03564032",
+    "items": [
+        {
+            "id": "C06BC428-6ED1-4E43-AB72-290E54D96B45",
+            "productId": 7,
+            "productName": ".NET Blue Hoodie",
+            "unitPrice": 15,
+            "oldUnitPrice": 0,
+            "quantity": 2,
+            "pictureUrl": "http://host.docker.internal:5202/c/api/v1/catalog/items/6/pic/"
+        },
+        {
+            "id": "9132C259-2E8E-456B-AA01-C449AEF88125",
+            "productId": 2,
+            "productName": ".NET Bot Black Hoodie",
+            "unitPrice": 219.5,
+            "oldUnitPrice": 0,
+            "quantity": 5,
+            "pictureUrl": "http://host.docker.internal:5202/c/api/v1/catalog/items/1/pic/"
+        }
+    ]
+}
+
+###
+
+DELETE  http://localhost:8080/api/v1/basket/BBBDF976-D8EB-4D5E-BE19-0B9D03564032 HTTP/1.1
