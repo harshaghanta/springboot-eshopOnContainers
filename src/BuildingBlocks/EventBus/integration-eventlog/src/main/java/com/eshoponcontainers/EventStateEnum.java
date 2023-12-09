@@ -6,7 +6,7 @@ public enum EventStateEnum {
     PUBLISHED(2),
     PUBLISH_FAILED(3);
 
-    private int value;
+    private int value = 0;
     private EventStateEnum(int value) {
         this.value = value;
     }
