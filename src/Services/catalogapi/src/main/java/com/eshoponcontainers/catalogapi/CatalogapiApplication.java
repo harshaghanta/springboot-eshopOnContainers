@@ -13,5 +13,4 @@ public class CatalogapiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CatalogapiApplication.class, args);
 	}
-
 }

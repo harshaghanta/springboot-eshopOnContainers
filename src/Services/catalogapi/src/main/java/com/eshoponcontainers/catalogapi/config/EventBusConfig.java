@@ -17,7 +17,7 @@ public class EventBusConfig {
     @Bean
     public ConnectionFactory getConnectionFactory() {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
+        factory.setHost("host.docker.internal");
         return factory;
     }
 
