@@ -8,9 +8,17 @@
 		},
 		{
 			"path": "src\\BuildingBlocks\\EventBus\\integration-eventlog"
+		},
+		{
+			"name": "basketapi",
+			"path": "src/Services/basketapi"
+		},
+		{
+			"path": "src/BuildingBlocks/EventBus/eventbus"
 		}
 	],
 	"settings": {
-		"java.configuration.updateBuildConfiguration": "automatic"
+		"java.configuration.updateBuildConfiguration": "automatic",
+		"java.dependency.packagePresentation": "hierarchical"
 	}
 }
