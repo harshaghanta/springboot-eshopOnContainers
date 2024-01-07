@@ -32,14 +32,14 @@ public class OrderItem extends Entity {
         this.units = units;
     }
 
-    public void setNewDiscount(double discount) throws OrderingDomainException {
+    public void setNewDiscount(double discount) {
         if(discount < 0)
             throw new OrderingDomainException("Discount is invalid");
 
         this.discount = discount;
     }
 
-    public void addUnits(int units) throws OrderingDomainException {
+    public void addUnits(int units) {
         if(units < 0)
             throw new OrderingDomainException("Invalid number of units");
 

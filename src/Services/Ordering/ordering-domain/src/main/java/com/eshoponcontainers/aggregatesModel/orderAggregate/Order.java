@@ -163,4 +163,8 @@ public class Order extends Entity implements IAggregateRoot {
 
     }
 
+    public double getTotal() {
+        return orderItems.stream().mapToDouble(oi -> oi.getUnits() * oi.getUnitPrice()).sum();
+    }
+
 }

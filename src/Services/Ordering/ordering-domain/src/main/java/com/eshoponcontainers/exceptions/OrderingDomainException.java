@@ -3,7 +3,7 @@ package com.eshoponcontainers.exceptions;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class OrderingDomainException extends Exception {
+public class OrderingDomainException extends RuntimeException {
     
     public OrderingDomainException(String message) {
         super(message);
