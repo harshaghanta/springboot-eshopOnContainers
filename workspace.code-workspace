@@ -15,6 +15,18 @@
 		},
 		{
 			"path": "src/BuildingBlocks/EventBus/eventbus"
+		},
+		{
+			"name": "orderapi",
+			"path": "src/Services/Ordering/orderapi"
+		},
+		{
+			"name": "ordering-domain",
+			"path": "src/Services/Ordering/ordering-domain"
+		},
+		{
+			"name": "ordering-infrastructure",
+			"path": "src/Services/Ordering/ordering-infrastructure"
 		}
 	],
 	"settings": {

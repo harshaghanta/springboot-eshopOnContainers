@@ -1,6 +1,7 @@
 package com.eshoponcontainers.orderapi.application.viewModels;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -19,6 +20,6 @@ public class Order {
     private String zipCode;
     private String country;
     private String state;
-    private List<OrderItem> orderItems;
+    private List<OrderItem> orderItems = new ArrayList<>();
     private Double total;
 }

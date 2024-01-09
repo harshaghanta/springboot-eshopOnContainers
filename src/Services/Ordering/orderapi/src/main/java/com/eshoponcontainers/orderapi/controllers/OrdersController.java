@@ -74,7 +74,8 @@ public class OrdersController {
 
     @GetMapping()
     public ResponseEntity<List<OrderSummary>> getOrders() {
-        UUID userId  = UUID.randomUUID();
+        String strUserId = "3d13ed19-e065-44d4-80c1-5c5c20fe10b9";
+        UUID userId  =  UUID.fromString(strUserId);
         List<OrderSummary> orders = orderQueries.getOrdersFromUser(userId);
         return ResponseEntity.ok().body(orders);
     }

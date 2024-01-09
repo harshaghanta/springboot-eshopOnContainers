@@ -3,6 +3,7 @@ package com.eshoponcontainers.orderapi.application.queries;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,9 +34,9 @@ public class OrderQueries {
         "FROM ordering.Orders o " +
         "LEFT JOIN ordering.Orderitems oi ON o.Id = oi.orderid " +
         "LEFT JOIN ordering.orderstatus os on o.OrderStatusId = os.Id " +
-        "WHERE o.Id= ?1";
+        "WHERE o.Id= :orderId";
         Query query = entityManager.createNativeQuery(strQuery);
-        query.setParameter(1, id);
+        query.setParameter("orderId", id);
         List orderData = query.getResultList();
 
         return mapOrderItems(orderData);
@@ -62,6 +63,7 @@ public class OrderQueries {
         for (Object item : orderData) {
             Object[] itemDetails = (Object[])  item;
             OrderItem orderItem = new OrderItem((String) itemDetails[9], (Integer) itemDetails[10],(BigDecimal) itemDetails[11], (String) itemDetails[12]);
+            order.getOrderItems().add(orderItem);
             double total = order.getTotal() + (orderItem.units() * orderItem.unitPrice().doubleValue());            
             order.setTotal(total);
         }
@@ -69,7 +71,33 @@ public class OrderQueries {
     }
 
     public List<OrderSummary> getOrdersFromUser(UUID userId) {
-        return null;
+
+        String strQuery = "SELECT o.[Id] as ordernumber,o.[OrderDate] as [date],os.[Name] as [status], SUM(oi.units*oi.unitprice) as total " +
+        "FROM [ordering].[Orders] o " +
+        "LEFT JOIN[ordering].[orderitems] oi ON  o.Id = oi.orderid " +
+        "LEFT JOIN[ordering].[orderstatus] os on o.OrderStatusId = os.Id " +                     
+        "LEFT JOIN[ordering].[buyers] ob on o.BuyerId = ob.Id " +
+        "WHERE ob.IdentityGuid = :userId " +
+        "GROUP BY o.[Id], o.[OrderDate], os.[Name] " +
+        "ORDER BY o.[Id]";
+
+        Query query = entityManager.createNativeQuery(strQuery);
+        query.setParameter("userId", userId.toString());
+        List resultList = query.getResultList();
+
+        List<OrderSummary> orders = mapToOrderSummary(resultList);
+        return orders;
+    }
+
+    private List<OrderSummary> mapToOrderSummary(List resultList) {
+
+        List<OrderSummary> orders = new ArrayList<>();
+        for (Object rowObject : resultList) {
+            Object[] rowData = (Object[]) rowObject;
+            OrderSummary summary = new OrderSummary((Integer) rowData[0], ((java.sql.Timestamp)rowData[1]).toInstant(), (String) rowData[2], ((BigDecimal) rowData[3]).doubleValue());
+            orders.add(summary);
+        }
+        return orders;
     }
 
     public List<CardType> getCardTypes() {

@@ -5,6 +5,7 @@
         http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
     version="2.0">
     <sequence-generator name="cardtype_generator" sequence-name="cardtype_seq" allocation-size="1" />
+    <sequence-generator name="buyer_generator" sequence-name="buyer_seq" allocation-size="1" />
     <entity class="com.eshoponcontainers.aggregatesModel.buyerAggregate.CardType"
             access="FIELD" name="CardType">
             <table name="[ordering].[cardtypes]"></table>
@@ -15,6 +16,45 @@
             <basic name="name"/>
         </attributes>
     </entity>
+
+    <entity class="com.eshoponcontainers.aggregatesModel.buyerAggregate.Buyer"
+            access="FIELD" name="Buyer">
+            <table name="[ordering].[buyers]"></table>
+        <attributes>
+            <id name="id">
+                <column name="Id" />                 
+                <generated-value strategy="SEQUENCE" generator="buyer_generator" ></generated-value>                
+            </id>
+            <basic name="identityUUID" optional="false">
+                <column  name="IdentityGuid" nullable="false"/>
+            </basic>
+            <basic name="name" optional="true" />
+        </attributes>
+    </entity>
+
+
+
+    <!-- <entity class="com.eshoponcontainers.aggregatesModel.buyerAggregate.PaymentMethod"
+            access="FIELD" name="PaymentMethod">
+            <table name="[ordering].[paymentmethods]"></table>
+        <attributes>
+            <id name="id">                
+                <generated-value strategy="SEQUENCE" generator="paymentmethod_generator" ></generated-value>                
+            </id>
+
+            <basic name="alias"/>
+        </attributes>
+    </entity> -->
+
+
+    <!-- <entity class="com.eshoponcontainers.aggregatesModel.orderAggregate" access="FIELD" name="Order">
+        <table name="[ordering].[orders]"></table>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="SEQUENCE" generator="orderid_generator" ></generated-value> 
+            </id>
+        </attributes>
+    </entity> -->
     
  
 </entity-mappings>
