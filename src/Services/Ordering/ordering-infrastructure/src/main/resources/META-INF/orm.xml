@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?> 
-<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm
-        http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
-    version="2.0">
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd"
+    version="2.2">
     <sequence-generator name="cardtype_generator" sequence-name="cardtype_seq" allocation-size="1" />
-    <!-- <sequence-generator name="buyer_generator" sequence-name="buyer_seq" allocation-size="1" /> -->
+
 
     <mapped-superclass class="com.eshoponcontainers.seedWork.Entity" access="FIELD">
         <attributes>
@@ -16,74 +15,149 @@
     </mapped-superclass>
 
     <entity class="com.eshoponcontainers.aggregatesModel.buyerAggregate.CardType"
-            access="FIELD" name="CardType">
-            <table name="[ordering].[cardtypes]"></table>
+        access="FIELD" name="CardType">
+        <table name="[ordering].[cardtypes]"></table>
 
         <attributes>
-            <id name="id">                
-                <generated-value strategy="SEQUENCE" generator="cardtype_generator" ></generated-value>                
+            <id name="id">
+                <generated-value strategy="SEQUENCE" generator="cardtype_generator"></generated-value>
             </id>
-            <basic name="name"/>
+            <basic name="name" />
         </attributes>
     </entity>
-    
+
 
     <entity class="com.eshoponcontainers.aggregatesModel.buyerAggregate.Buyer"
-            access="FIELD" name="Buyer">
-            
-            <table name="[ordering].[buyers]"></table>
+        access="FIELD" name="Buyer">
+
+        <table name="[ordering].[buyers]"></table>
         <attributes>
             <id name="id" access="FIELD">
-                <column name="Id" />                 
-                 <generated-value strategy="SEQUENCE" generator="buyer_generator" ></generated-value>             
+                <column name="Id" />
+                <generated-value strategy="SEQUENCE" generator="buyer_generator"></generated-value>
             </id>
             <basic name="identityUUID" optional="false">
-                <column  name="IdentityGuid" nullable="false"/>
+                <column name="IdentityGuid" nullable="false" />
             </basic>
             <basic name="name" optional="true" />
-            <!-- <transient name="paymentMethods" /> -->
             <one-to-many name="paymentMethods">
-                <join-column name="BuyerId" /> 
-            </one-to-many>
-           
+                <join-column name="BuyerId" />
+            </one-to-many>            
+
         </attributes>
     </entity>
-
 
 
     <entity class="com.eshoponcontainers.aggregatesModel.buyerAggregate.PaymentMethod"
-            access="FIELD" name="PaymentMethod">
-            <table name="[ordering].[paymentmethods]"></table>
-            
-        <attributes>
-            <id name="id">                
-                <generated-value strategy="SEQUENCE" generator="paymentmethod_generator" ></generated-value>                
-            </id>
-            
+        access="FIELD" name="PaymentMethod">
+        <table name="[ordering].[paymentmethods]"></table>
 
-            <basic name="alias"/>
-            <basic name="cardNumber"></basic>            
+        <attributes>
+            <id name="id">
+                <generated-value strategy="SEQUENCE" generator="paymentmethod_generator"></generated-value>
+            </id>
+
+
+            <basic name="alias" />
+            <basic name="cardNumber"></basic>
             <basic name="cardHolderName"></basic>
             <basic name="expiration"></basic>
             <many-to-one name="cardType">
                 <join-column name="CardTypeId" />
             </many-to-one>
-           
-            
+
+
             <transient name="securityNumber" />
-            <!-- <transient name="cardTypeId" /> -->
+
+        </attributes>
+    </entity>
+
+    <entity class="com.eshoponcontainers.aggregatesModel.orderAggregate.OrderItem" name="OrderItem">
+        <table name="[ordering].[orderItems]"></table>
+        <attributes>
+            <basic name="productId">
+                <column name="ProductId" />
+            </basic>
+            <basic name="productName">
+                <column name="ProductName"/>
+            </basic>
+            <basic name="pictureUrl">
+                <column name="PictureUrl" /> 
+            </basic>
+            <basic name="unitPrice">
+                <column name="UnitPrice" /> 
+            </basic>
+            <basic name="discount">
+                <column name="Discount" /> 
+            </basic>
+            <basic name="units">
+                <column name="Units" /> 
+            </basic>
         </attributes>
     </entity>
 
 
-    <!-- <entity class="com.eshoponcontainers.aggregatesModel.orderAggregate" access="FIELD" name="Order">
+    <entity class="com.eshoponcontainers.aggregatesModel.orderAggregate.Order" access="FIELD"
+        name="Order">        
         <table name="[ordering].[orders]"></table>
         <attributes>
             <id name="id">
-                <generated-value strategy="SEQUENCE" generator="orderid_generator" ></generated-value> 
+                <generated-value strategy="SEQUENCE" generator="orderid_generator"></generated-value>
             </id>
+            <basic name="orderDate">
+                <column name="OrderDate" />
+                <temporal>DATE</temporal>
+            </basic>
+            <basic name="description">
+                <column name="Description" />
+            </basic>
+            <basic name="orderStatus">
+                <column  name="OrderStatusId"/>
+                <convert converter="com.eshoponcontainers.converters.OrderStatusConverter" /> 
+            </basic>
+            <one-to-many name="orderItems">
+                <join-column name="OrderId" />
+            </one-to-many>
+            <one-to-one name="buyer">
+                <join-column name="BuyerId" />
+            </one-to-one>
+            <one-to-one name="paymentMethod">
+                <join-column name="PaymentMethodId" />
+            </one-to-one>
+            
+            <embedded name="address">
+                <attribute-override name="city">
+                    <column name="Address_City" />
+                </attribute-override>
+                <attribute-override name="country">
+                    <column name="Address_Country" />
+                </attribute-override>
+                <attribute-override name="state">
+                    <column name="Address_State" />
+                </attribute-override>
+                <attribute-override name="street">
+                    <column name="Address_Street" />
+                </attribute-override>
+                <attribute-override name="zipCode">
+                    <column name="Address_ZipCode" />
+                </attribute-override>
+            </embedded>
+            
+            <transient name="isDraft" />
         </attributes>
-    </entity> -->
-    
- 
+
+    </entity>
+
+
+    <embeddable class="com.eshoponcontainers.aggregatesModel.orderAggregate.Address">
+        <attributes>
+            <basic name="street"></basic>
+            <basic name="city"></basic>
+            <basic name="state"></basic>
+            <basic name="country"></basic>
+            <basic name="zipCode"></basic>
+
+        </attributes>
+    </embeddable>
+
 </entity-mappings>

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eshoponcontainers.aggregatesModel.buyerAggregate.Buyer;
 import com.eshoponcontainers.aggregatesModel.buyerAggregate.IBuyerRepository;
 import com.eshoponcontainers.aggregatesModel.buyerAggregate.PaymentMethod;
+import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
 
 import jakarta.persistence.EntityManager;
 
@@ -27,7 +28,8 @@ public class TestController {
     public String test() {
         Buyer buyer = buyerRepository.findById("1");
         PaymentMethod paymentMethod = entityManager.find(PaymentMethod.class, 1);
-        return buyer.toString();
+        Order order = entityManager.find(Order.class, 11);
+        return "Test";
     }
     
 }

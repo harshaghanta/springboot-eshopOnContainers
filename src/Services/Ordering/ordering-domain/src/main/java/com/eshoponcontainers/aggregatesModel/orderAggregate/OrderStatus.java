@@ -37,4 +37,8 @@ public enum OrderStatus {
     public static OrderStatus from(int id) {
         return by_id.get(id);
     }
+
+    public int getId() {
+        return id;
+    }
 }

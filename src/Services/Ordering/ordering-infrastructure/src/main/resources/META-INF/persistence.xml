@@ -19,6 +19,9 @@
     <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:5433;databaseName=Microsoft.eShopOnContainers.Services.OrderingDb;integratedSecurity=false;encrypt=false;trustServerCertificate=true;" />
     <property name="javax.persistence.jdbc.user" value="sa" />
     <property name="javax.persistence.jdbc.password" value="Pass@word" />
+    <property name = "hibernate.show_sql" value = "true" />
+    <property name = "hibernate.format_sql" value = "true" />
+
   </properties>
  </persistence-unit>
  
