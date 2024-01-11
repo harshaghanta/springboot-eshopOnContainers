@@ -1,12 +1,12 @@
 package com.eshoponcontainers.aggregatesModel.buyerAggregate;
 
-import lombok.Data;
+import com.eshoponcontainers.seedWork.Entity;
+
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
-public class CardType {
 
-    private int id;
+public class CardType extends Entity {
+    
     private String name;
 }

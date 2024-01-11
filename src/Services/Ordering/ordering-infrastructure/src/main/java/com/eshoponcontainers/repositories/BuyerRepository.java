@@ -24,15 +24,15 @@ public class BuyerRepository implements IBuyerRepository {
     }
 
     @Override
-    public Buyer add(Buyer buyer) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'add'");
+    public Buyer add(Buyer buyer) {       
+        entityManager.persist(buyer);
+        return buyer;
     }
 
     @Override
     public Buyer update(Buyer buyer) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        entityManager.persist(buyer);
+        return buyer;
     }
 
     @Override
