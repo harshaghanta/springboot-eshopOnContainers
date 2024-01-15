@@ -7,6 +7,11 @@
 
 
     <mapped-superclass class="com.eshoponcontainers.seedWork.Entity" access="FIELD">
+        <entity-listeners>
+            <entity-listener class="com.eshoponcontainers.listeners.EntityEventListener">
+                <pre-update method-name="preUpdate"></pre-update>
+            </entity-listener>
+        </entity-listeners>
         <attributes>
             <id name="id"></id>
             <transient name="requestedHashCode" />

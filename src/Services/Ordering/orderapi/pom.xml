@@ -41,6 +41,24 @@
 
 		<dependency>
 			<groupId>com.eshoponcontainers</groupId>
+			<artifactId>integration-eventlog</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.eshoponcontainers.eventbus</groupId>
+			<artifactId>eventbus-rabbitmq</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.eshoponcontainers.eventbus</groupId>
+			<artifactId>eventbus</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.eshoponcontainers</groupId>
 			<artifactId>ordering-infrastructure</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>

@@ -2,25 +2,53 @@ package com.eshoponcontainers.services.impl;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
+
+import org.springframework.stereotype.Service;
 
 import com.eshoponcontainers.EventStateEnum;
 import com.eshoponcontainers.entities.IntegrationEventLogEntry;
 import com.eshoponcontainers.eventbus.events.IntegrationEvent;
-import com.eshoponcontainers.repositories.IntegrationEventLogRepository;
 import com.eshoponcontainers.services.IntegrationEventLogService;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Service
 public class DefaultIntegrationEventLogService implements IntegrationEventLogService {
 
-    IntegrationEventLogRepository eventLogRepository;
-    public DefaultIntegrationEventLogService(IntegrationEventLogRepository eventLogRepository ) {
-        this.eventLogRepository = eventLogRepository;
-    }
+    // IntegrationEventLogRepository eventLogRepository;
+    private final EntityManager entityManager;
+
+    // public DefaultIntegrationEventLogService(IntegrationEventLogRepository eventLogRepository) {
+    //     this.eventLogRepository = eventLogRepository;        
+    // }
+
+    // public DefaultIntegrationEventLogService(EntityManager entityManager  ) {        
+    //     this.entityManager = entityManager;
+    // }
 
     @Override
     public List<IntegrationEventLogEntry> retrieveEventLogsPendingToPublish(UUID transactionId ) {
-        List<IntegrationEventLogEntry> pendingEvents = eventLogRepository.findByTransactionIdAndState(transactionId.toString(), EventStateEnum.NOT_PUBLISHED);
+        // List<IntegrationEventLogEntry> pendingEvents = eventLogRepository.findByTransactionIdAndState(transactionId.toString(), EventStateEnum.NOT_PUBLISHED);
+        List<IntegrationEventLogEntry> pendingEvents = null;
+        
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<IntegrationEventLogEntry> criteria = criteriaBuilder.createQuery(IntegrationEventLogEntry.class);
+        Root<IntegrationEventLogEntry> root = criteria.from(IntegrationEventLogEntry.class);
+
+        Predicate transactionFilter = criteriaBuilder.equal(root.get("TransactionId"), transactionId);
+        Predicate eventStateFilter = criteriaBuilder.equal(root.get("state"), EventStateEnum.NOT_PUBLISHED);
+
+        CriteriaQuery<IntegrationEventLogEntry> criteriaQuery = criteria.select(root)
+            .where( criteriaBuilder.and(transactionFilter, eventStateFilter));
+
+        pendingEvents = entityManager.createQuery(criteriaQuery).getResultList();
 
         if(pendingEvents != null && !pendingEvents.isEmpty()) {
            pendingEvents.sort(Comparator.comparing(IntegrationEventLogEntry::getCreationTime));
@@ -35,7 +63,8 @@ public class DefaultIntegrationEventLogService implements IntegrationEventLogSer
     public void saveEvent(IntegrationEvent event, UUID transactionId) {        
         
         IntegrationEventLogEntry logEntry = new IntegrationEventLogEntry(event, transactionId);
-        eventLogRepository.save(logEntry);
+        entityManager.persist(logEntry);
+        // eventLogRepository.save(logEntry);
     }
 
     @Override
@@ -58,15 +87,19 @@ public class DefaultIntegrationEventLogService implements IntegrationEventLogSer
     }
 
     private void updateEventStatus(UUID eventId, EventStateEnum status) {
-        Optional<IntegrationEventLogEntry> optionalEvent = eventLogRepository.findById(eventId);
-        if(optionalEvent.isPresent()) {
-            IntegrationEventLogEntry event = optionalEvent.get();
-            event.setState(status);
+        // Optional<IntegrationEventLogEntry> optionalEventLogEntry = eventLogRepository.findById(eventId);
+        IntegrationEventLogEntry eventLogEntry = entityManager.find(IntegrationEventLogEntry.class, eventId);
+        // if(optionalEventLogEntry.isPresent()) {
+        if(eventLogEntry != null) {
+            // IntegrationEventLogEntry eventLogEntry = optionalEventLogEntry.get();
+            
+            eventLogEntry.setState(status);
 
-            if(event.getState() == EventStateEnum.IN_PROGRESS) {
-                event.setTimesSent(event.getTimesSent() + 1);
+            if(eventLogEntry.getState() == EventStateEnum.IN_PROGRESS) {
+                eventLogEntry.setTimesSent(eventLogEntry.getTimesSent() + 1);
             }
-            eventLogRepository.save(event);
+            // eventLogRepository.save(event);
+            entityManager.merge(eventLogEntry);
         }
     }
 }

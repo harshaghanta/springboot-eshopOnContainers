@@ -10,6 +10,7 @@
   <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
   <!-- <mapping-file>orm.xml</mapping-file> -->
   <!-- <class>com.example.CardType</class> -->
+  <class>com.eshoponcontainers.entities.IntegrationEventLogEntry</class>
 
 
   

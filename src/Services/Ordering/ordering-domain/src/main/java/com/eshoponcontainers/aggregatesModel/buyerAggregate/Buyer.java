@@ -7,6 +7,8 @@ import java.util.List;
 import com.eshoponcontainers.seedWork.Entity;
 import com.eshoponcontainers.seedWork.IAggregateRoot;
 
+import lombok.Getter;
+@Getter
 public class Buyer extends Entity implements IAggregateRoot {
 
     private String identityUUID;

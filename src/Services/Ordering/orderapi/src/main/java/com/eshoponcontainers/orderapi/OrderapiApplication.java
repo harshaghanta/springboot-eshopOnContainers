@@ -7,13 +7,16 @@ import org.springframework.boot.autoconfigure.dao.PersistenceExceptionTranslatio
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 @SpringBootApplication(scanBasePackages = "com.eshoponcontainers")
-@EnableAutoConfiguration(exclude={PersistenceExceptionTranslationAutoConfiguration.class, HibernateJpaAutoConfiguration.class, DataSourceAutoConfiguration.class})
+// @EnableJpaRepositories(basePackages = { "com.eshoponcontainers.repositories" })
+@EnableAutoConfiguration(exclude = { PersistenceExceptionTranslationAutoConfiguration.class,
+		HibernateJpaAutoConfiguration.class, DataSourceAutoConfiguration.class })
 public class OrderapiApplication {
 
 	public static void main(String[] args) {
@@ -21,15 +24,24 @@ public class OrderapiApplication {
 	}
 
 	@Bean
+	@Primary
 	public EntityManager entityManager(EntityManagerFactory factory) {
 		return factory.createEntityManager();
 	}
 
 	@Bean
-    public EntityManagerFactory entityManagerFactory() {
+	public EntityManagerFactory entityManagerFactory() {
 
-        EntityManagerFactory emFactory = Persistence.createEntityManagerFactory("ordering-persistence");
-        return emFactory;
-    }
+		EntityManagerFactory emFactory = Persistence.createEntityManagerFactory("ordering-persistence");
+		return emFactory;
+	}
+
+	// @Bean
+	// @Primary 
+	// public PlatformTransactionManager tm(EntityManager em) {
+	// 	final JpaTransactionManager transactionManager = new JpaTransactionManager();
+	// 	transactionManager.setEntityManagerFactory(em.getObject());
+	// 	return transactionManager;
+	// }
 
 }

@@ -3,19 +3,23 @@ package com.eshoponcontainers.entities;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+
 
 import com.eshoponcontainers.EventStateEnum;
 import com.eshoponcontainers.eventbus.events.IntegrationEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import lombok.Getter;
+
 @Entity
 @Table(name = "IntegrationEventLog")
+@Getter
 public class IntegrationEventLogEntry {
     
     @Id

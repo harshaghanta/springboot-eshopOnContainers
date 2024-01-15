@@ -13,7 +13,7 @@
 	<name>catalogapi</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>8</java.version>
+		<java.version>17</java.version>
 		<springdoc.version>1.6.4</springdoc.version>
 	</properties>
 	<dependencies>

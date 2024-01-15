@@ -1,0 +1,7 @@
+PUT http://localhost:8080/api/v1/orders/cancel HTTP/1.1
+x-requestid: samplerequestid
+Content-Type: application/json
+
+{
+    "orderNumber" : 1
+}
