@@ -4,28 +4,24 @@ import java.util.UUID;
 
 import javax.transaction.Transactional;
 
-import com.eshoponcontainers.catalogapi.entities.CatalogItem;
+import org.springframework.stereotype.Service;
 
+import com.eshoponcontainers.catalogapi.entities.CatalogItem;
 import com.eshoponcontainers.catalogapi.repositories.CatalogItemRepository;
 import com.eshoponcontainers.eventbus.abstractions.EventBus;
 import com.eshoponcontainers.eventbus.events.IntegrationEvent;
 import com.eshoponcontainers.services.IntegrationEventLogService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class CatalogIntegrationService {
 
-    @Autowired
-    private CatalogItemRepository catalogItemRepository;
-
-    @Autowired
-    private IntegrationEventLogService eventLogService;
-
-    @Autowired
-    private EventBus eventBus;
-  
+    
+    private final CatalogItemRepository catalogItemRepository;    
+    private final IntegrationEventLogService eventLogService;
+    private final EventBus eventBus;  
 
     @Transactional
     public void saveEventAndCatalogChanges(IntegrationEvent event, CatalogItem requestedItem) {

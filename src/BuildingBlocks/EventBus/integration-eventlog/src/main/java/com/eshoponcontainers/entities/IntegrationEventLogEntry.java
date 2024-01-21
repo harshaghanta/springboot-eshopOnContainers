@@ -3,11 +3,10 @@ package com.eshoponcontainers.entities;
 import java.util.Date;
 import java.util.UUID;
 
-
-
 import com.eshoponcontainers.EventStateEnum;
 import com.eshoponcontainers.eventbus.events.IntegrationEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.Column;
@@ -87,8 +86,12 @@ public class IntegrationEventLogEntry {
         this.state = state;
     }
 
-    public void deserializeEventContent() {
-        this.event = new ObjectMapper().convertValue(this.content, IntegrationEvent.class);
+    public void deserializeEventContent(Class<?> eventType) throws JsonMappingException, JsonProcessingException {
+        //TODO: HIGH: CHECK THE POSSIBILITY OF INJECT OBJECTMAPPER
+        
+        ObjectMapper objectMapper = new ObjectMapper();
+        
+        this.event = (IntegrationEvent) objectMapper.readValue(this.content, eventType);
     }
     
 }

@@ -42,10 +42,10 @@ public class OrderingIntegrationEventService implements IOrderingIntegrationEven
     }
 
     @Override
-    public void addAndSaveEvent(IntegrationEvent event) {
+    public void addAndSaveEvent(IntegrationEvent event, UUID transactionId) {
         log.info("----- Enqueuing integration event {} to repository ({})", event.getId(), event);
         //TODO : HIGH : NEED TO GET TRANSSACTION ID
-        UUID transactionId = UUID.randomUUID();
+        // UUID transactionId = UUID.randomUUID();
         eventLogService.saveEvent(event, transactionId);
     }
 

@@ -8,5 +8,5 @@ public interface IOrderingIntegrationEventService {
 
     void publishEventsThroughEventBus(UUID transactionId);
 
-    void addAndSaveEvent(IntegrationEvent event);
+    void addAndSaveEvent(IntegrationEvent event, UUID transactionId);
 }

@@ -5,8 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.eshoponcontainers.repositories", "com.eshoponcontainers.catalogapi" })
+@ComponentScan(basePackages = {"com.eshoponcontainers.repositories", "com.eshoponcontainers.catalogapi", "com.eshoponcontainers.services" })
 @EnableJpaRepositories(basePackages = {"com.eshoponcontainers.repositories", "com.eshoponcontainers.catalogapi" })
 public class CatalogapiApplication {
 
