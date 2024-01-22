@@ -4,6 +4,9 @@ import java.time.LocalDate;
 
 import com.eshoponcontainers.seedWork.Entity;
 
+import lombok.Getter;
+
+@Getter
 public class PaymentMethod extends Entity {
 
     private String alias;

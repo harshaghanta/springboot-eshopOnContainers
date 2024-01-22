@@ -5,11 +5,21 @@ import java.time.LocalDate;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
 
 import an.awesome.pipelinr.Notification;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor
 public class OrderStartedDomainEvent implements Notification {
 
-    public OrderStartedDomainEvent(Order order, String userId, String userName, int cardTypeId, String cardNumber,
-            String cardSecurityNumber, String cardHolderName, LocalDate cardExpiration) {
-    }
+    private Order order;
+    private String userId;
+    private String userName;
+    private int cardTypeId;
+    private String cardNumber;
+    private String cardSecurityNumber;
+    private String cardHolderName;
+    private LocalDate cardExpiration; 
+    
 
 }

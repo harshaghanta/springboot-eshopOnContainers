@@ -23,6 +23,7 @@ public class CreateOrderCommand implements Command<Boolean>  {
     private String country;
     private String zipCode;
     private String cardNumber;
+    private String cardHolderName;
     private LocalDate cardExpiration;
     private String cardSecurityNumber;
     private int cardTypeId;

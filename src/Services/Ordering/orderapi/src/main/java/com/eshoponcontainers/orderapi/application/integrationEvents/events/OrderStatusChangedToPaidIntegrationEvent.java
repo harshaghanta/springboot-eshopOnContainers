@@ -1,7 +1,7 @@
 package com.eshoponcontainers.orderapi.application.integrationEvents.events;
 
 
-import java.util.Collection;
+import java.util.List;
 
 import com.eshoponcontainers.eventbus.events.IntegrationEvent;
 
@@ -15,13 +15,5 @@ public class OrderStatusChangedToPaidIntegrationEvent extends IntegrationEvent {
     private int orderId;
     private String orderStatus;
     private String buyerName;
-    private Collection<OrderStockItem> orderStockItems;
-
-    @AllArgsConstructor
-    @Getter
-    class OrderStockItem 
-    {
-        private int productId;
-        private int units;
-    }
+    private List<OrderStockItem> orderStockItems;    
 }
