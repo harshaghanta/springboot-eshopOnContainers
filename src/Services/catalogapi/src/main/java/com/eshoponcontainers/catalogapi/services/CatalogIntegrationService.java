@@ -2,8 +2,6 @@ package com.eshoponcontainers.catalogapi.services;
 
 import java.util.UUID;
 
-import javax.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
 
 import com.eshoponcontainers.catalogapi.entities.CatalogItem;
@@ -12,6 +10,7 @@ import com.eshoponcontainers.eventbus.abstractions.EventBus;
 import com.eshoponcontainers.eventbus.events.IntegrationEvent;
 import com.eshoponcontainers.services.IntegrationEventLogService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service

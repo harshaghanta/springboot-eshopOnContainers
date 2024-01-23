@@ -6,18 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.constraints.Min;
-
-import com.eshoponcontainers.catalogapi.controllers.viewmodels.PaginatedItemViewModel;
-import com.eshoponcontainers.catalogapi.entities.CatalogBrand;
-import com.eshoponcontainers.catalogapi.entities.CatalogItem;
-import com.eshoponcontainers.catalogapi.entities.CatalogType;
-import com.eshoponcontainers.catalogapi.integrationevents.events.ProductPriceChangedIntegrationEvent;
-import com.eshoponcontainers.catalogapi.repositories.CatalogBrandRepository;
-import com.eshoponcontainers.catalogapi.repositories.CatalogItemRepository;
-import com.eshoponcontainers.catalogapi.repositories.CatalogTypeRepository;
-import com.eshoponcontainers.catalogapi.services.CatalogIntegrationService;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,12 +23,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.eshoponcontainers.catalogapi.controllers.viewmodels.PaginatedItemViewModel;
+import com.eshoponcontainers.catalogapi.entities.CatalogBrand;
+import com.eshoponcontainers.catalogapi.entities.CatalogItem;
+import com.eshoponcontainers.catalogapi.entities.CatalogType;
+import com.eshoponcontainers.catalogapi.integrationevents.events.ProductPriceChangedIntegrationEvent;
+import com.eshoponcontainers.catalogapi.repositories.CatalogBrandRepository;
+import com.eshoponcontainers.catalogapi.repositories.CatalogItemRepository;
+import com.eshoponcontainers.catalogapi.repositories.CatalogTypeRepository;
+import com.eshoponcontainers.catalogapi.services.CatalogIntegrationService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 
 @RestController

@@ -1,11 +1,14 @@
 spring:
-    datasource:
-        url: jdbc:sqlserver://host.docker.internal:1433;databaseName=CatalogDB;createDatabaseIfNotExist=true
-        username: sa
-        password: Pass@word
-    jpa.properties.hibernate.dialect: org.hibernate.dialect.SQLServer2012Dialect
-    jpa.hibernate.ddl-auto: update
-    jpa.hibernate.naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  datasource:    
+    url: jdbc:sqlserver://localhost:5433;databaseName=Microsoft.eShopOnContainers.Services.CatalogDb;integratedSecurity=false;encrypt=false;trustServerCertificate=true;
+    username: sa
+    password: Pass@word
+    driverClassName: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming.physical-strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
+      naming.implicit-strategy: "org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl"
 
 server.port: 80
 picBaseUrl: "http://host.docker.internal:5202/catalog-api/api/v1/catalog/items/[0]/pic/"
