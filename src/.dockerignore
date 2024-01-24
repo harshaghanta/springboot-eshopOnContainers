@@ -1,0 +1,13 @@
+**/.idea/
+**/*.iml
+**/*.iws
+**/target/
+**/.sonar/
+**/.sonarlint/
+**/.mvn/
+**/.vscode/
+**/obj/
+**/mvnw
+**/mvnw.cmd
+**/Dockerfile
+**/.dockerignore
