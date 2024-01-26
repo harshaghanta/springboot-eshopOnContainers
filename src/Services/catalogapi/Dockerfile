@@ -24,10 +24,10 @@ RUN mvn clean install -Dmaven.test.skip=true
 WORKDIR /src/Services/catalogapi
 RUN mvn clean install -Dmaven.test.skip=true
 
-# CMD tail -f /dev/null
-
 FROM base AS final
 WORKDIR /app
 COPY --from=build /src/Services/catalogapi/target/catalog-api.jar ./catalog-api.jar
+
+# CMD tail -f /dev/null
 
 ENTRYPOINT [ "java", "-jar", "catalog-api.jar" ]

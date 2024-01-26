@@ -1,9 +1,42 @@
 version: '3.4'
-
 services:
-
   catalog-api:    
     build:
       context: .
       dockerfile: Services/catalogapi/Dockerfile
-
+    env_file:
+    - .env
+    depends_on:
+    - db
+    - eventbus
+    networks:
+    - simpbridgenetwork
+  db:
+    build:
+      context: .
+      dockerfile: "DBSetup/CatalogDB/Dockerfile"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Pass@word
+    ports:
+    - 9133:1433
+    networks:
+    - simpbridgenetwork
+  eventbus:
+    image: rabbitmq:3-management-alpine
+    container_name: eventbus
+    networks:
+    - simpbridgenetwork
+  # db:
+  #   image: mcr.microsoft.com/mssql/server:2019-latest
+  #   environment:
+  #     ACCEPT_EULA: "Y"
+  #     SA_PASSWORD: Pass@word
+  #   ports:
+  #   - "9133:1433"
+  #   volumes:
+  #   - ./DBSetup/init-scripts:/docker-entrypoint-initdb.d  # Mount initialization scripts
+  #   networks:
+  #   - simpbridgenetwork
+networks:
+  simpbridgenetwork:

@@ -1,8 +1,8 @@
 spring:
   datasource:    
-    url: jdbc:sqlserver://localhost:5433;databaseName=Microsoft.eShopOnContainers.Services.CatalogDb;integratedSecurity=false;encrypt=false;trustServerCertificate=true;
-    username: sa
-    password: Pass@word
+    url: ${catalog.datasource.url}
+    username: ${catalog.datasource.username}
+    password: ${catalog.datasource.password}
     driverClassName: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
   jpa:
     hibernate:
@@ -10,6 +10,11 @@ spring:
       naming.physical-strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
       naming.implicit-strategy: "org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl"
 
-server.port: 80
-picBaseUrl: "http://host.docker.internal:5202/catalog-api/api/v1/catalog/items/[0]/pic/"
+picBaseUrl: ${catalog.picBaseUrl}
+eventbus:
+  host: ${eventbus.Host}
+  username: ${eventbus.username}
+  password: ${eventbus.password}
+  retryCount: ${eventbus.retryCount}
+
 springdoc.swagger-ui.path: /swagger-ui-custom.html
