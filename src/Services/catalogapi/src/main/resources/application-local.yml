@@ -1,0 +1,23 @@
+spring:
+  datasource:    
+    url: "jdbc:sqlserver://host.docker.internal:9133;databaseName=CatalogDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
+    username: sa
+    password: Pass@word
+    driverClassName: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming.physical-strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
+      naming.implicit-strategy: "org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl"
+
+
+picBaseUrl: "http://host.docker.internal:5202/catalog-api/api/v1/catalog/items/[0]/pic/"
+
+eventbus:
+  host: "host.docker.internal"
+  username:
+  password:
+  retryCount: 5
+
+#springdoc.swagger-ui.path: /swagger-ui-custom.html
+server.port: 9090 

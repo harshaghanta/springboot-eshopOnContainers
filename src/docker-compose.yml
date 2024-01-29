@@ -9,6 +9,8 @@ services:
     depends_on:
     - db
     - eventbus
+    ports:
+    - 8081:8080
     networks:
     - simpbridgenetwork
   db:
@@ -27,6 +29,9 @@ services:
     container_name: eventbus
     networks:
     - simpbridgenetwork
+    ports:
+    - 5672:5672 
+    - 15672:15672
   # db:
   #   image: mcr.microsoft.com/mssql/server:2019-latest
   #   environment:
