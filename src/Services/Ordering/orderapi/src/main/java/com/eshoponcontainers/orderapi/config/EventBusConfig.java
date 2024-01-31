@@ -9,16 +9,25 @@ import com.eshoponcontainers.eventbus.abstractions.EventBusSubscriptionManager;
 import com.eshoponcontainers.eventbus.impl.InMemoryEventBusSubscriptionManager;
 import com.rabbitmq.client.ConnectionFactory;
 
+import lombok.Data;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ConfigurationProperties(prefix = "eventbus")
+@Data
 public class EventBusConfig {
+
+    private String host;
+    private String username;
+    private String password;
 
     @Bean
     public ConnectionFactory getConnectionFactory() {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("host.docker.internal");
+        factory.setHost(host);
         return factory;
     }
 

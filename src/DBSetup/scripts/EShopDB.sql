@@ -107,6 +107,21 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[
 	ALTER TABLE [dbo].[Catalog] CHECK CONSTRAINT [FK8d255nh6w9gcit9xpm4kblao]
 GO
 
+IF NOT EXISTS(SELECT TOP 1 1 FROM [dbo].[CatalogBrand])
+BEGIN
+	INSERT [dbo].[CatalogBrand] ([Id], [Brand]) VALUES (1, N'.NET')
+	INSERT [dbo].[CatalogBrand] ([Id], [Brand]) VALUES (2, N'Other')
+END
+GO
+
+IF NOT EXISTS(SELECT TOP 1 1 FROM [dbo].[CatalogType])
+BEGIN
+	INSERT [dbo].[CatalogType] ([Id], [Type]) VALUES (1, N'Mug')
+	INSERT [dbo].[CatalogType] ([Id], [Type]) VALUES (2, N'T-Shirt')
+	INSERT [dbo].[CatalogType] ([Id], [Type]) VALUES (3, N'Pin')
+END
+GO
+
 
 SET IDENTITY_INSERT dbo.Catalog ON;  
 GO  
@@ -133,20 +148,7 @@ GO
 SET IDENTITY_INSERT dbo.Catalog OFF;  
 GO  
 
-IF NOT EXISTS(SELECT TOP 1 1 FROM [dbo].[CatalogBrand])
-BEGIN
-	INSERT [dbo].[CatalogBrand] ([Id], [Brand]) VALUES (1, N'.NET')
-	INSERT [dbo].[CatalogBrand] ([Id], [Brand]) VALUES (2, N'Other')
-END
-GO
 
-IF NOT EXISTS(SELECT TOP 1 1 FROM [dbo].[CatalogType])
-BEGIN
-	INSERT [dbo].[CatalogType] ([Id], [Type]) VALUES (1, N'Mug')
-	INSERT [dbo].[CatalogType] ([Id], [Type]) VALUES (2, N'T-Shirt')
-	INSERT [dbo].[CatalogType] ([Id], [Type]) VALUES (3, N'Pin')
-END
-GO
 
 IF NOT EXISTS(SELECT TOP 1 1 FROM [dbo].[IntegrationEventLog])
 BEGIN
@@ -159,13 +161,13 @@ BEGIN
 END
 GO
 
-IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'OrderingDb')
+IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'OrderDB')
 BEGIN
-	CREATE DATABASE OrderingDb;
+	CREATE DATABASE OrderDB;
 END
 GO
 
-USE OrderingDb;
+USE OrderDB;
 GO
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[buyers]') AND type in (N'U'))
@@ -193,6 +195,7 @@ BEGIN
 		[Id] [int] IDENTITY(1,1) PRIMARY KEY,
 		[Name] [nvarchar](200) NOT NULL
 	);
+END
 GO
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[paymentmethods]') AND type in (N'U'))
@@ -221,7 +224,7 @@ GO
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[orders]') AND type in (N'U'))
 BEGIN
-	CREATE TABLE [dbo][orders](
+	CREATE TABLE [dbo].[orders](
 		[Id] [int] IDENTITY(1,1) PRIMARY KEY,
 		[BuyerId] [int] FOREIGN KEY REFERENCES [buyers]([Id]) NULL,
 		[OrderDate] [datetime2](7) NOT NULL,
@@ -316,3 +319,10 @@ BEGIN
 	)
 END
 GO
+
+IF NOT EXISTS(SELECT TOP 1 1 FROM [dbo].cardtypes)
+BEGIN
+	INSERT INTO [dbo].[cardtypes]([Name]) VALUES('Amex');
+	INSERT INTO [dbo].[cardtypes]([Name]) VALUES('Visa');
+	INSERT INTO [dbo].[cardtypes]([Name]) VALUES('MasterCard');
+END

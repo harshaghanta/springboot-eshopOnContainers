@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/mssql/server:2019-latest
 #RUN mkdir -p /usr/dbscripts
 WORKDIR /usr/dbscripts
 
-COPY DBSetup/CatalogDB/scripts .
+COPY DBSetup/scripts .
 # RUN chmod +x ./db-init.sh
 
 # Run Microsoft SQl Server and initialization script (at the same time)

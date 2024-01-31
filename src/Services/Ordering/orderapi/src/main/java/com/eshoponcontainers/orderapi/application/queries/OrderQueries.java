@@ -31,9 +31,9 @@ public class OrderQueries {
         "o.Address_City as city, o.Address_Country as country, o.Address_State as state, o.Address_Street as street, o.Address_ZipCode as zipcode," +
         "os.Name as status, " +
         "oi.ProductName as productname, oi.Units as units, oi.UnitPrice as unitprice, oi.PictureUrl as pictureurl " +
-        "FROM ordering.Orders o " +
-        "LEFT JOIN ordering.Orderitems oi ON o.Id = oi.orderid " +
-        "LEFT JOIN ordering.orderstatus os on o.OrderStatusId = os.Id " +
+        "FROM dbo.Orders o " +
+        "LEFT JOIN dbo.Orderitems oi ON o.Id = oi.orderid " +
+        "LEFT JOIN dbo.orderstatus os on o.OrderStatusId = os.Id " +
         "WHERE o.Id= :orderId";
         Query query = entityManager.createNativeQuery(strQuery);
         query.setParameter("orderId", id);
@@ -73,10 +73,10 @@ public class OrderQueries {
     public List<OrderSummary> getOrdersFromUser(UUID userId) {
 
         String strQuery = "SELECT o.[Id] as ordernumber,o.[OrderDate] as [date],os.[Name] as [status], SUM(oi.units*oi.unitprice) as total " +
-        "FROM [ordering].[Orders] o " +
-        "LEFT JOIN[ordering].[orderitems] oi ON  o.Id = oi.orderid " +
-        "LEFT JOIN[ordering].[orderstatus] os on o.OrderStatusId = os.Id " +                     
-        "LEFT JOIN[ordering].[buyers] ob on o.BuyerId = ob.Id " +
+        "FROM [dbo].[Orders] o " +
+        "LEFT JOIN [dbo].[orderitems] oi ON  o.Id = oi.orderid " +
+        "LEFT JOIN [dbo].[orderstatus] os on o.OrderStatusId = os.Id " +                     
+        "LEFT JOIN [dbo].[buyers] ob on o.BuyerId = ob.Id " +
         "WHERE ob.IdentityGuid = :userId " +
         "GROUP BY o.[Id], o.[OrderDate], os.[Name] " +
         "ORDER BY o.[Id]";
@@ -101,7 +101,7 @@ public class OrderQueries {
     }
 
     public List<CardType> getCardTypes() {
-        Query query = entityManager.createNativeQuery("SELECT Id, Name FROM ordering.cardtypes", CardType.class);
+        Query query = entityManager.createNativeQuery("SELECT Id, Name FROM dbo.cardtypes", CardType.class);
         List<CardType> cardTypes = (List<CardType>) query.getResultList();
         return cardTypes;
     }
