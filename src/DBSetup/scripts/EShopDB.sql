@@ -4,6 +4,12 @@ BEGIN
 END
 GO
 
+IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'OrderDB')
+BEGIN
+	CREATE DATABASE OrderDB;
+END
+GO
+
 USE [CatalogDB]
 GO
 /****** Object:  Table [dbo].[Catalog]    Script Date: 3/20/2022 7:28:44 PM ******/
@@ -158,12 +164,6 @@ BEGIN
 	INSERT [dbo].[IntegrationEventLog] ([EventId], [Content], [CreationTime], [EventTypeName], [State], [TimesSent], [TransactionId]) VALUES (N'fef883cf-cc4a-c344-a0bd-6f40461d4e9f', N'{"id":"cf83f8fe-4acc-44c3-a0bd-6f40461d4e9f","creationDate":1647696073101,"productId":1,"newPrice":199.50,"oldPrice":99.50}', CAST(N'2022-03-19T18:51:13.1010000' AS DateTime2), N'com.eshoponcontainers.catalogapi.integrationevents.events.ProductPriceChangedIntegrationEvent', 2, 1, N'e524a6d6-1632-4d79-844c-d6786938c267')
 	INSERT [dbo].[IntegrationEventLog] ([EventId], [Content], [CreationTime], [EventTypeName], [State], [TimesSent], [TransactionId]) VALUES (N'614050c7-6ca6-5247-bb1d-a9c8fbc0a15f', N'{"id":"c7504061-a66c-4752-bb1d-a9c8fbc0a15f","creationDate":1647691351251,"productId":1,"newPrice":124.50,"oldPrice":137.50}', CAST(N'2022-03-19T17:32:31.2510000' AS DateTime2), N'com.eshoponcontainers.catalogapi.integrationevents.ProductPriceChangedIntegrationEvent', 2, 1, N'88aab933-2767-4ab8-8281-46aa4cc7628d')
 	INSERT [dbo].[IntegrationEventLog] ([EventId], [Content], [CreationTime], [EventTypeName], [State], [TimesSent], [TransactionId]) VALUES (N'cfec0a20-f7ef-d041-af46-acdb4e43b571', N'{"id":"200aeccf-eff7-41d0-af46-acdb4e43b571","creationDate":1647695924807,"productId":1,"newPrice":99.50,"oldPrice":124.50}', CAST(N'2022-03-19T18:48:44.8070000' AS DateTime2), N'com.eshoponcontainers.catalogapi.integrationevents.events.ProductPriceChangedIntegrationEvent', 2, 1, N'12910cb0-20e3-47d5-b9c7-bc2576e9f0c1')
-END
-GO
-
-IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'OrderDB')
-BEGIN
-	CREATE DATABASE OrderDB;
 END
 GO
 

@@ -10,6 +10,7 @@ import com.eshoponcontainers.eventbus.impl.InMemoryEventBusSubscriptionManager;
 import com.rabbitmq.client.ConnectionFactory;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConfigurationProperties(prefix = "eventbus")
+@Slf4j
 @Data
 public class EventBusConfig {
 
@@ -27,7 +29,14 @@ public class EventBusConfig {
     @Bean
     public ConnectionFactory getConnectionFactory() {
         ConnectionFactory factory = new ConnectionFactory();
+        log.info("--------------PRINTING EVENTUBUS DETAILS HOST: {}--------------------", host);
         factory.setHost(host);
+        if(!username.isBlank() && username != null)
+            factory.setUsername(username);
+
+        if(!password.isBlank() && password != null)
+            factory.setPassword(password);
+        
         return factory;
     }
 

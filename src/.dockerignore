@@ -10,4 +10,5 @@
 **/mvnw
 **/mvnw.cmd
 **/Dockerfile
+**/Web
 **/.dockerignore
