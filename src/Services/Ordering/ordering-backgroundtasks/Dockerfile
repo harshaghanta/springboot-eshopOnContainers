@@ -1,7 +1,6 @@
 # Base Stage
 FROM eclipse-temurin:17-jre-jammy AS base
 WORKDIR /app
-EXPOSE 8080
 
 # Build Stage
 FROM  maven:3.8.4-openjdk-17-slim AS build
@@ -13,7 +12,7 @@ COPY ./BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml /src/BuildingBlocks/Eve
 COPY ./BuildingBlocks/EventBus/integration-eventlog/pom.xml /src/BuildingBlocks/EventBus/integration-eventlog/pom.xml
 COPY ./Services/Ordering/ordering-domain/pom.xml /src/Services/Ordering/ordering-domain/pom.xml
 COPY ./Services/Ordering/ordering-infrastructure/pom.xml /src/Services/Ordering/ordering-infrastructure/pom.xml
-COPY ./Services/Ordering/orderapi/pom.xml /src/Services/Ordering/orderapi/pom.xml
+COPY ./Services/Ordering/ordering-backgroundtasks/pom.xml /src/Services/Ordering/ordering-backgroundtasks/pom.xml
 
 COPY . .
 
@@ -35,11 +34,11 @@ RUN mvn -f /src/Services/Ordering/ordering-domain/pom.xml install -Dmaven.test.s
 RUN mvn -f /src/Services/Ordering/ordering-infrastructure/pom.xml dependency:go-offline
 RUN mvn -f /src/Services/Ordering/ordering-infrastructure/pom.xml install -Dmaven.test.skip=true
 
-RUN mvn -f /src/Services/Ordering/orderapi/pom.xml dependency:go-offline
-RUN mvn -f /src/Services/Ordering/orderapi/pom.xml package -Dmaven.test.skip=true 
+RUN mvn -f /src/Services/Ordering/ordering-backgroundtasks/pom.xml dependency:go-offline
+RUN mvn -f /src/Services/Ordering/ordering-backgroundtasks/pom.xml package -Dmaven.test.skip=true
 
 FROM base AS final
 WORKDIR /app
-COPY --from=build /src/Services/Ordering/orderapi/target/order-api.jar ./order-api.jar
+COPY --from=build /src/Services/Ordering/ordering-backgroundtasks/target/ordering-backgroundtasks.jar ./ordering-backgroundtasks.jar
 
-ENTRYPOINT ["java", "-jar", "order-api.jar"]
+ENTRYPOINT ["java", "-jar", "ordering-backgroundtasks.jar"]
