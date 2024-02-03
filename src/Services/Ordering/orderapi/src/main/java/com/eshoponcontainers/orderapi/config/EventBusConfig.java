@@ -12,7 +12,9 @@ import com.rabbitmq.client.ConnectionFactory;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -53,7 +55,7 @@ public class EventBusConfig {
 
     @Bean
     public EventBus getEventBus(RabbitMQPersistentConnection persistentConnection,
-    EventBusSubscriptionManager eventBusSubscriptionManager) {
-        return new RabbitMQEventBus((DefaultRabbitMQPersistentConnection) persistentConnection, eventBusSubscriptionManager, "Catalog");
+    EventBusSubscriptionManager eventBusSubscriptionManager, ApplicationContext context) {
+        return new RabbitMQEventBus((DefaultRabbitMQPersistentConnection) persistentConnection, eventBusSubscriptionManager, context, "Ordering");
     }
 }

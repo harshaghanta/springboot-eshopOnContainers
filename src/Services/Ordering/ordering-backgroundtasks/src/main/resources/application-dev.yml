@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: ${orderapi.datasource.url}
+    username: ${orderapi.datasource.username}
+    password: ${orderapi.datasource.password}
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+eventbus:
+  host: ${eventbus.host}
+  username: ${eventbus.username}
+  password: ${eventbus.password}
+  retryCount: ${eventbus.retryCount}

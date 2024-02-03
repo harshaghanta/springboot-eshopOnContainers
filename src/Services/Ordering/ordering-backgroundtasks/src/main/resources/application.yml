@@ -1,6 +1,1 @@
-spring:
-  datasource:
-    url: jdbc:sqlserver://localhost:5433;databaseName=Microsoft.eShopOnContainers.Services.OrderingDb;integratedSecurity=false;encrypt=false;trustServerCertificate=true;
-    username: sa
-    password: Pass@123
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+spring.profiles.active: dev

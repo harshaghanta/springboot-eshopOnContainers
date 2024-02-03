@@ -21,7 +21,7 @@
 
     <entity class="com.eshoponcontainers.aggregatesModel.buyerAggregate.CardType"
         access="FIELD" name="CardType">
-        <table name="[dbo].[cardtypes]"></table>
+        <table name="[ordering].[cardtypes]"></table>
 
         <attributes>
             <id name="id">
@@ -35,7 +35,7 @@
     <entity class="com.eshoponcontainers.aggregatesModel.buyerAggregate.Buyer"
         access="FIELD" name="Buyer">
 
-        <table name="[dbo].[buyers]"></table>
+        <table name="[ordering].[buyers]"></table>
         <attributes>
             <id name="id" access="FIELD">
                 <column name="Id" />
@@ -55,7 +55,7 @@
 
     <entity class="com.eshoponcontainers.aggregatesModel.buyerAggregate.PaymentMethod"
         access="FIELD" name="PaymentMethod">
-        <table name="[dbo].[paymentmethods]"></table>
+        <table name="[ordering].[paymentmethods]"></table>
 
         <attributes>
             <id name="id">
@@ -78,7 +78,7 @@
     </entity>
 
     <entity class="com.eshoponcontainers.aggregatesModel.orderAggregate.OrderItem" name="OrderItem">
-        <table name="[dbo].[orderItems]"></table>
+        <table name="[ordering].[orderItems]"></table>
         <attributes>
             <basic name="productId">
                 <column name="ProductId" />
@@ -104,7 +104,7 @@
 
     <entity class="com.eshoponcontainers.aggregatesModel.orderAggregate.Order" access="FIELD"
         name="Order">        
-        <table name="[dbo].[orders]"></table>
+        <table name="[ordering].[orders]"></table>
         <attributes>
             <id name="id">
                 <generated-value strategy="SEQUENCE" generator="orderid_generator"></generated-value>

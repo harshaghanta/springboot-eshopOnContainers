@@ -1,6 +1,8 @@
 package com.eshoponcontainers.catalogapi.config;
 
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -53,8 +55,8 @@ public class EventBusConfig {
 
     @Bean
     public EventBus getEventBus(RabbitMQPersistentConnection persistentConnection,
-            EventBusSubscriptionManager eventBusSubscriptionManager) {
+            EventBusSubscriptionManager eventBusSubscriptionManager, ApplicationContext context) {
         return new RabbitMQEventBus((DefaultRabbitMQPersistentConnection) persistentConnection,
-                eventBusSubscriptionManager, "Catalog");
+                eventBusSubscriptionManager, context, "Catalog");
     }
 }

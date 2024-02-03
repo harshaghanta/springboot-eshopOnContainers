@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    # url: "jdbc:sqlserver://host.docker.internal:9133;databaseName=OrderDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
+    url: "jdbc:sqlserver://host.docker.internal:5433;databaseName=Microsoft.eShopOnContainers.Services.OrderingDb;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
+    username: sa
+    password: Pass@word
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+eventbus:
+  host: "host.docker.internal"
+  username: 
+  password: 
+  retryCount: 5

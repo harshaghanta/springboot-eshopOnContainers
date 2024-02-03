@@ -8,6 +8,7 @@ import com.eshoponcontainers.eventbus.abstractions.EventBusSubscriptionManager;
 import com.eshoponcontainers.eventbus.impl.InMemoryEventBusSubscriptionManager;
 import com.rabbitmq.client.ConnectionFactory;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,7 +35,7 @@ public class EventBusConfig {
 
     @Bean
     public EventBus getEventBus(RabbitMQPersistentConnection persistentConnection,
-    EventBusSubscriptionManager eventBusSubscriptionManager) {
-        return new RabbitMQEventBus((DefaultRabbitMQPersistentConnection) persistentConnection, eventBusSubscriptionManager, "Basket");
+    EventBusSubscriptionManager eventBusSubscriptionManager, ApplicationContext context) {
+        return new RabbitMQEventBus((DefaultRabbitMQPersistentConnection) persistentConnection, eventBusSubscriptionManager, context, "Basket");
     }
 }
