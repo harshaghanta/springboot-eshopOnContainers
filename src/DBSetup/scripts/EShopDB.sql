@@ -269,7 +269,7 @@ BEGIN
 END
 GO
 
-IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_orderItems_OrderId' AND object_id = OBJECT_ID('N[ordering].[orderItems]'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_orderItems_OrderId' AND object_id = OBJECT_ID(N'[ordering].[orderItems]'))
 BEGIN
 	CREATE NONCLUSTERED INDEX [IX_orderItems_OrderId] ON [ordering].[orderItems]
 	(
@@ -278,7 +278,7 @@ BEGIN
 END
 GO
 
-IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_orders_BuyerId' AND object_id = OBJECT_ID('N[ordering].[orders]'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_orders_BuyerId' AND object_id = OBJECT_ID(N'[ordering].[orders]'))
 BEGIN
 	CREATE NONCLUSTERED INDEX [IX_orders_BuyerId] ON [ordering].[orders]
 	(
