@@ -31,6 +31,10 @@
 		{
 			"name": "server",
 			"path": "src/Web/WebSpa/server"
+		},
+		{
+			"name": "ordering-backgroundtasks",
+			"path": "src/Services/Ordering/ordering-backgroundtasks"
 		}
 	],
 	"settings": {
