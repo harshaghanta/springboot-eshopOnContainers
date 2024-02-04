@@ -1,1 +1,2 @@
-
+spring.profiles.active: dev
+springdoc.swagger-ui.path: /swagger-ui-custom.html

@@ -1,24 +1,25 @@
 package com.eshoponcontainers.catalogapi;
 
-import com.eshoponcontainers.catalogapi.integrationevents.eventhandlers.ProductPriceChangedEventHandler;
-import com.eshoponcontainers.catalogapi.integrationevents.events.ProductPriceChangedIntegrationEvent;
+import org.springframework.stereotype.Component;
+
 import com.eshoponcontainers.eventbus.abstractions.EventBus;
 
 import jakarta.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
+@RequiredArgsConstructor
 public class StartUp {
-
-    @Autowired
-    private EventBus eventBus;
     
+    private final EventBus eventBus;    
 
     @PostConstruct
     public void init() {
         System.out.println("Starting catalog-api");
-        eventBus.subscribe(ProductPriceChangedIntegrationEvent.class, ProductPriceChangedEventHandler.class);
+        log.info("Subscribing to the Integration Events");
+        //
+        //eventBus.subscribe(ProductPriceChangedIntegrationEvent.class, ProductPriceChangedEventHandler.class);
     }
 }

@@ -11,8 +11,9 @@ WORKDIR /src
 COPY ./BuildingBlocks/EventBus/eventbus/pom.xml /src/BuildingBlocks/EventBus/eventbus/pom.xml
 COPY ./BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml /src/BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml
 COPY ./BuildingBlocks/EventBus/integration-eventlog/pom.xml /src/BuildingBlocks/EventBus/integration-eventlog/pom.xml
-COPY ./Services/catalogapi/pom.xml /src/Services/catalogapi/pom.xml
-# ENV MAVEN_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
+COPY ./Services/Ordering/ordering-domain/pom.xml /src/Services/Ordering/ordering-domain/pom.xml
+COPY ./Services/Ordering/ordering-infrastructure/pom.xml /src/Services/Ordering/ordering-infrastructure/pom.xml
+COPY ./Services/Ordering/orderapi/pom.xml /src/Services/Ordering/orderapi/pom.xml
 
 COPY . .
 
@@ -26,32 +27,19 @@ RUN mvn -f /src/BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml install -Dmave
 RUN mvn -f /src/BuildingBlocks/EventBus/integration-eventlog/pom.xml dependency:go-offline
 RUN mvn -f /src/BuildingBlocks/EventBus/integration-eventlog/pom.xml install -Dmaven.test.skip=true
 
-RUN mvn -f /src/Services/catalogapi/pom.xml dependency:go-offline
-RUN mvn -f /src/Services/catalogapi/pom.xml package -Dmaven.test.skip=true
 
-# WORKDIR /src/BuildingBlocks/EventBus/eventbus
-# RUN mvn clean install -Dmaven.test.skip=true
+RUN mvn -f /src/Services/Ordering/ordering-domain/pom.xml dependency:go-offline
+RUN mvn -f /src/Services/Ordering/ordering-domain/pom.xml install -Dmaven.test.skip=true
 
-# WORKDIR /src/BuildingBlocks/EventBus/eventbus-rabbitmq
-# RUN mvn clean install -Dmaven.test.skip=true
 
-# WORKDIR /src/BuildingBlocks/EventBus/integration-eventlog
-# RUN mvn clean install -Dmaven.test.skip=true
+RUN mvn -f /src/Services/Ordering/ordering-infrastructure/pom.xml dependency:go-offline
+RUN mvn -f /src/Services/Ordering/ordering-infrastructure/pom.xml install -Dmaven.test.skip=true
 
-# WORKDIR /src/Services/catalogapi
-# RUN mvn clean install -Dmaven.test.skip=true
+RUN mvn -f /src/Services/Ordering/orderapi/pom.xml dependency:go-offline
+RUN mvn -f /src/Services/Ordering/orderapi/pom.xml package -Dmaven.test.skip=true 
 
 FROM base AS final
 WORKDIR /app
-COPY --from=build /src/Services/catalogapi/target/catalog-api.jar ./catalog-api.jar
+COPY --from=build /src/Services/Ordering/orderapi/target/order-api.jar ./order-api.jar
 
-# CMD tail -f /dev/null
-
-## ADDED SLEEP FOR 60 SECONDS TO WAIT FOR DB SERVER TO BE UP. with out sh sleep is failing
-# ENTRYPOINT ["sh", "-c", "sleep 60 && java -jar catalog-api.jar"]
-# ENTRYPOINT sleep 60 && java -jar catalog-api.jar
-# Sleep not working . Giving error during startup 
-ENTRYPOINT ["java", "-jar", "catalog-api.jar"]
-
-
-
+ENTRYPOINT ["java", "-jar", "order-api.jar"]

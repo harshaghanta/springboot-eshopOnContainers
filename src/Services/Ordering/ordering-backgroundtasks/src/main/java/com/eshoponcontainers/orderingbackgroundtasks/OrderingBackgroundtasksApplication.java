@@ -1,26 +1,33 @@
 package com.eshoponcontainers.orderingbackgroundtasks;
 
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import com.eshoponcontainers.eventbus.abstractions.EventBus;
+import com.eshoponcontainers.orderingbackgroundtasks.events.GracePeriodConfirmedIntegrationEvent;
 import com.eshoponcontainers.orderingbackgroundtasks.repositories.OrderRepository;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
+@EnableScheduling
 @Slf4j
+@RequiredArgsConstructor
 public class OrderingBackgroundtasksApplication {
 
-	@Autowired
-	private OrderRepository orderRepository;
-
+	private final EventBus eventBus;
+	private final OrderRepository orderRepository;
 
 	private volatile boolean shutdownRequested = false;
+	private List<Integer> ordersToProcess = new ArrayList<>();
 
 	public static void main(String[] args) {
 
@@ -36,19 +43,33 @@ public class OrderingBackgroundtasksApplication {
 		if (shutdownRequested) {
 
 		} else {
-			List<Integer> orders = orderRepository.getConfirmedGracePeriodOrders();
-			for (Integer orderId : orders) {
-				// GracePeriodConfirmedIntegrationEvent event = new GracePeriodConfirmedIntegrationEvent(orderId);
-				// eventBus.publish(event);
+			log.info("Fetching confirmed grace period orders..");
+			ordersToProcess = orderRepository.getConfirmedGracePeriodOrders();
+			for (Integer orderId : ordersToProcess) {
+				GracePeriodConfirmedIntegrationEvent event = new GracePeriodConfirmedIntegrationEvent(orderId);
+				eventBus.publish(event);
 			}
 		}
-		log.info("GracePeriodManagerService started");
-
 	}
 
 	// Method to handle shutdown and pause ongoing work
 	public synchronized void handleShutdown() {
 
+		while (!ordersToProcess.isEmpty()) {
+			log.info("Orders getting processed. Waiting for them to be processed...");
+			Sleep(Duration.ofSeconds(3));
+		}
+		shutdownRequested = true;
+		log.warn("No orders to process.Shutting down....");
+	}
+
+	private void Sleep(Duration duration) {
+		try {
+			Thread.sleep(duration.toMillis());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

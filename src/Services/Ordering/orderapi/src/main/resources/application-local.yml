@@ -1,0 +1,14 @@
+order:
+  datasource:    
+    url: "jdbc:sqlserver://host.docker.internal:9133;databaseName=OrderDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
+    username: sa
+    password: Pass@word
+
+eventbus:
+  host: "host.docker.internal"
+  username:
+  password:
+  retryCount: 5
+
+springdoc.swagger-ui.path: /swagger-ui-custom.html
+server.port: 9090 

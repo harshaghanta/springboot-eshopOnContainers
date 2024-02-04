@@ -1,5 +1,11 @@
 package com.eshoponcontainers.catalogapi.config;
 
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 import com.eshoponcontainers.eventbus.DefaultRabbitMQPersistentConnection;
 import com.eshoponcontainers.eventbus.RabbitMQEventBus;
 import com.eshoponcontainers.eventbus.RabbitMQPersistentConnection;
@@ -8,44 +14,38 @@ import com.eshoponcontainers.eventbus.abstractions.EventBusSubscriptionManager;
 import com.eshoponcontainers.eventbus.impl.InMemoryEventBusSubscriptionManager;
 import com.rabbitmq.client.ConnectionFactory;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 @Configuration
+@ConfigurationProperties(prefix = "eventbus")
 @Slf4j
+@Data
 public class EventBusConfig {
 
-    @Value("${eventbus.host}")
-    private String eventBusHost;
-
-    @Value("${eventbus.username}")
-    private String eventBusUserName;
-
-    @Value("${eventbus.password}")
-    private String eventBusPassword;
-
+    private String host;
+    private String username;
+    private String password;
 
     @Bean
     public ConnectionFactory getConnectionFactory() {
         ConnectionFactory factory = new ConnectionFactory();
-        log.info("--------------PRINTING EVENTUBUS DETAILS HOST: {}--------------------", eventBusHost);
-        factory.setHost(eventBusHost);
-        if(!eventBusUserName.isBlank() && eventBusUserName != null)
-            factory.setUsername(eventBusUserName);
+        log.info("--------------PRINTING EVENTUBUS DETAILS HOST: {}--------------------", host);
+        factory.setHost(host);
+        if (!username.isBlank() && username != null)
+            factory.setUsername(username);
 
-        if(!eventBusPassword.isBlank() && eventBusPassword != null)
-            factory.setPassword(eventBusPassword);
-        
+        if (!password.isBlank() && password != null)
+            factory.setPassword(password);
+
         return factory;
     }
 
     @Bean
     public RabbitMQPersistentConnection getRabbitMQPersistentConnection(ConnectionFactory connectionFactory) {
-         DefaultRabbitMQPersistentConnection persistentConnection = new DefaultRabbitMQPersistentConnection(connectionFactory , 5);         
-         return persistentConnection;
+        DefaultRabbitMQPersistentConnection persistentConnection = new DefaultRabbitMQPersistentConnection(
+                connectionFactory, 5);
+        return persistentConnection;
     }
 
     @Bean
@@ -55,7 +55,8 @@ public class EventBusConfig {
 
     @Bean
     public EventBus getEventBus(RabbitMQPersistentConnection persistentConnection,
-    EventBusSubscriptionManager eventBusSubscriptionManager) {
-        return new RabbitMQEventBus((DefaultRabbitMQPersistentConnection) persistentConnection, eventBusSubscriptionManager, "Catalog");
+            EventBusSubscriptionManager eventBusSubscriptionManager, ApplicationContext context) {
+        return new RabbitMQEventBus((DefaultRabbitMQPersistentConnection) persistentConnection,
+                eventBusSubscriptionManager, context, "Catalog");
     }
 }

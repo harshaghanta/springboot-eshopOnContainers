@@ -12,7 +12,7 @@ spring:
 
 picBaseUrl: ${catalog.picBaseUrl}
 eventbus:
-  host: ${eventbus.Host}
+  host: ${eventbus.host}
   username: ${eventbus.username}
   password: ${eventbus.password}
   retryCount: ${eventbus.retryCount}

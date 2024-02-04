@@ -5,6 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import org.springframework.context.ApplicationContext;
+
 import com.eshoponcontainers.eventbus.abstractions.EventBus;
 import com.eshoponcontainers.eventbus.abstractions.EventBusSubscriptionManager;
 import com.eshoponcontainers.eventbus.abstractions.IntegrationEventHandler;
@@ -26,6 +28,7 @@ public class RabbitMQEventBus implements EventBus {
     private EventBusSubscriptionManager eventBusSubscriptionManager;
     private DefaultRabbitMQPersistentConnection persistentConnection;
     private Channel consumerChannel;
+    private ApplicationContext context;
     /**
      *
      */
@@ -33,12 +36,14 @@ public class RabbitMQEventBus implements EventBus {
     private static final String EXCHANGE_NAME = "eshop_event_bus";
 
     public RabbitMQEventBus(DefaultRabbitMQPersistentConnection persistentConnection,
-            EventBusSubscriptionManager eventBusSubscriptionManager, String subscribtionName) {
+            EventBusSubscriptionManager eventBusSubscriptionManager,
+            ApplicationContext context, String subscribtionName) {
 
         this.persistentConnection = persistentConnection;
         this.eventBusSubscriptionManager = eventBusSubscriptionManager;
         this.subscribtionName = subscribtionName;
         this.consumerChannel = createConsumerChannel();
+        this.context = context;
 
     }
 
@@ -155,14 +160,12 @@ public class RabbitMQEventBus implements EventBus {
                         
                         Class handler = subscription.getHandler();
                         try {
-                            Object instance = handler.newInstance();
+                            // Object instance = handler.newInstance();
+                            Object instance = context.getBean(handler);
                             Method methodInfo = handler.getMethod("handle",  eventType);
                             Runnable runnable = (Runnable)  methodInfo.invoke(instance, event);
                             
-                        } catch (InstantiationException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } catch (IllegalAccessException e) {
+                        }catch (IllegalAccessException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         } catch (NoSuchMethodException e) {

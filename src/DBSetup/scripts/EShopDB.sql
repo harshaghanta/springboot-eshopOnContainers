@@ -4,6 +4,12 @@ BEGIN
 END
 GO
 
+IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'OrderDB')
+BEGIN
+	CREATE DATABASE OrderDB;
+END
+GO
+
 USE [CatalogDB]
 GO
 /****** Object:  Table [dbo].[Catalog]    Script Date: 3/20/2022 7:28:44 PM ******/
@@ -107,6 +113,21 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[
 	ALTER TABLE [dbo].[Catalog] CHECK CONSTRAINT [FK8d255nh6w9gcit9xpm4kblao]
 GO
 
+IF NOT EXISTS(SELECT TOP 1 1 FROM [dbo].[CatalogBrand])
+BEGIN
+	INSERT [dbo].[CatalogBrand] ([Id], [Brand]) VALUES (1, N'.NET')
+	INSERT [dbo].[CatalogBrand] ([Id], [Brand]) VALUES (2, N'Other')
+END
+GO
+
+IF NOT EXISTS(SELECT TOP 1 1 FROM [dbo].[CatalogType])
+BEGIN
+	INSERT [dbo].[CatalogType] ([Id], [Type]) VALUES (1, N'Mug')
+	INSERT [dbo].[CatalogType] ([Id], [Type]) VALUES (2, N'T-Shirt')
+	INSERT [dbo].[CatalogType] ([Id], [Type]) VALUES (3, N'Pin')
+END
+GO
+
 
 SET IDENTITY_INSERT dbo.Catalog ON;  
 GO  
@@ -133,20 +154,7 @@ GO
 SET IDENTITY_INSERT dbo.Catalog OFF;  
 GO  
 
-IF NOT EXISTS(SELECT TOP 1 1 FROM [dbo].[CatalogBrand])
-BEGIN
-	INSERT [dbo].[CatalogBrand] ([Id], [Brand]) VALUES (1, N'.NET')
-	INSERT [dbo].[CatalogBrand] ([Id], [Brand]) VALUES (2, N'Other')
-END
-GO
 
-IF NOT EXISTS(SELECT TOP 1 1 FROM [dbo].[CatalogType])
-BEGIN
-	INSERT [dbo].[CatalogType] ([Id], [Type]) VALUES (1, N'Mug')
-	INSERT [dbo].[CatalogType] ([Id], [Type]) VALUES (2, N'T-Shirt')
-	INSERT [dbo].[CatalogType] ([Id], [Type]) VALUES (3, N'Pin')
-END
-GO
 
 IF NOT EXISTS(SELECT TOP 1 1 FROM [dbo].[IntegrationEventLog])
 BEGIN
@@ -159,18 +167,17 @@ BEGIN
 END
 GO
 
-IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'OrderingDb')
+USE OrderDB;
+GO
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'ordering')
 BEGIN
-	CREATE DATABASE OrderingDb;
+	EXEC('CREATE SCHEMA ordering')
 END
 GO
 
-USE OrderingDb;
-GO
-
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[buyers]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ordering].[buyers]') AND type in (N'U'))
 BEGIN
-	CREATE TABLE [dbo].[buyers](
+	CREATE TABLE [ordering].[buyers](
 		[Id] [int] IDENTITY(1,1) PRIMARY KEY,
 		[IdentityGuid] [nvarchar](200) NOT NULL,
 		[Name] [nvarchar](max) NULL
@@ -178,40 +185,41 @@ BEGIN
 END
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[cardtypes]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ordering].[cardtypes]') AND type in (N'U'))
 BEGIN
-	CREATE TABLE [dbo].[cardtypes](
+	CREATE TABLE [ordering].[cardtypes](
 		[Id] [int] IDENTITY(1,1) PRIMARY KEY,
 		[Name] [nvarchar](200) NOT NULL
 	);
 END
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[orderstatus]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ordering].[orderstatus]') AND type in (N'U'))
 BEGIN
-	CREATE TABLE [dbo].[orderstatus](
+	CREATE TABLE [ordering].[orderstatus](
 		[Id] [int] IDENTITY(1,1) PRIMARY KEY,
 		[Name] [nvarchar](200) NOT NULL
 	);
+END
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[paymentmethods]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ordering].[paymentmethods]') AND type in (N'U'))
 BEGIN
-	CREATE TABLE [dbo].[paymentmethods](
+	CREATE TABLE [ordering].[paymentmethods](
 		[Id] [int] IDENTITY(1,1) PRIMARY KEY,
 		[Alias] [nvarchar](200) NOT NULL,
-		[BuyerId] [int] FOREIGN KEY REFERENCES [buyers]([Id]) NOT NULL,
+		[BuyerId] [int] FOREIGN KEY REFERENCES [ordering].[buyers]([Id]) NOT NULL,
 		[CardHolderName] [nvarchar](200) NOT NULL,
 		[CardNumber] [nvarchar](25) NOT NULL,
-		[CardTypeId] [int] FOREIGN KEY REFERENCES [cardtypes]([Id]) NOT NULL,
+		[CardTypeId] [int] FOREIGN KEY REFERENCES [ordering].[cardtypes]([Id]) NOT NULL,
 		[Expiration] [datetime2](7) NOT NULL
 	);
 END
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[requests]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ordering].[requests]') AND type in (N'U'))
 BEGIN
-	CREATE TABLE [dbo].[requests](
+	CREATE TABLE [ordering].[requests](
 		[Id] [uniqueidentifier] PRIMARY KEY,
 		[Name] [nvarchar](max) NOT NULL,
 		[Time] [datetime2](7) NOT NULL
@@ -219,13 +227,13 @@ BEGIN
 END
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[orders]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ordering].[orders]') AND type in (N'U'))
 BEGIN
-	CREATE TABLE [dbo][orders](
+	CREATE TABLE [ordering].[orders](
 		[Id] [int] IDENTITY(1,1) PRIMARY KEY,
-		[BuyerId] [int] FOREIGN KEY REFERENCES [buyers]([Id]) NULL,
+		[BuyerId] [int] FOREIGN KEY REFERENCES [ordering].[buyers]([Id]) NULL,
 		[OrderDate] [datetime2](7) NOT NULL,
-		[OrderStatusId] [int] FOREIGN KEY REFERENCES [orderstatus]([Id]) NOT NULL,
+		[OrderStatusId] [int] FOREIGN KEY REFERENCES [ordering].[orderstatus]([Id]) NOT NULL,
 		[PaymentMethodId] [int] NULL,
 		[Description] [nvarchar](max) NULL,
 		[Address_City] [nvarchar](max) NULL,
@@ -237,12 +245,12 @@ BEGIN
 END
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[orderItems]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ordering].[orderItems]') AND type in (N'U'))
 BEGIN
-	CREATE TABLE [dbo].[orderItems](
+	CREATE TABLE [ordering].[orderItems](
 		[Id] [int] IDENTITY(1,1) PRIMARY KEY,
 		[Discount] [decimal](18, 2) NOT NULL,
-		[OrderId] [int] REFERENCES [orders]([Id]) NULL,
+		[OrderId] [int] REFERENCES [ordering].[orders]([Id]) NULL,
 		[PictureUrl] [nvarchar](max) NULL,
 		[ProductId] [int] NOT NULL,
 		[ProductName] [nvarchar](max) NOT NULL,
@@ -252,27 +260,27 @@ BEGIN
 END
 GO
 
-IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_buyers_IdentityGuid' AND object_id = OBJECT_ID('buyers'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_buyers_IdentityGuid' AND object_id = OBJECT_ID(N'[ordering].[buyers]'))
 BEGIN
-	CREATE UNIQUE NONCLUSTERED INDEX [IX_buyers_IdentityGuid] ON [dbo].[buyers]
+	CREATE UNIQUE NONCLUSTERED INDEX [IX_buyers_IdentityGuid] ON [ordering].[buyers]
 	(
 		[IdentityGuid] ASC
 	)
 END
 GO
 
-IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_orderItems_OrderId' AND object_id = OBJECT_ID('orderItems'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_orderItems_OrderId' AND object_id = OBJECT_ID(N'[ordering].[orderItems]'))
 BEGIN
-	CREATE NONCLUSTERED INDEX [IX_orderItems_OrderId] ON [dbo].[orderItems]
+	CREATE NONCLUSTERED INDEX [IX_orderItems_OrderId] ON [ordering].[orderItems]
 	(
 		[OrderId] ASC
 	)
 END
 GO
 
-IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_orders_BuyerId' AND object_id = OBJECT_ID('orders'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_orders_BuyerId' AND object_id = OBJECT_ID(N'[ordering].[orders]'))
 BEGIN
-	CREATE NONCLUSTERED INDEX [IX_orders_BuyerId] ON [dbo].[orders]
+	CREATE NONCLUSTERED INDEX [IX_orders_BuyerId] ON [ordering].[orders]
 	(
 		[BuyerId] ASC
 	)
@@ -280,18 +288,18 @@ END
 GO
 
 
-IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_orders_OrderStatusId' AND object_id = OBJECT_ID('orders'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_orders_OrderStatusId' AND object_id = OBJECT_ID(N'[ordering].[orders]'))
 BEGIN
-	CREATE NONCLUSTERED INDEX [IX_orders_OrderStatusId] ON [dbo].[orders]
+	CREATE NONCLUSTERED INDEX [IX_orders_OrderStatusId] ON [ordering].[orders]
 	(
 		[OrderStatusId] ASC
 	)
 END
 GO
 
-IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_orders_PaymentMethodId' AND object_id = OBJECT_ID('orders'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_orders_PaymentMethodId' AND object_id = OBJECT_ID(N'[ordering].[orders]'))
 BEGIN
-	CREATE NONCLUSTERED INDEX [IX_orders_PaymentMethodId] ON [dbo].[orders]
+	CREATE NONCLUSTERED INDEX [IX_orders_PaymentMethodId] ON [ordering].[orders]
 	(
 		[PaymentMethodId] ASC
 	)
@@ -299,20 +307,27 @@ END
 GO
 
 
-IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_paymentmethods_BuyerId' AND object_id = OBJECT_ID('paymentmethods'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_paymentmethods_BuyerId' AND object_id = OBJECT_ID(N'[ordering].[paymentmethods]'))
 BEGIN
-	CREATE NONCLUSTERED INDEX [IX_paymentmethods_BuyerId] ON [dbo].[paymentmethods]
+	CREATE NONCLUSTERED INDEX [IX_paymentmethods_BuyerId] ON [ordering].[paymentmethods]
 	(
 		[BuyerId] ASC
 	)
 END
 GO
 
-IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_paymentmethods_CardTypeId' AND object_id = OBJECT_ID('paymentmethods'))
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_paymentmethods_CardTypeId' AND object_id = OBJECT_ID(N'[ordering].[paymentmethods]'))
 BEGIN
-	CREATE NONCLUSTERED INDEX [IX_paymentmethods_CardTypeId] ON [dbo].[paymentmethods]
+	CREATE NONCLUSTERED INDEX [IX_paymentmethods_CardTypeId] ON [ordering].[paymentmethods]
 	(
 		[CardTypeId] ASC
 	)
 END
 GO
+
+IF NOT EXISTS(SELECT TOP 1 1 FROM [ordering].cardtypes)
+BEGIN
+	INSERT INTO [ordering].[cardtypes]([Name]) VALUES('Amex');
+	INSERT INTO [ordering].[cardtypes]([Name]) VALUES('Visa');
+	INSERT INTO [ordering].[cardtypes]([Name]) VALUES('MasterCard');
+END

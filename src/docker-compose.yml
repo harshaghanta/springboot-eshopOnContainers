@@ -16,7 +16,7 @@ services:
   db:
     build:
       context: .
-      dockerfile: "DBSetup/CatalogDB/Dockerfile"
+      dockerfile: "DBSetup/Dockerfile"
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Pass@word
@@ -32,16 +32,30 @@ services:
     ports:
     - 5672:5672 
     - 15672:15672
-  # db:
-  #   image: mcr.microsoft.com/mssql/server:2019-latest
-  #   environment:
-  #     ACCEPT_EULA: "Y"
-  #     SA_PASSWORD: Pass@word
-  #   ports:
-  #   - "9133:1433"
-  #   volumes:
-  #   - ./DBSetup/init-scripts:/docker-entrypoint-initdb.d  # Mount initialization scripts
-  #   networks:
-  #   - simpbridgenetwork
+  ordering-api:    
+    build:
+      context: .
+      dockerfile: Services/Ordering/orderapi/Dockerfile
+    env_file:
+    - .env
+    depends_on:
+    - db
+    - eventbus
+    ports:
+    - 8082:8080
+    networks:
+    - simpbridgenetwork
+  ordering-backgroundtasks:
+    build:
+      context: .
+      dockerfile: Services/Ordering/ordering-backgroundtasks/Dockerfile
+    env_file:
+    - .env
+    depends_on:
+    - db
+    - eventbus
+    networks:
+      - simpbridgenetwork
+
 networks:
   simpbridgenetwork:
