@@ -1,61 +1,69 @@
 version: '3.4'
 services:
-  catalog-api:    
+  # catalog-api:    
+  #   build:
+  #     context: .
+  #     dockerfile: Services/catalogapi/Dockerfile
+  #   env_file:
+  #   - .env
+  #   depends_on:
+  #   - db
+  #   - eventbus
+  #   ports:
+  #   - 8081:8080
+  #   networks:
+  #   - simpbridgenetwork
+  # db:
+  #   build:
+  #     context: .
+  #     dockerfile: "DBSetup/Dockerfile"
+  #   environment:
+  #     - ACCEPT_EULA=Y
+  #     - SA_PASSWORD=Pass@word
+  #   ports:
+  #   - 9133:1433
+  #   networks:
+  #   - simpbridgenetwork
+  # eventbus:
+  #   image: rabbitmq:3-management-alpine
+  #   container_name: eventbus
+  #   networks:
+  #   - simpbridgenetwork
+  #   ports:
+  #   - 5672:5672 
+  #   - 15672:15672
+  # ordering-api:    
+  #   build:
+  #     context: .
+  #     dockerfile: Services/Ordering/orderapi/Dockerfile
+  #   env_file:
+  #   - .env
+  #   depends_on:
+  #   - db
+  #   - eventbus
+  #   ports:
+  #   - 8082:8080
+  #   networks:
+  #   - simpbridgenetwork
+  # ordering-backgroundtasks:
+  #   build:
+  #     context: .
+  #     dockerfile: Services/Ordering/ordering-backgroundtasks/Dockerfile
+  #   env_file:
+  #   - .env
+  #   depends_on:
+  #   - db
+  #   - eventbus
+  #   networks:
+  #     - simpbridgenetwork
+  webspa:
     build:
       context: .
-      dockerfile: Services/catalogapi/Dockerfile
-    env_file:
-    - .env
-    depends_on:
-    - db
-    - eventbus
+      dockerfile: Web/WebSpa/server/Dockerfile  
     ports:
-    - 8081:8080
+    - 8080:8080
     networks:
     - simpbridgenetwork
-  db:
-    build:
-      context: .
-      dockerfile: "DBSetup/Dockerfile"
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=Pass@word
-    ports:
-    - 9133:1433
-    networks:
-    - simpbridgenetwork
-  eventbus:
-    image: rabbitmq:3-management-alpine
-    container_name: eventbus
-    networks:
-    - simpbridgenetwork
-    ports:
-    - 5672:5672 
-    - 15672:15672
-  ordering-api:    
-    build:
-      context: .
-      dockerfile: Services/Ordering/orderapi/Dockerfile
-    env_file:
-    - .env
-    depends_on:
-    - db
-    - eventbus
-    ports:
-    - 8082:8080
-    networks:
-    - simpbridgenetwork
-  ordering-backgroundtasks:
-    build:
-      context: .
-      dockerfile: Services/Ordering/ordering-backgroundtasks/Dockerfile
-    env_file:
-    - .env
-    depends_on:
-    - db
-    - eventbus
-    networks:
-      - simpbridgenetwork
 
 networks:
   simpbridgenetwork:
