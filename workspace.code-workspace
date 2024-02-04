@@ -27,6 +27,10 @@
 		{
 			"name": "ordering-infrastructure",
 			"path": "src/Services/Ordering/ordering-infrastructure"
+		},
+		{
+			"name": "server",
+			"path": "src/Web/WebSpa/server"
 		}
 	],
 	"settings": {

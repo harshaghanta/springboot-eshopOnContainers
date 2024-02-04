@@ -38,3 +38,7 @@
 ## Git
 ##############################
 **/.gitattributes
+**/node_modules
+**/dist
+**/.angular
+**/.vscode

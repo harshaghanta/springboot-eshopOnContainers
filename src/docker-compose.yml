@@ -56,6 +56,14 @@ services:
     - eventbus
     networks:
       - simpbridgenetwork
+  webspa:
+    build:
+      context: .
+      dockerfile: Web/WebSpa/server/Dockerfile  
+    ports:
+    - 8080:8080
+    networks:
+    - simpbridgenetwork
 
 networks:
   simpbridgenetwork:
