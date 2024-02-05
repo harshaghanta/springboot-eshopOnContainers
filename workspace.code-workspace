@@ -35,6 +35,12 @@
 		{
 			"name": "ordering-backgroundtasks",
 			"path": "src/Services/Ordering/ordering-backgroundtasks"
+		},
+		{
+			"path": "src/Web/WebSpa/Client"
+		},
+		{
+			"path": "src/Gateways/Envoy"
 		}
 	],
 	"settings": {

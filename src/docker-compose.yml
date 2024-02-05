@@ -64,6 +64,11 @@ services:
     - 8080:8080
     networks:
     - simpbridgenetwork
+  
+  webshoppingapigw:
+    image: envoyproxy/envoy:v1.11.1
+    networks:
+    - simpbridgenetwork
 
 networks:
   simpbridgenetwork:

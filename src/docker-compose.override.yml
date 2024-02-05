@@ -1,0 +1,11 @@
+version: '3.4'
+services:
+  webshoppingapigw:
+    volumes:
+    - ./Gateways/Envoy/config/webshopping:/etc/envoy
+    ports:
+    - "8090:80"
+    - "8091:8001"
+  catalog-api:
+    environment:
+      SERVER_SERVLET_CONTEXT_PATH: "/catalog-api"

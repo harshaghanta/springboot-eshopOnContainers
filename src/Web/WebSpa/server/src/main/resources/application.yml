@@ -2,7 +2,7 @@ config-data:
   identityUrl: "http://host.docker.internal:5105"
   basketUrl: "http://host.docker.internal:5103"
   marketingUrl: null
-  purchaseUrl: "http://host.docker.internal:5202"
-  signalrHubUrl: "http://host.docker.internal:5202"
+  purchaseUrl: "http://host.docker.internal:8090"
+  signalrHubUrl: "http://host.docker.internal:8090"
   activateCampaignDetailFunction: "False"
   useCustomizationData: true
