@@ -71,7 +71,9 @@ services:
     - KEYCLOAK_ADMIN=admin
     - KEYCLOAK_ADMIN_PASSWORD=admin 
     - DB_VENDOR=h2
-    command: ["start-dev"]
+    volumes:
+      - ./Keycloak:/opt/keycloak/data/import
+    command: -v start-dev --import-realm
     ports:
     - 8095:8080
     networks:

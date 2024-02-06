@@ -41,6 +41,9 @@
 		},
 		{
 			"path": "src/Gateways/Envoy"
+		},
+		{
+			"path": "src/Keycloak"
 		}
 	],
 	"settings": {
