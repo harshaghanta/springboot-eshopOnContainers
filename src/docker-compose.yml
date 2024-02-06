@@ -64,6 +64,18 @@ services:
     - 8080:8080
     networks:
     - simpbridgenetwork
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+    - KEYCLOAK_ADMIN=admin
+    - KEYCLOAK_ADMIN_PASSWORD=admin 
+    - DB_VENDOR=h2
+    command: ["start-dev"]
+    ports:
+    - 8095:8080
+    networks:
+    - simpbridgenetwork
   
   webshoppingapigw:
     image: envoyproxy/envoy:v1.11.1
