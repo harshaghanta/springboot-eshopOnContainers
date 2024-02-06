@@ -47,7 +47,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/catalog")
 @RestControllerAdvice
 public class CatalogController {
-    
+
     private final CatalogItemRepository catalogItemRepository;
     private final CatalogTypeRepository catalogTypeRepository;
     private final CatalogBrandRepository catalogBrandRepository;
@@ -55,33 +55,25 @@ public class CatalogController {
 
     @Value("${picBaseUrl}")
     private String picBaseUrl;
-    
-    
+
     @GetMapping("/items")
     @Operation(summary = "Get all/specified catalog items", description = "Get all/specified catalog items")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", 
-            content = { 
-                @Content(mediaType = "application/json", 
-                array = @ArraySchema(schema = @Schema(implementation = CatalogItem.class))) 
-            }
-        ),
-        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
-            content = @Content(mediaType = "application/json", 
-            schema = @Schema(implementation = String.class))
-        ),
-        @ApiResponse(responseCode = "200", description = "PaginatedViewModel", 
-            content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = PaginatedItemViewModel.class ) )
-        )
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CatalogItem.class)))
+            }),
+            @ApiResponse(responseCode = "400", description = "Invalid id supplied", content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "200", description = "PaginatedViewModel", content = @Content(mediaType = "application/json", schema = @Schema(implementation = PaginatedItemViewModel.class)))
     })
-    public ResponseEntity<?> getItems(@RequestParam( name = "pageIndex", required = false, defaultValue = "0") Integer pageIndex, @RequestParam(required = false, defaultValue = "10") Integer pageSize, @RequestParam (required = false, name = "ids" ) String ids) {
-        
+    public ResponseEntity<?> getItems(
+            @RequestParam(name = "pageIndex", required = false, defaultValue = "0") Integer pageIndex,
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false, name = "ids") String ids) {
 
-        if( !(ids == null || ids.isEmpty()) ) {
+        if (!(ids == null || ids.isEmpty())) {
 
             List<CatalogItem> catalogItems = getCatalogItems(ids);
-            if(catalogItems.isEmpty()) {
+            if (catalogItems.isEmpty()) {
                 return ResponseEntity.badRequest().body("ids value invalid. Must be comma-separated list of numbers");
             }
 
@@ -90,79 +82,90 @@ public class CatalogController {
             return ResponseEntity.ok(catalogItems);
         }
 
-        Page<CatalogItem> pageResults = catalogItemRepository.findAll(PageRequest.of(pageIndex, pageSize, Sort.by("name").ascending()));
+        Page<CatalogItem> pageResults = catalogItemRepository
+                .findAll(PageRequest.of(pageIndex, pageSize, Sort.by("name").ascending()));
         changeUrlPlaceHolder(pageResults.getContent());
-        PaginatedItemViewModel<CatalogItem> paginatedItemViewModel = new PaginatedItemViewModel<CatalogItem>(pageIndex, pageSize, (int) pageResults.getTotalElements(), pageResults.getContent());
+        PaginatedItemViewModel<CatalogItem> paginatedItemViewModel = new PaginatedItemViewModel<CatalogItem>(pageIndex,
+                pageSize, (int) pageResults.getTotalElements(), pageResults.getContent());
         return ResponseEntity.ok(paginatedItemViewModel);
-        
+
     }
 
     @GetMapping("/items/{id}")
     public ResponseEntity<CatalogItem> getItemsById(@PathVariable("id") Integer id) {
 
-        if(id !=null && id <=0)
+        if (id != null && id <= 0)
             return ResponseEntity.badRequest().build();
 
         Optional<CatalogItem> item = catalogItemRepository.findById(id);
-        if(item.isPresent()) {
+        if (item.isPresent()) {
             CatalogItem catalogItem = changeUrlPlaceHolder(item.get());
             return ResponseEntity.ok(catalogItem);
         }
-            
+
         return ResponseEntity.notFound().build();
-        
+
     }
 
     @GetMapping("/items/withname/{name}")
-    public ResponseEntity<PaginatedItemViewModel<CatalogItem>> getItemsByName(@PathVariable(name =  "name") @Min(1) String name, 
-        @RequestParam(name =  "pageIndex", defaultValue = "0")Integer pageIndex, 
-        @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) 
-    {
-        PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by("id").ascending());    
+    public ResponseEntity<PaginatedItemViewModel<CatalogItem>> getItemsByName(
+            @PathVariable(name = "name") @Min(1) String name,
+            @RequestParam(name = "pageIndex", defaultValue = "0") Integer pageIndex,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by("id").ascending());
         Page<CatalogItem> items = catalogItemRepository.findByNameStartsWith(name, pageRequest);
         changeUrlPlaceHolder(items.getContent());
-        
-        PaginatedItemViewModel<CatalogItem> paginatedItemViewModel = new PaginatedItemViewModel<CatalogItem>(pageIndex, pageSize, (int) items.getTotalElements(), items.getContent());
+
+        PaginatedItemViewModel<CatalogItem> paginatedItemViewModel = new PaginatedItemViewModel<CatalogItem>(pageIndex,
+                pageSize, (int) items.getTotalElements(), items.getContent());
         return ResponseEntity.ok(paginatedItemViewModel);
-        
-    }
-    
-    @GetMapping( value = { "/items/type/{catalogTypeId}/brand/{catalogBrandId}", "/items/type/{catalogTypeId}/brand" })
-    public ResponseEntity<PaginatedItemViewModel<CatalogItem>> getItemsByCatalogTypeAndBrand(@PathVariable("catalogTypeId") Integer catalogTypeId,
-        @PathVariable(name =  "catalogBrandId", required = false ) Integer catalogBrandId,
-        @RequestParam(name = "pageIndex", required = false, defaultValue = "0")Integer pageIndex,
-        @RequestParam(name = "pageSize", required = false,  defaultValue = "10") Integer pageSize)
-    {
-        Page<CatalogItem> catalogItems = null;
-        PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by("id").ascending());
-        if(catalogBrandId == null) {
-            catalogItems = catalogItemRepository.findByCatalogType_Id(catalogTypeId, pageRequest);
-        }
-        else {
-            catalogItems = catalogItemRepository.findByCatalogType_IdAndCatalogBrand_Id(catalogTypeId,catalogBrandId, pageRequest);
-        }
-        
-        changeUrlPlaceHolder(catalogItems.getContent());
-        PaginatedItemViewModel<CatalogItem> paginatedItemViewModel = new PaginatedItemViewModel<>(pageIndex, pageSize, (int) catalogItems.getTotalElements(), catalogItems.getContent());
-        return ResponseEntity.ok(paginatedItemViewModel);
+
     }
 
+    @GetMapping("/items/type/{catalogTypeId}/brand/")
+    public ResponseEntity<PaginatedItemViewModel<CatalogItem>> getItemsByCatalogType(
+            @PathVariable("catalogTypeId") Integer catalogTypeId,
+            @RequestParam(name = "pageIndex", required = false, defaultValue = "0") Integer pageIndex,
+            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        return getItemsByCatalogTypeAndBrand(catalogTypeId, null, pageIndex, pageSize);
+    }
+
+    @GetMapping("/items/type/{catalogTypeId}/brand/{catalogBrandId}")
+    public ResponseEntity<PaginatedItemViewModel<CatalogItem>> getItemsByCatalogTypeAndBrand(
+            @PathVariable("catalogTypeId") Integer catalogTypeId,
+            @PathVariable(name = "catalogBrandId", required = true) Integer catalogBrandId,
+            @RequestParam(name = "pageIndex", required = false, defaultValue = "0") Integer pageIndex,
+            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
+        Page<CatalogItem> catalogItems = null;
+        PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by("id").ascending());
+        if (catalogBrandId == null) {
+            catalogItems = catalogItemRepository.findByCatalogType_Id(catalogTypeId, pageRequest);
+        } else {
+            catalogItems = catalogItemRepository.findByCatalogType_IdAndCatalogBrand_Id(catalogTypeId, catalogBrandId,
+                    pageRequest);
+        }
+
+        changeUrlPlaceHolder(catalogItems.getContent());
+        PaginatedItemViewModel<CatalogItem> paginatedItemViewModel = new PaginatedItemViewModel<>(pageIndex, pageSize,
+                (int) catalogItems.getTotalElements(), catalogItems.getContent());
+        return ResponseEntity.ok(paginatedItemViewModel);
+    }
 
     @GetMapping("/items/type/all/brand/{catalogBrandId}")
-    public ResponseEntity<PaginatedItemViewModel<CatalogItem>> getItemsByBrand(@PathVariable(name = "catalogBrandId", required = false)Integer catalogBrandId,
-        @RequestParam(name = "pageIndex", required = false, defaultValue = "0") Integer pageIndex,
-        @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize)
-    {
+    public ResponseEntity<PaginatedItemViewModel<CatalogItem>> getItemsByBrand(
+            @PathVariable(name = "catalogBrandId", required = false) Integer catalogBrandId,
+            @RequestParam(name = "pageIndex", required = false, defaultValue = "0") Integer pageIndex,
+            @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
         Page<CatalogItem> catalogItems = null;
         PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by("id").ascending());
-        if(catalogBrandId == null) {
+        if (catalogBrandId == null) {
             catalogItems = catalogItemRepository.findAll(pageRequest);
-        }
-        else {
+        } else {
             catalogItems = catalogItemRepository.findByCatalogBrand_Id(catalogBrandId, pageRequest);
         }
         changeUrlPlaceHolder(catalogItems.getContent());
-        PaginatedItemViewModel<CatalogItem> paginatedItemViewModel = new PaginatedItemViewModel<>(pageIndex, pageSize, (int)catalogItems.getTotalElements(), catalogItems.getContent());
+        PaginatedItemViewModel<CatalogItem> paginatedItemViewModel = new PaginatedItemViewModel<>(pageIndex, pageSize,
+                (int) catalogItems.getTotalElements(), catalogItems.getContent());
         return ResponseEntity.ok(paginatedItemViewModel);
     }
 
@@ -181,8 +184,9 @@ public class CatalogController {
     public ResponseEntity<?> updateProduct(@RequestBody CatalogItem requestedItem) {
 
         Optional<CatalogItem> catalogItem = catalogItemRepository.findById(requestedItem.getId());
-        if(!catalogItem.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item with id " + requestedItem.getId() +" not found.");
+        if (!catalogItem.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Item with id " + requestedItem.getId() + " not found.");
         }
 
         BigDecimal oldPrice = catalogItem.get().getPrice();
@@ -190,24 +194,24 @@ public class CatalogController {
 
         boolean raisePriceChangedEvent = oldPrice != newPrice;
 
-        if(raisePriceChangedEvent) {
-            ProductPriceChangedIntegrationEvent productPriceChangedIntegrationEvent = new ProductPriceChangedIntegrationEvent(requestedItem.getId(), requestedItem.getPrice(), oldPrice);
+        if (raisePriceChangedEvent) {
+            ProductPriceChangedIntegrationEvent productPriceChangedIntegrationEvent = new ProductPriceChangedIntegrationEvent(
+                    requestedItem.getId(), requestedItem.getPrice(), oldPrice);
             catalogIntegrationService.saveEventAndCatalogChanges(productPriceChangedIntegrationEvent, requestedItem);
             catalogIntegrationService.publishThroughEventBus(productPriceChangedIntegrationEvent);
-        }
-        else {
+        } else {
             catalogItemRepository.save(requestedItem);
         }
 
-        URI location = URI.create("/items/"+ requestedItem.getId());
+        URI location = URI.create("/items/" + requestedItem.getId());
         return ResponseEntity.created(location).build();
-      
+
     }
 
     @PostMapping("/items")
     public ResponseEntity<CatalogItem> createProduct(@RequestBody CatalogItem catalogItem) {
         CatalogItem savedItem = catalogItemRepository.save(catalogItem);
-        URI location = URI.create("/items/"+ savedItem.getId());
+        URI location = URI.create("/items/" + savedItem.getId());
         return ResponseEntity.created(location).body(savedItem);
     }
 
@@ -220,7 +224,7 @@ public class CatalogController {
     private List<CatalogItem> getCatalogItems(String ids) {
 
         List<Integer> itemIds = new ArrayList<>();
-        
+
         String[] catalogIds = ids.split(",");
 
         for (String catalogId : catalogIds) {
@@ -236,7 +240,7 @@ public class CatalogController {
     }
 
     private List<CatalogItem> changeUrlPlaceHolder(List<CatalogItem> catalogItems) {
-        
+
         for (CatalogItem catalogItem : catalogItems) {
             changeUrlPlaceHolder(catalogItem);
         }
@@ -247,5 +251,5 @@ public class CatalogController {
         catalogItem.setPictureUri(picBaseUrl.replace("[0]", catalogItem.getId().toString()));
         return catalogItem;
     }
-    
+
 }

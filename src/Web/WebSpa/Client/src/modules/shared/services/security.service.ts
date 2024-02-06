@@ -148,7 +148,7 @@ export class SecurityService {
     }
 
     public Logoff() {
-        let authorizationUrl = this.authorityUrl + '/connect/endsession';
+        let authorizationUrl = this.authorityUrl + '/openid-connect/logout';
         let id_token_hint = this.storage.retrieve('authorizationDataIdToken');
         let post_logout_redirect_uri = location.origin + '/';
 
@@ -226,7 +226,7 @@ export class SecurityService {
 
         const options = this.setHeaders();
 
-        return this._http.get<string[]>(`${this.authorityUrl}/connect/userinfo`, options)
+        return this._http.get<string[]>(`${this.authorityUrl}/openid-connect/userinfo`, options)
             .pipe<string[]>((info: any) => info);
     }
 
