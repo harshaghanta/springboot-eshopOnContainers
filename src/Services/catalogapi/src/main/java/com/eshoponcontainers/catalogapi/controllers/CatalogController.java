@@ -122,7 +122,7 @@ public class CatalogController {
 
     }
 
-    @GetMapping("/items/type/{catalogTypeId}/brand")
+    @GetMapping("/items/type/{catalogTypeId}/brand/")
     public ResponseEntity<PaginatedItemViewModel<CatalogItem>> getItemsByCatalogType(
             @PathVariable("catalogTypeId") Integer catalogTypeId,
             @RequestParam(name = "pageIndex", required = false, defaultValue = "0") Integer pageIndex,
