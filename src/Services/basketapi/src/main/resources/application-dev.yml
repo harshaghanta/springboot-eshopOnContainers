@@ -1,0 +1,17 @@
+spring:
+  redis:
+    host: ${basketdata.host}
+    client-name: basketapi
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${oauthIssuerUrl}
+eventbus:
+  host: "eventbus"
+  username:
+  password:
+  retryCount: 5
+
+oauthIssuerUrl: http://keycloak:8080/realms/eshoponcontainers

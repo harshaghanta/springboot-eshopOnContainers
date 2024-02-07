@@ -1,6 +1,8 @@
-
 spring:
-  redis:
-    host: localhost
-    client-name: basketapi
-    
+  profiles:
+    active:
+    - dev
+
+logging:
+  level:
+    org.springframework.security.oauth2.jwt: DEBUG

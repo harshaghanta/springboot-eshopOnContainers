@@ -9,3 +9,9 @@ services:
   catalog-api:
     environment:
       SERVER_SERVLET_CONTEXT_PATH: "/catalog-api"
+  basket-api:
+    environment:
+      SERVER_SERVLET_CONTEXT_PATH: "/basket-api"
+  basketdata:
+    ports:
+    - "6379:6379"

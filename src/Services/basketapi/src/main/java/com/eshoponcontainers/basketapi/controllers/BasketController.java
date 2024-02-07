@@ -1,5 +1,6 @@
 package com.eshoponcontainers.basketapi.controllers;
 
+import java.security.Principal;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,11 @@ public class BasketController {
     private final EventBus eventBus;
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerBasket> getBasket(@PathVariable String id) {
+    public ResponseEntity<CustomerBasket> getBasket(@PathVariable String id, Principal principal) {
+        if(principal != null)
+            log.info(principal.getName());
+        else
+            log.info("Principal is null");
         CustomerBasket basket = basketDataRepository.getBasket(id);
         if (basket == null)
             basket = new CustomerBasket(id);
@@ -54,10 +59,16 @@ public class BasketController {
 
     @PostMapping("/checkout")
     public ResponseEntity<Void> checkout(@RequestBody BasketCheckout basketCheckout,
-            @RequestHeader(name = "x-rquestid") String requestId) {
+            @RequestHeader(name = "x-rquestid") String requestId, Principal principal) {
         // TODO: HIGH : Yet to implement IdentityService
         UUID rquestUUID = null;
         String userId = null;
+
+        if(principal != null)
+            log.info(principal.getName());
+        else
+            log.info("Principal is null");
+
         try {
             rquestUUID = UUID.fromString(requestId);
             basketCheckout.setRequestId(rquestUUID);

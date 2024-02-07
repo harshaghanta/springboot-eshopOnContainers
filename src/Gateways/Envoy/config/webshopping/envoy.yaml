@@ -59,19 +59,19 @@ static_resources:
               #     upgrade_configs:
               #       upgrade_type: "websocket"
               #       enabled: true
-              # - name: "b-short"
-              #   match:
-              #     prefix: "/b/"
-              #   route:
-              #     auto_host_rewrite: true
-              #     prefix_rewrite: "/basket-api/"
-              #     cluster: basket
-              # - name: "b-long"
-              #   match:
-              #     prefix: "/basket-api/"
-              #   route:
-              #     auto_host_rewrite: true
-              #     cluster: basket
+              - name: "b-short"
+                match:
+                  prefix: "/b/"
+                route:
+                  auto_host_rewrite: true
+                  prefix_rewrite: "/basket-api/"
+                  cluster: basket
+              - name: "b-long"
+                match:
+                  prefix: "/basket-api/"
+                route:
+                  auto_host_rewrite: true
+                  cluster: basket
               # - name: "agg"
               #  match:
               #    prefix: "/"
@@ -116,14 +116,14 @@ static_resources:
     - socket_address:
         address: catalog-api
         port_value: 8080
-  # - name: basket
-  #   connect_timeout: 0.25s
-  #   type: strict_dns
-  #   lb_policy: round_robin
-  #   hosts:
-  #   - socket_address:
-  #       address: basket-api
-  #       port_value: 8080
+  - name: basket
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    hosts:
+    - socket_address:
+        address: basket-api
+        port_value: 8080
   # - name: ordering
   #   connect_timeout: 0.25s
   #   type: strict_dns
