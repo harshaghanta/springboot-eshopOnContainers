@@ -3,11 +3,6 @@ spring:
     host: ${basketdata.host}
     client-name: basketapi
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${oauthIssuerUrl}
 eventbus:
   host: "eventbus"
   username:
