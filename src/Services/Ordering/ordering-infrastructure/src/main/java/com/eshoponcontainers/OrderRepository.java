@@ -19,7 +19,7 @@ public class OrderRepository implements IOrderRepository  {
     private final IUnitOfWork unitOfWork;
 
     @Override
-    public IUnitOfWork geUnitOfWork() {
+    public IUnitOfWork getUnitOfWork() {
 
         return unitOfWork;
     }
@@ -34,7 +34,7 @@ public class OrderRepository implements IOrderRepository  {
 
     @Override
     public boolean update(Order order) {
-        entityManager.persist(order);
+        order = entityManager.merge(order);
         return true;
     }
 

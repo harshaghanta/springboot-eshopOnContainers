@@ -4,6 +4,10 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
 
+import com.eshoponcontainers.basketapi.integrationevents.eventhandlers.OrderStartedIntegrationEventHandler;
+import com.eshoponcontainers.basketapi.integrationevents.eventhandlers.ProductPriceChangedEventHandler;
+import com.eshoponcontainers.basketapi.integrationevents.events.OrderStartedIntegrationEvent;
+import com.eshoponcontainers.basketapi.integrationevents.events.ProductPriceChangedIntegrationEvent;
 import com.eshoponcontainers.eventbus.abstractions.EventBus;
 
 import lombok.RequiredArgsConstructor;
@@ -18,7 +22,8 @@ public class StartUp {
 
     @PostConstruct
     public void init() {
-        log.info("Starting basketapi");
-        // eventBus.subscribe(ProductPriceChangedIntegrationEvent.class, ProductPriceChangedEventHandler.class);
+        log.info("Subscribing to the Integration Events in BasketAPI");
+        eventBus.subscribe(ProductPriceChangedIntegrationEvent.class, ProductPriceChangedEventHandler.class);
+        eventBus.subscribe(OrderStartedIntegrationEvent.class, OrderStartedIntegrationEventHandler.class);
     }
 }

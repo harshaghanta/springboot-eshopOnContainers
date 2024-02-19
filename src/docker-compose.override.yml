@@ -12,6 +12,10 @@ services:
   basket-api:
     environment:
       SERVER_SERVLET_CONTEXT_PATH: "/basket-api"
+  ordering-api:
+    environment:
+      SERVER_SERVLET_CONTEXT_PATH: "/ordering-api"
   basketdata:
     ports:
     - "6379:6379"
+  

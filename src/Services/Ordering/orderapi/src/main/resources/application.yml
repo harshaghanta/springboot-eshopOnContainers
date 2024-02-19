@@ -1,2 +1,6 @@
-spring.profiles.active: dev
+spring.profiles.active: local
 springdoc.swagger-ui.path: /swagger-ui-custom.html
+
+logging:
+  level:
+    org.springframework.security.oauth2.jwt: DEBUG

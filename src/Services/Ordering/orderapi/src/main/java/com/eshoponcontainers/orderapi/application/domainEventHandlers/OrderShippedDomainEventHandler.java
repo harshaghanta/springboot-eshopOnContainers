@@ -10,6 +10,7 @@ import com.eshoponcontainers.aggregatesModel.orderAggregate.OrderStatus;
 import com.eshoponcontainers.events.OrderShippedDomainEvent;
 import com.eshoponcontainers.orderapi.application.integrationEvents.OrderingIntegrationEventService;
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStatusChangedToShippedIntegrationEvent;
+import com.eshoponcontainers.repositories.BuyerRepository;
 
 import an.awesome.pipelinr.Notification;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class OrderShippedDomainEventHandler implements Notification.Handler<OrderShippedDomainEvent> {
 
     private final IOrderRepository orderRepository;
+    private final BuyerRepository buyerRepository;
     private final OrderingIntegrationEventService orderingIntegrationEventService;
 
     @Override
@@ -31,9 +33,9 @@ public class OrderShippedDomainEventHandler implements Notification.Handler<Orde
 
         UUID transactionId = UUID.randomUUID();
         Order order = orderRepository.get(event.getOrder().getId());
-
-        String buyerName = order.getBuyer().getName();
-        OrderStatusChangedToShippedIntegrationEvent integrationEvent = new OrderStatusChangedToShippedIntegrationEvent(order.getId(), order.getOrderStatus().name(), buyerName);
+        var buyer = buyerRepository.findById(order.getBuyerId().toString());
+        
+        OrderStatusChangedToShippedIntegrationEvent integrationEvent = new OrderStatusChangedToShippedIntegrationEvent(order.getId(), order.getOrderStatus().name(), buyer.getName());
         orderingIntegrationEventService.addAndSaveEvent(integrationEvent, transactionId);
     }
 

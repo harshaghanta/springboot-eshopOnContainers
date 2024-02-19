@@ -1,6 +1,7 @@
 package com.eshoponcontainers.basketapi.controllers;
 
 import java.security.Principal;
+import java.text.MessageFormat;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -56,23 +57,20 @@ public class BasketController {
 
     @PostMapping("/checkout")
     public ResponseEntity<Void> checkout(@RequestBody BasketCheckout basketCheckout,
-            @RequestHeader(name = "x-rquestid") String requestId, Principal principal) {
+            @RequestHeader(name = "x-requestid") String requestId, Principal principal) {
         UUID rquestUUID = null;
         String userId = identityService.getUserId();
         String userName = identityService.getUsername();
-        log.info("Userid: {}, username: {}", userId, userName);
+        log.info("Userid: {}, username: {}, RequestId: {}", userId, userName, requestId);
         try {
             rquestUUID = UUID.fromString(requestId);
             basketCheckout.setRequestId(rquestUUID);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
         }
 
         CustomerBasket basket = basketDataRepository.getBasket(userId);
         if (basket == null)
             return ResponseEntity.badRequest().build();
-
-     
 
         UserCheckoutAcceptedIntegrationEvent event = new UserCheckoutAcceptedIntegrationEvent(userId, userName,
                 basketCheckout.getCity(), basketCheckout.getStreet(), basketCheckout.getState(),
@@ -82,10 +80,13 @@ public class BasketController {
                 basketCheckout.getCardTypeId(), basketCheckout.getBuyer(),
                 basketCheckout.getRequestId(), basket);
 
+        log.info("RequestID: {}",event.getRequestId());
+
         try {
             eventBus.publish(event);
         } catch (Exception e) {
-            log.error("ERROR Publishihng Integration event", e);
+            log.error(MessageFormat.format("ERROR Publishing Integration event: {0} from {1}", event.getId(), "Basket"),
+                    e);
         }
 
         return ResponseEntity.accepted().build();

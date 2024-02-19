@@ -6,11 +6,17 @@ import java.util.UUID;
 import com.eshoponcontainers.basketapi.model.CustomerBasket;
 import com.eshoponcontainers.eventbus.events.IntegrationEvent;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@Getter
+@Setter
 public class UserCheckoutAcceptedIntegrationEvent extends IntegrationEvent {
 
     private String userId;
     private String userName;
-    private int orderNumber;
     private String city;
     private String street;
     private String state;

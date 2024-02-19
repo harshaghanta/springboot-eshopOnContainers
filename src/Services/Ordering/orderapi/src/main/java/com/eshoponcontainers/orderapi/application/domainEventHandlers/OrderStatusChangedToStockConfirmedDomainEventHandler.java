@@ -10,6 +10,7 @@ import com.eshoponcontainers.aggregatesModel.orderAggregate.OrderStatus;
 import com.eshoponcontainers.events.OrderStatusChangedToStockConfirmedDomainEvent;
 import com.eshoponcontainers.orderapi.application.integrationEvents.OrderingIntegrationEventService;
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStatusChangedToStockConfirmedIntegrationEvent;
+import com.eshoponcontainers.repositories.BuyerRepository;
 
 import an.awesome.pipelinr.Notification;
 import lombok.RequiredArgsConstructor;
@@ -21,15 +22,16 @@ import lombok.extern.slf4j.Slf4j;
 public class OrderStatusChangedToStockConfirmedDomainEventHandler implements Notification.Handler<OrderStatusChangedToStockConfirmedDomainEvent> {
 
     private final IOrderRepository orderRepository;
+    private final BuyerRepository buyerRepository;
     private final OrderingIntegrationEventService orderingIntegrationEventService;
 
     @Override
     public void handle(OrderStatusChangedToStockConfirmedDomainEvent event) {
         log.trace("Order with Id: {} has been successfully updated to status {} ({})", event.getOrderId(), OrderStatus.StockConfirmed.name(), OrderStatus.StockConfirmed.getId());
         Order order = orderRepository.get(event.getOrderId());
-        String buyerName = order.getBuyer().getName();
+        var buyer = buyerRepository.findById(order.getBuyerId().toString());
         UUID transactionId = UUID.randomUUID();
-        OrderStatusChangedToStockConfirmedIntegrationEvent integrationEvent = new OrderStatusChangedToStockConfirmedIntegrationEvent(order.getId(), order.getOrderStatus().name(), buyerName);
+        OrderStatusChangedToStockConfirmedIntegrationEvent integrationEvent = new OrderStatusChangedToStockConfirmedIntegrationEvent(order.getId(), order.getOrderStatus().name(), buyer.getName());
         orderingIntegrationEventService.addAndSaveEvent(integrationEvent, transactionId);
     }
 }

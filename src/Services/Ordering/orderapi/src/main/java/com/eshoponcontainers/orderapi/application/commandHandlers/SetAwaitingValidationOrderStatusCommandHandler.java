@@ -21,7 +21,7 @@ public class SetAwaitingValidationOrderStatusCommandHandler implements Command.H
             return false;
         
         order.setAwaitingValidationStatus();
-        return orderRepository.geUnitOfWork().saveChanges();
+        return orderRepository.getUnitOfWork().saveChanges();
     }
 
 }

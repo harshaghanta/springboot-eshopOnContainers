@@ -36,19 +36,19 @@ static_resources:
                 route:
                   auto_host_rewrite: true
                   cluster: catalog
-              # - name: "o-short"
-              #   match:
-              #     prefix: "/o/"
-              #   route:
-              #     auto_host_rewrite: true
-              #     prefix_rewrite: "/ordering-api/"
-              #     cluster: ordering
-              # - name: "o-long"
-              #   match:
-              #     prefix: "/ordering-api/"
-              #   route:
-              #     auto_host_rewrite: true
-              #     cluster: ordering
+              - name: "o-short"
+                match:
+                  prefix: "/o/"
+                route:
+                  auto_host_rewrite: true
+                  prefix_rewrite: "/ordering-api/"
+                  cluster: ordering
+              - name: "o-long"
+                match:
+                  prefix: "/ordering-api/"
+                route:
+                  auto_host_rewrite: true
+                  cluster: ordering
               # - name: "h-long"
               #   match:
               #     prefix: "/hub/notificationhub"
@@ -124,14 +124,14 @@ static_resources:
     - socket_address:
         address: basket-api
         port_value: 8080
-  # - name: ordering
-  #   connect_timeout: 0.25s
-  #   type: strict_dns
-  #   lb_policy: round_robin
-  #   hosts:
-  #   - socket_address:
-  #       address: ordering-api
-  #       port_value: 80
+  - name: ordering
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    hosts:
+    - socket_address:
+        address: ordering-api
+        port_value: 8080
   # - name: signalr-hub
   # connect_timeout: 0.25s
   # type: strict_dns

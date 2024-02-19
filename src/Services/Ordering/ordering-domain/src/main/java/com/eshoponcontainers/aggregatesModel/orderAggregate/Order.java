@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.eshoponcontainers.aggregatesModel.buyerAggregate.Buyer;
-import com.eshoponcontainers.aggregatesModel.buyerAggregate.PaymentMethod;
 import com.eshoponcontainers.events.OrderCancelledDomainEvent;
 import com.eshoponcontainers.events.OrderShippedDomainEvent;
 import com.eshoponcontainers.events.OrderStartedDomainEvent;
@@ -29,10 +27,10 @@ public class Order extends Entity implements IAggregateRoot {
     private Address address;
     private String description;
     private boolean isDraft;
-    // private Integer buyerId;    
-    private Buyer buyer;
-    // private Integer paymentMethodId;
-    private PaymentMethod paymentMethod;
+    private Integer buyerId;    
+    // private Buyer buyer;
+    private Integer paymentMethodId;
+    // private PaymentMethod paymentMethod;
     private final List<OrderItem> orderItems;
     private OrderStatus orderStatus;
 
@@ -57,12 +55,12 @@ public class Order extends Entity implements IAggregateRoot {
     public Order(String userId, String userName, Address address, int cardTypeId, String cardNumber,
         String cardSecurityNumber,
         // String cardHolderName, LocalDate cardExpiration, Integer buyerId, Integer paymentMethodId) {
-        String cardHolderName, LocalDate cardExpiration, Buyer buyer, PaymentMethod paymentMethod) {
+        String cardHolderName, LocalDate cardExpiration, Integer buyerId, Integer paymentMethodId) {
         this();
-        // this.buyerId = buyerId;
-        // this.paymentMethodId = paymentMethodId;
-        this.buyer = buyer;
-        this.paymentMethod = paymentMethod;
+        this.buyerId = buyerId;
+        this.paymentMethodId = paymentMethodId;
+        // this.buyer = buyer;
+        // this.paymentMethod = paymentMethod;
         this.orderDate = new Date();
         this.address = address;
         this.orderStatus = OrderStatus.Submitted;
@@ -93,21 +91,21 @@ public class Order extends Entity implements IAggregateRoot {
         }
     }
 
-    public void setPaymentMethod(PaymentMethod paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public void setBuyer(Buyer buyer) {
-        this.buyer = buyer;
-    }
-
-    // public void setPaymentId(int id) {
-    //     this.paymentMethodId = id;
+    // public void setPaymentMethod(PaymentMethod paymentMethod) {
+    //     this.paymentMethod = paymentMethod;
     // }
 
-    // public void setBuyerId(int id) {
-    //     this.buyerId = id;
+    // public void setBuyer(Buyer buyer) {
+    //     this.buyer = buyer;
     // }
+
+    public void setPaymentMethodId(int id) {
+        this.paymentMethodId = id;
+    }
+
+    public void setBuyerId(int id) {
+        this.buyerId = id;
+    }
 
 
     public void setAwaitingValidationStatus() {

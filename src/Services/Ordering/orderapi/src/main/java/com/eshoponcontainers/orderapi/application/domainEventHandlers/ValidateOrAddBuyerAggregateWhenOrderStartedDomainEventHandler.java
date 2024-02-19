@@ -15,31 +15,36 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler implements Notification.Handler<OrderStartedDomainEvent> {
+public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler
+        implements Notification.Handler<OrderStartedDomainEvent> {
 
     private final IBuyerRepository buyerRepository;
 
     @Override
     public void handle(OrderStartedDomainEvent event) {
 
+        log.info("ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler invoked");
+
         var cardTypeId = event.getCardTypeId() != 0 ? event.getCardTypeId() : 1;
         Buyer buyer = buyerRepository.find(event.getUserId());
-        boolean buyerExisted = buyer == null;
+        boolean buyerExisted = !(buyer == null);
 
-        if(!buyerExisted) {
+        if (!buyerExisted) {
             buyer = new Buyer(event.getUserId(), event.getUserName());
         }
 
         String paymentMethodAlias = "Payment Method on " + new Date().toString();
 
-        buyer.verifyOrAddPaymentMethod(cardTypeId, paymentMethodAlias, event.getCardNumber(), event.getCardSecurityNumber(), event.getCardHolderName(), event.getCardExpiration(), event.getOrder().getId());
+        buyer.verifyOrAddPaymentMethod(cardTypeId, paymentMethodAlias, event.getCardNumber(),
+                event.getCardSecurityNumber(), event.getCardHolderName(), event.getCardExpiration(),
+                event.getOrder().getId());
 
-        if(buyerExisted)
+        if (buyerExisted)
             buyerRepository.update(buyer);
         else
             buyerRepository.add(buyer);
 
-        buyerRepository.geUnitOfWork().saveChanges();
+        buyerRepository.getUnitOfWork().saveChanges();
     }
 
 }

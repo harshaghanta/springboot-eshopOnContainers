@@ -1,4 +1,4 @@
-package com.eshoponcontainers.basketapi.config;
+package com.eshoponcontainers.orderapi.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -24,21 +24,19 @@ public class SecurityConfig {
 	@Value("${oauthIssuerUrl}")
 	private String oauthIssuerUrl;
 
-    @Bean
+	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-			.authorizeHttpRequests((authorize) -> authorize
-				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-				.anyRequest().authenticated()
-			)
-			.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.oauth2ResourceServer((oauth2) -> oauth2
-				.jwt(Customizer.withDefaults())
-			);
+				.authorizeHttpRequests((authorize) -> authorize
+						.requestMatchers(HttpMethod.OPTIONS).permitAll()
+						.anyRequest().authenticated())
+				.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.oauth2ResourceServer((oauth2) -> oauth2
+						.jwt(Customizer.withDefaults()));
 		return http.build();
 	}
 
-    @Bean
+	@Bean
 	public JwtDecoder jwtDecoder() {
 		// log.info("IssuerUrl:{}", oauthIssuerUrl);
 		// return JwtDecoders.fromIssuerLocation(oauthIssuerUrl);
@@ -51,9 +49,9 @@ public class SecurityConfig {
 
 		private final JwtDecoder jwtDecoder;
 
-        public CustomJwtDecoder(JwtDecoder jwtDecoder) {
-            this.jwtDecoder = jwtDecoder;
-        }
+		public CustomJwtDecoder(JwtDecoder jwtDecoder) {
+			this.jwtDecoder = jwtDecoder;
+		}
 
 		@Override
 		public Jwt decode(String token) throws JwtException {

@@ -45,8 +45,10 @@ public class OrderingBackgroundtasksApplication {
 		} else {
 			log.info("Fetching confirmed grace period orders..");
 			ordersToProcess = orderRepository.getConfirmedGracePeriodOrders();
+			log.info("Retrieved {} confirmed grace period orders.", ordersToProcess.size());
 			for (Integer orderId : ordersToProcess) {
 				GracePeriodConfirmedIntegrationEvent event = new GracePeriodConfirmedIntegrationEvent(orderId);
+				log.info("----- Publishing integration event: {} from {} - {}", event.getId(), "Ordering-Backgroundtasks", event);
 				eventBus.publish(event);
 			}
 		}

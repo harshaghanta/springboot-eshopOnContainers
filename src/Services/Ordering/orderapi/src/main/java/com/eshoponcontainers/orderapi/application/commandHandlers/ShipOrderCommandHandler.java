@@ -22,7 +22,7 @@ public class ShipOrderCommandHandler implements Command.Handler<ShipOrderCommand
             return false;
 
         order.SetShippedStatus();
-        return orderRepository.geUnitOfWork().saveChanges();
+        return orderRepository.getUnitOfWork().saveChanges();
     }
 
 }

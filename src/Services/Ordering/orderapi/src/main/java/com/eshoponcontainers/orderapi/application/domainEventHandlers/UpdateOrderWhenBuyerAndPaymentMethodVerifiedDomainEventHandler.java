@@ -19,8 +19,8 @@ public class UpdateOrderWhenBuyerAndPaymentMethodVerifiedDomainEventHandler impl
     @Override
     public void handle(BuyerAndPaymentMethodVerifiedDomainEvent event) {
         var order = orderRepository.get(event.getOrderId());
-        order.setBuyer(event.getBuyer());
-        order.setPaymentMethod(event.getPaymentMethod());
+        order.setBuyerId(event.getBuyer().getId());
+        order.setPaymentMethodId(event.getPaymentMethod().getId());
 
         log.trace("Order with Id: {} has been successfully updated with a payment method {} {}", event.getOrderId(), event.getPaymentMethod().getId());
     }

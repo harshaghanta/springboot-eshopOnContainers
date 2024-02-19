@@ -5,16 +5,18 @@ import com.eshoponcontainers.orderapi.application.viewModels.CustomerBasket;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserCheckoutAcceptedIntegrationEvent extends IntegrationEvent {
 
     private String userId;
-    private String username;
+    private String userName;
     private String city;
     private String street;
     private String state;

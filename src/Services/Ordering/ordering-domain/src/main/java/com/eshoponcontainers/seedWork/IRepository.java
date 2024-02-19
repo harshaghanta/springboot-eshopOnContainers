@@ -2,5 +2,5 @@ package com.eshoponcontainers.seedWork;
 
 public interface IRepository<T extends IAggregateRoot> {
 
-    IUnitOfWork geUnitOfWork();
+    IUnitOfWork getUnitOfWork();
 }

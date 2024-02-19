@@ -28,7 +28,7 @@ public class SetPaidOrderStatusCommandHandler implements Command.Handler<SetPaid
             return false;
         
         order.SetPaidStatus();
-        return orderRepository.geUnitOfWork().saveChanges();
+        return orderRepository.getUnitOfWork().saveChanges();
     }
 
 }
