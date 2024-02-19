@@ -6,6 +6,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.eshoponcontainers.orderapi.application.integrationEvents.OrderingIntegrationEventService;
+import com.eshoponcontainers.orderapi.services.TransactionContext;
 
 import an.awesome.pipelinr.Command;
 import jakarta.persistence.EntityManager;
@@ -29,19 +30,21 @@ public class TransactionBehavior implements Command.Middleware {
         R response = null;
         UUID transactionId = null;
         try {
-            if(transaction.isActive()) {
-               return next.invoke();
+            if (transaction.isActive()) {
+                return next.invoke();
             }
-            
+
             transaction.begin();
-            transactionId = UUID.randomUUID();
-            log.info("----- Begin transaction for {} ({})",  className, command);
+            TransactionContext.beginTransactionContext();
+            transactionId = TransactionContext.getTransactionId();
+            log.info("----- Begin transaction {} for {} ({})", transactionId, className, command);
             response = next.invoke();
-            transaction.commit();        
-            log.info("----- commit transaction for {} ",  className);
+            transaction.commit();
+            TransactionContext.clearContext();
+            log.info("----- commit transaction {} for {} ",transactionId, className);
             orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
         } catch (Exception e) {
-            log.error("ERROR Handling transaction for {} ({})", transaction, command);
+            log.error("ERROR Handling transaction for {}", className);
             throw e;
         }
         return response;

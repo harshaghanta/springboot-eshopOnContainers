@@ -34,7 +34,7 @@ public class BuyerRepository implements IBuyerRepository {
 
     @Override
     public Buyer update(Buyer buyer) {
-        entityManager.persist(buyer);
+        entityManager.merge(buyer);
         return buyer;
     }
 

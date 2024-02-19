@@ -11,6 +11,7 @@ import com.eshoponcontainers.orderapi.application.commands.CreateOrderCommand;
 import com.eshoponcontainers.orderapi.application.integrationEvents.OrderingIntegrationEventService;
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStartedIntegrationEvent;
 import com.eshoponcontainers.orderapi.application.viewModels.OrderItemDTO;
+import com.eshoponcontainers.orderapi.services.TransactionContext;
 
 import an.awesome.pipelinr.Command;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class CreateOrderCommandHandler implements Command.Handler<CreateOrderCom
     @Override
     public Boolean handle(CreateOrderCommand command) {
         var orderStartedIntegrationEvent = new OrderStartedIntegrationEvent(command.getUserId());
-        UUID transactionId = UUID.randomUUID();
+        UUID transactionId = TransactionContext.getTransactionId();
         orderingIntegrationEventService.addAndSaveEvent(orderStartedIntegrationEvent, transactionId);
 
         var address = new Address(command.getStreet(), command.getCity(), command.getState(), command.getCountry(),
