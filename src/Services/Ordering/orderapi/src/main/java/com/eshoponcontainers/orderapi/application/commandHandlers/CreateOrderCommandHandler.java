@@ -42,7 +42,7 @@ public class CreateOrderCommandHandler implements Command.Handler<CreateOrderCom
 
         log.info("Creating Order: -", order);
         orderRepository.add(order);
-        orderRepository.geUnitOfWork().saveChanges();
+        orderRepository.getUnitOfWork().saveChanges();
         return false;
     }
 
