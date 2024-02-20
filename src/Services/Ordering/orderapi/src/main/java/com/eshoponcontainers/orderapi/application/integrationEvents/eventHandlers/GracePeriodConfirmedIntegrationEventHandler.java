@@ -8,8 +8,10 @@ import com.eshoponcontainers.orderapi.application.integrationEvents.events.Grace
 
 import an.awesome.pipelinr.Pipeline;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class GracePeriodConfirmedIntegrationEventHandler implements IntegrationEventHandler<GracePeriodConfirmedIntegrationEvent> {
 
@@ -17,7 +19,10 @@ public class GracePeriodConfirmedIntegrationEventHandler implements IntegrationE
 
     @Override
     public Runnable handle(GracePeriodConfirmedIntegrationEvent event) {
-        SetAwaitingValidationOrderStatusCommand command = new SetAwaitingValidationOrderStatusCommand(event.getOrderId());
+        log.info("----- Handling integration event: {} at {} - {}", event.getId(), "Ordering", event );
+        var command = new SetAwaitingValidationOrderStatusCommand(event.getOrderId());
+        log.info("----- Sending command: {} - {}: {} {}",
+            command.getClass().getSimpleName(), "OrderNumber", command.getOrderNumber(), command);
         Runnable task = () -> pipeline.send(command);
         task.run();
         return task;

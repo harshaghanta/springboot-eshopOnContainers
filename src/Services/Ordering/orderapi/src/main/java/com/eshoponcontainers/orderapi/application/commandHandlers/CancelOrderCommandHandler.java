@@ -22,7 +22,7 @@ public class CancelOrderCommandHandler implements Command.Handler<CancelOrderCom
             return false;
         
         order.SetCancelledStatus();
-        orderRepository.geUnitOfWork().saveChanges();
+        orderRepository.getUnitOfWork().saveChanges();
         
         return true;
     }

@@ -11,3 +11,6 @@ eventbus:
   username: 
   password: 
   retryCount: 5
+
+
+gracePeriodTime: 1

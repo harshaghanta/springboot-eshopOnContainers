@@ -5,3 +5,41 @@ Content-Type: application/json
 {
     "orderNumber" : 531
 }
+
+###
+
+GET  http://localhost:9090/api/v1/orders HTTP/1.1
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJweGl0UEJNdTNEczQwX0REdkdQbUNENEZRdkNzVjhuM0diWW5pdU1XdE8wIn0.eyJleHAiOjE3MDc1ODk3ODMsImlhdCI6MTcwNzU4ODg4MywiYXV0aF90aW1lIjoxNzA3NTg4ODgzLCJqdGkiOiI4YjYzOTEwMS03YWJkLTQ1ODYtYTUwNi03YTVmZDc3NTY1NmYiLCJpc3MiOiJodHRwOi8vaG9zdC5kb2NrZXIuaW50ZXJuYWw6ODA5NS9yZWFsbXMvZXNob3BvbmNvbnRhaW5lcnMiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNDZlYjdiOTItMWEwMC00NGNlLWJlZDgtZmJhNTNkZGM3Y2IzIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoianMiLCJub25jZSI6Ik4wLjc3MDAzODMyNDE2NTI1MzgxNzA3NTg4ODgwMjI2Iiwic2Vzc2lvbl9zdGF0ZSI6IjQ4YjYxYzI1LTg4YzEtNGY4Ni1hMjkyLTA1NWM2MGU0Nzc3YSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtZXNob3BvbmNvbnRhaW5lcnMiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBiYXNrZXQgd2Vic2hvcHBpbmdhZ2cgb3JkZXJzIG9yZGVycy5zaWduYWxyaHViIGVtYWlsIHByb2ZpbGUiLCJzaWQiOiI0OGI2MWMyNS04OGMxLTRmODYtYTI5Mi0wNTVjNjBlNDc3N2EiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJBbGljZSBHaGFudGEiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhbGljZSIsImdpdmVuX25hbWUiOiJBbGljZSIsImZhbWlseV9uYW1lIjoiR2hhbnRhIiwiZW1haWwiOiJhbGljZUBnbWFpbC5jb20ifQ.PVAZ_BoSgImcsMEbTyTr_JrBqzuJ5mqBotgdp1djKPLXNaeJgUhHv1WpLCRpN3bfIDuwajxlSVSKITb58alv1oTUIb9K_E7_izGY9p6wxV6apo12YHdovLGJxrjJxwRfWxFBI464uH5d5H5KFKHQW0yTM-70Hl4O8qngWd6soS7XQiZ94GKl-fW8IiJRyXmpCIkITRL1a5LwE8XpCMXlNdQAvs8GUcx44N-TfnyasEjW9gpygDrEak34IXNBndMjbkGN7Y5QFIaG9FFKWXJis2Z3aRDLKnWAh9BzncylSh2OAT62LP1J1v-iAjvJUuoFJ3AooUHbmpjtEW3FvGkU_g
+
+###
+POST  http://localhost:9090/api/v1/orders/createorder HTTP/1.1
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJweGl0UEJNdTNEczQwX0REdkdQbUNENEZRdkNzVjhuM0diWW5pdU1XdE8wIn0.eyJleHAiOjE3MDgxNjY4ODAsImlhdCI6MTcwODE2NTk4MCwiYXV0aF90aW1lIjoxNzA4MTY1OTgwLCJqdGkiOiIyNDgyMzNjMC1jYjQ5LTQ0MTMtOWRmNi1mMTFjYzYwNzM1ZjQiLCJpc3MiOiJodHRwOi8vaG9zdC5kb2NrZXIuaW50ZXJuYWw6ODA5NS9yZWFsbXMvZXNob3BvbmNvbnRhaW5lcnMiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNDZlYjdiOTItMWEwMC00NGNlLWJlZDgtZmJhNTNkZGM3Y2IzIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoianMiLCJub25jZSI6Ik4wLjU4ODk1MjQwOTE0MjU3NDQxNzA4MTY1OTc3NjUwIiwic2Vzc2lvbl9zdGF0ZSI6Ijk5ZjliMWE0LTJlYmMtNGI4My1hMzM3LWE4MmU5Njg5ODgwZSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtZXNob3BvbmNvbnRhaW5lcnMiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBiYXNrZXQgd2Vic2hvcHBpbmdhZ2cgb3JkZXJzIG9yZGVycy5zaWduYWxyaHViIGVtYWlsIHByb2ZpbGUiLCJzaWQiOiI5OWY5YjFhNC0yZWJjLTRiODMtYTMzNy1hODJlOTY4OTg4MGUiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJBbGljZSBHaGFudGEiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhbGljZSIsImdpdmVuX25hbWUiOiJBbGljZSIsImZhbWlseV9uYW1lIjoiR2hhbnRhIiwiZW1haWwiOiJhbGljZUBnbWFpbC5jb20ifQ.FP0ThbH1yjYxRLnvUP1DaN2-1JpNMtL_agOW6kXwuML27RgNwWJvo5FH4N6N0q_YBqDzZtSPVd6P9sCN2semU_zn1dA3Dc0-I17IVeALS37Dc22Y7Lo1ADaQ7pOlfra0mW3pM2NzMzOckv-yv0hPyO6mNgR0Wa0atufL7-PL2ApoPTYHP7ou45pnJGWeX6OBn0PTYB_zZEkbPi87tNT1VxnsLtpBBCY7zpAvUGqTgbmhGW0z6eGAzO-sORuUhk_yh4HYsiiZrcyiL2REXU1_Z7CWTngGFYNKXWE46hXLh9mzu6XtZrPDbzwhKFpNx5Z8LGgGikf7ux7t5cctaQt4gQ
+Content-Type: application/json
+
+{
+    "userId": "46eb7b92-1a00-44ce-bed8-fba53ddc7cb3",
+    "userName": "alice",
+    "city": "Hyderabad",
+    "street": "KAVURI HILLS",
+    "state": "Telangana",
+    "country": "India",
+    "zipCode": "500033",
+    "cardNumber": "1234567890123456",
+    "cardHolderName": "Sri Harsha Ghanta",
+    "cardExpiration": "2025-02-11",
+    "cardSecurityNumber": "678",
+    "cardTypeId": 1,
+    "orderItems": [
+        {
+            "productId": 1, 
+            "productName": ".NET Bot Black Hoodie",
+            "unitPrice":199.5,
+            "discount":0,
+            "units": 1,
+            "pictureUrl": "http://host.docker.internal:8090/catalog-api/api/v1/catalog/items/1/pic"
+        }
+    ]
+}
+
+# {"buyerId":"46eb7b92-1a00-44ce-bed8-fba53ddc7cb3","items":[{"id":"1f874fc2-6944-4385-a4e2-d59b07d01789","productId":1,"productName":".NET Bot Black Hoodie","unitPrice":199.5,"oldUnitPrice":0,"quantity":1,"pictureUrl":"http://host.docker.internal:8090/catalog-api/api/v1/catalog/items/1/pic"}]}
+# {"street":"SRI HARSHA GHANTA, 102, RAJDEEP VILLA, KAVURI HILLS, MADHAPUR, HYDERABAD","city":"Hyderabad","country":"India","state":"Telangana","cardexpiration":"2026-03-31T18:30:00.000Z","cardnumber":"12345678901234","cardsecuritynumber":"123","cardtypeid":1,"cardholdername":"Sri Harsha Ghanta","total":0}

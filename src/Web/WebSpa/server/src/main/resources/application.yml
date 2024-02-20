@@ -1,6 +1,6 @@
 config-data:
   identityUrl: "http://host.docker.internal:8095/realms/eshoponcontainers/protocol"
-  basketUrl: "http://host.docker.internal:5103"
+  basketUrl: "http://host.docker.internal:8083"
   marketingUrl: null
   purchaseUrl: "http://host.docker.internal:8090"
   signalrHubUrl: "http://host.docker.internal:8090"

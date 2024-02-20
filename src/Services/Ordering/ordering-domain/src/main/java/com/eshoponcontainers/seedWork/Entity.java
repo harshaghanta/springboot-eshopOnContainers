@@ -25,6 +25,9 @@ public abstract class Entity {
     private List<Notification> domainEvents;
 
     public Collection<Notification> getDomainEvents() {
+        if (domainEvents == null) {
+            return Collections.emptyList();
+        }
         return Collections.unmodifiableCollection(domainEvents);
     }
 
@@ -46,7 +49,7 @@ public abstract class Entity {
     }
 
     public boolean isTransient() {
-        return this.id == 0;
+        return this.id == null;
     }
 
     @Override

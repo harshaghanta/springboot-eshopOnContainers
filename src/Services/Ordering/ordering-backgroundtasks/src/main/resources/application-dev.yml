@@ -10,3 +10,5 @@ eventbus:
   username: ${eventbus.username}
   password: ${eventbus.password}
   retryCount: ${eventbus.retryCount}
+
+gracePeriodTime: 1

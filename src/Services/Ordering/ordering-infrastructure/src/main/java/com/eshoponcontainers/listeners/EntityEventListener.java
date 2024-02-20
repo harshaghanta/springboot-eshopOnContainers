@@ -6,6 +6,10 @@ import com.eshoponcontainers.seedWork.Entity;
 public class EntityEventListener {
 
     public void preUpdate(Entity entity) {
-        DomainContext.addDomainEvents(entity.getDomainEvents());
+        if(entity.getDomainEvents() != null)
+            DomainContext.addDomainEvents(entity.getDomainEvents());
+
+        entity.clearDomainEvents();
+        
     }
 }

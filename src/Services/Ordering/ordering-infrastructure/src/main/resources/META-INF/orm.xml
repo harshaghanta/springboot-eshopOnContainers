@@ -3,17 +3,18 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd"
     version="2.2">
-    <sequence-generator name="cardtype_generator" sequence-name="cardtype_seq" allocation-size="1" />
-
 
     <mapped-superclass class="com.eshoponcontainers.seedWork.Entity" access="FIELD">
         <entity-listeners>
             <entity-listener class="com.eshoponcontainers.listeners.EntityEventListener">
+                <pre-persist method-name="preUpdate"></pre-persist>
                 <pre-update method-name="preUpdate"></pre-update>
             </entity-listener>
         </entity-listeners>
         <attributes>
-            <id name="id"></id>
+            <id name="id">
+                <generated-value strategy="IDENTITY"></generated-value>
+            </id>
             <transient name="requestedHashCode" />
             <transient name="domainEvents" />
         </attributes>
@@ -25,7 +26,7 @@
 
         <attributes>
             <id name="id">
-                <generated-value strategy="SEQUENCE" generator="cardtype_generator"></generated-value>
+                <generated-value strategy="IDENTITY"></generated-value>
             </id>
             <basic name="name" />
         </attributes>
@@ -37,19 +38,20 @@
 
         <table name="[ordering].[buyers]"></table>
         <attributes>
-            <id name="id" access="FIELD">
-                <column name="Id" />
-                <generated-value strategy="SEQUENCE" generator="buyer_generator"></generated-value>
-            </id>
             <basic name="identityUUID" optional="false">
                 <column name="IdentityGuid" nullable="false" />
             </basic>
             <basic name="name" optional="true" />
-            <one-to-many name="paymentMethods">
-                <join-column name="BuyerId" />
-            </one-to-many>            
+            <one-to-many name="paymentMethods" mapped-by="buyer" fetch="LAZY">
+                <!-- <join-column name="BuyerId" referenced-column-name="Id"  /> -->
+                <cascade>
+                    <cascade-persist />
+                </cascade>
+                
+            </one-to-many>
 
         </attributes>
+
     </entity>
 
 
@@ -58,19 +60,31 @@
         <table name="[ordering].[paymentmethods]"></table>
 
         <attributes>
-            <id name="id">
-                <generated-value strategy="SEQUENCE" generator="paymentmethod_generator"></generated-value>
-            </id>
 
+            <basic name="alias">
+                <column name="Alias" />
+            </basic>
 
-            <basic name="alias" />
-            <basic name="cardNumber"></basic>
-            <basic name="cardHolderName"></basic>
-            <basic name="expiration"></basic>
-            <many-to-one name="cardType">
-                <join-column name="CardTypeId" />
+            <basic name="cardNumber">
+                <column name="CardNumber" />
+            </basic>
+            <basic name="cardHolderName">
+                <column name="CardHolderName" />
+            </basic>
+            <basic name="expiration">
+                <column name="Expiration" />
+            </basic>
+            <basic name="cardTypeId" />
+
+            <many-to-one name="buyer">
+                <join-column name="BuyerId" referenced-column-name="Id"  />
             </many-to-one>
 
+
+            <!-- <many-to-one name="CardType">
+                <join-column name="CardTypeId" />
+            </many-to-one> -->
+            <!-- <transient name="cardTypeId" /> -->
 
             <transient name="securityNumber" />
 
@@ -84,30 +98,30 @@
                 <column name="ProductId" />
             </basic>
             <basic name="productName">
-                <column name="ProductName"/>
+                <column name="ProductName" />
             </basic>
             <basic name="pictureUrl">
-                <column name="PictureUrl" /> 
+                <column name="PictureUrl" />
             </basic>
             <basic name="unitPrice">
-                <column name="UnitPrice" /> 
+                <column name="UnitPrice" />
             </basic>
             <basic name="discount">
-                <column name="Discount" /> 
+                <column name="Discount" />
             </basic>
             <basic name="units">
-                <column name="Units" /> 
+                <column name="Units" />
             </basic>
         </attributes>
     </entity>
 
 
     <entity class="com.eshoponcontainers.aggregatesModel.orderAggregate.Order" access="FIELD"
-        name="Order">        
+        name="Order">
         <table name="[ordering].[orders]"></table>
         <attributes>
             <id name="id">
-                <generated-value strategy="SEQUENCE" generator="orderid_generator"></generated-value>
+                <generated-value strategy="IDENTITY"></generated-value>
             </id>
             <basic name="orderDate">
                 <column name="OrderDate" />
@@ -117,11 +131,14 @@
                 <column name="Description" />
             </basic>
             <basic name="orderStatus">
-                <column  name="OrderStatusId"/>
-                <convert converter="com.eshoponcontainers.converters.OrderStatusConverter" /> 
+                <column name="OrderStatusId" />
+                <convert converter="com.eshoponcontainers.converters.OrderStatusConverter" />
             </basic>
             <one-to-many name="orderItems">
                 <join-column name="OrderId" />
+                <cascade>
+                    <cascade-persist />
+                </cascade>
             </one-to-many>
             <one-to-one name="buyer">
                 <join-column name="BuyerId" />
@@ -129,7 +146,7 @@
             <one-to-one name="paymentMethod">
                 <join-column name="PaymentMethodId" />
             </one-to-one>
-            
+
             <embedded name="address">
                 <attribute-override name="city">
                     <column name="Address_City" />
@@ -147,7 +164,7 @@
                     <column name="Address_ZipCode" />
                 </attribute-override>
             </embedded>
-            
+
             <transient name="isDraft" />
         </attributes>
 

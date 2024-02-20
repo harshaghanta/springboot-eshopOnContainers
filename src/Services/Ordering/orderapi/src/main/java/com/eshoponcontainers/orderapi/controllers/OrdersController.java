@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 // import com.eshoponcontainers.aggregatesModel.buyerAggregate.CardType;
 import com.eshoponcontainers.orderapi.application.commands.CancelOrderCommand;
+import com.eshoponcontainers.orderapi.application.commands.CreateOrderCommand;
 import com.eshoponcontainers.orderapi.application.commands.CreateOrderDraftCommand;
 import com.eshoponcontainers.orderapi.application.commands.ShipOrderCommand;
 import com.eshoponcontainers.orderapi.application.queries.OrderQueries;
@@ -96,4 +97,12 @@ public class OrdersController {
 
         return ResponseEntity.ok().body(orderDraft);
     }
+
+    @PostMapping("/createorder")
+    public String CreateOrder(@RequestBody CreateOrderCommand command) {
+       Boolean status = pipeline.send(command);
+        
+        return "successfull";
+    }
+    
 }

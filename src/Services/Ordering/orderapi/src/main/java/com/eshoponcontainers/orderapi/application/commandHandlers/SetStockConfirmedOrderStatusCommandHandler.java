@@ -29,7 +29,7 @@ public class SetStockConfirmedOrderStatusCommandHandler
             return false;
         
         order.setStockConfirmedStatus();
-        return orderRepository.geUnitOfWork().saveChanges();
+        return orderRepository.getUnitOfWork().saveChanges();
     }
 
 }

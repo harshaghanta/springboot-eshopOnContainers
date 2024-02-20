@@ -30,7 +30,7 @@ public class SetStockRejectedOrderStatusCommandHandler
             return false;
 
         order.SetCancelledStatusWhenStockIsRejected(command.getOrderStockItems());
-        return orderRepository.geUnitOfWork().saveChanges();
+        return orderRepository.getUnitOfWork().saveChanges();
     }
 
 }

@@ -260,6 +260,37 @@ BEGIN
 END
 GO
 
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[IntegrationEventLog]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[IntegrationEventLog](
+	[EventId] [uniqueidentifier] NOT NULL,
+	[Content] [nvarchar](max) NOT NULL,
+	[CreationTime] [datetime2](7) NOT NULL,
+	[EventTypeName] [nvarchar](max) NOT NULL,
+	[State] [int] NOT NULL,
+	[TimesSent] [int] NOT NULL,
+	[TransactionId] [nvarchar](max) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[EventId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END
+GO
+
+IF NOT EXISTS(SELECT TOP 1 1 FROM [ordering].[orderstatus])
+BEGIN
+	INSERT [ordering].[orderstatus] ([Name]) VALUES('submitted');
+	INSERT [ordering].[orderstatus] ([Name]) VALUES('awaitingvalidation');
+	INSERT [ordering].[orderstatus] ([Name]) VALUES('stockconfirmed');
+	INSERT [ordering].[orderstatus] ([Name]) VALUES('paid');
+	INSERT [ordering].[orderstatus] ([Name]) VALUES('shipped');
+	INSERT [ordering].[orderstatus] ([Name]) VALUES('cancelled');
+END
+GO
+
+
+
 IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_buyers_IdentityGuid' AND object_id = OBJECT_ID(N'[ordering].[buyers]'))
 BEGIN
 	CREATE UNIQUE NONCLUSTERED INDEX [IX_buyers_IdentityGuid] ON [ordering].[buyers]

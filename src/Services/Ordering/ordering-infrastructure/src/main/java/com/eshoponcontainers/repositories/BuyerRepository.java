@@ -8,6 +8,9 @@ import com.eshoponcontainers.seedWork.IUnitOfWork;
 
 import an.awesome.pipelinr.Pipeline;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -16,11 +19,11 @@ public class BuyerRepository implements IBuyerRepository {
 
     private final Pipeline pipeline;
     private final EntityManager entityManager;
+    private final IUnitOfWork unitOfWork;
 
     @Override
-    public IUnitOfWork geUnitOfWork() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'geUnitOfWork'");
+    public IUnitOfWork getUnitOfWork() {
+        return unitOfWork;
     }
 
     @Override
@@ -31,13 +34,20 @@ public class BuyerRepository implements IBuyerRepository {
 
     @Override
     public Buyer update(Buyer buyer) {
-        entityManager.persist(buyer);
+        entityManager.merge(buyer);
         return buyer;
     }
 
     @Override
     public Buyer find(String buyerIdentityUUID) {
-        return null;
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Buyer> criteriaQuery = criteriaBuilder.createQuery(Buyer.class);
+        Root<Buyer> root = criteriaQuery.from(Buyer.class);
+        
+        criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("identityUUID"), buyerIdentityUUID));
+        
+        Buyer buyer = entityManager.createQuery(criteriaQuery).getSingleResult();
+        return buyer;
     }
 
     @Override

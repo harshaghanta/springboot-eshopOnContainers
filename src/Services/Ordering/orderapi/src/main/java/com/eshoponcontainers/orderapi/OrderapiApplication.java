@@ -11,6 +11,9 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+// import org.springframework.orm.jpa.JpaTransactionManager;
+// import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.eshoponcontainers.orderapi.config.OrderingDBConfig;
 
@@ -21,6 +24,7 @@ import jakarta.persistence.Persistence;
 @SpringBootApplication(scanBasePackages = "com.eshoponcontainers")
 // @EnableJpaRepositories(basePackages = { "com.eshoponcontainers.repositories"
 // })
+// @EnableTransactionManagement
 @EnableAutoConfiguration(exclude = { PersistenceExceptionTranslationAutoConfiguration.class,
 		HibernateJpaAutoConfiguration.class, DataSourceAutoConfiguration.class })
 public class OrderapiApplication {
@@ -52,9 +56,9 @@ public class OrderapiApplication {
 	// @Bean
 	// @Primary
 	// public PlatformTransactionManager tm(EntityManager em) {
-	// final JpaTransactionManager transactionManager = new JpaTransactionManager();
-	// transactionManager.setEntityManagerFactory(em.getObject());
-	// return transactionManager;
+	// 	final JpaTransactionManager transactionManager = new JpaTransactionManager();
+	// 	transactionManager.setEntityManagerFactory(em.getEntityManagerFactory());
+	// 	return transactionManager;
 	// }
 
 }

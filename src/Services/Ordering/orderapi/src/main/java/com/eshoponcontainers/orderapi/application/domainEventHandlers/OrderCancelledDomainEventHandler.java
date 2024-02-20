@@ -4,10 +4,13 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
+import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
+import com.eshoponcontainers.aggregatesModel.orderAggregate.OrderStatus;
 import com.eshoponcontainers.events.OrderCancelledDomainEvent;
 import com.eshoponcontainers.orderapi.application.integrationEvents.IOrderingIntegrationEventService;
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStatusChangedToCancelledIntegrationEvent;
+import com.eshoponcontainers.repositories.BuyerRepository;
 
 import an.awesome.pipelinr.Notification;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +22,17 @@ import lombok.extern.slf4j.Slf4j;
 public class OrderCancelledDomainEventHandler implements Notification.Handler<OrderCancelledDomainEvent>  {
 
     private final IOrderingIntegrationEventService orderingIntegrationEventService;
+    private final BuyerRepository buyerRepository;
+    private final IOrderRepository orderRepository;
 
     @Override
     public void handle(OrderCancelledDomainEvent event) {
-        Order order = event.getOrder();
-        log.info("Order {} cancelled", order.getId());
-        var orderStatusChangedToCancelledIntegrationEvent = new OrderStatusChangedToCancelledIntegrationEvent(order.getId(), order.getOrderStatus().name(), order.getBuyer().getName());
+        log.trace("Order with Id:{} has been successfully updated to status {}", event.getOrder().getId(), OrderStatus.Cancelled.name());
+        
+        Order order = orderRepository.get(event.getOrder().getId());        
+        var buyer = buyerRepository.findById(order.getBuyerId().toString());
+
+        var orderStatusChangedToCancelledIntegrationEvent = new OrderStatusChangedToCancelledIntegrationEvent(order.getId(), order.getOrderStatus().name(), buyer.getName());
         UUID transactionId = UUID.randomUUID();
         orderingIntegrationEventService.addAndSaveEvent(orderStatusChangedToCancelledIntegrationEvent, transactionId);
         orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
