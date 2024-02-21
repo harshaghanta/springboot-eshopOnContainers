@@ -67,7 +67,9 @@ public class RabbitMQEventBus implements EventBus {
             e.printStackTrace();
         }
 
+        //TODO: HIGH : INJECT OBJECTMAPPER
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
         byte[] messageBytes = null;
         try {
             messageBytes = objectMapper.writeValueAsBytes(event);
@@ -150,10 +152,16 @@ public class RabbitMQEventBus implements EventBus {
                @Override
                public void handleDelivery(String consumerTag, Envelope envelope, BasicProperties properties,
                        byte[] body) throws IOException {
+
+                    
+                    //TODO: HIGH : INJECT OBJECT MAPPER 
+
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.findAndRegisterModules();
                    
                     String eventName = envelope.getRoutingKey();
                     Class eventType = eventBusSubscriptionManager.getEventTypeByName(eventName);
-                    Object event = new ObjectMapper().readValue(body, eventType);
+                    Object event = objectMapper.readValue(body, eventType);
                     List<SubscriptionInfo> subscriptions = eventBusSubscriptionManager.getHandlersForEvent(eventType);
 
                     for (SubscriptionInfo subscription : subscriptions) {

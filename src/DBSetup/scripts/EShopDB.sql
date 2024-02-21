@@ -180,7 +180,8 @@ BEGIN
 	CREATE TABLE [ordering].[buyers](
 		[Id] [int] IDENTITY(1,1) PRIMARY KEY,
 		[IdentityGuid] [nvarchar](200) NOT NULL,
-		[Name] [nvarchar](max) NULL
+		[Name] [nvarchar](max) NULL,
+		[UpdateTime] [datetime2](7) NOT NULL
 	); 
 END
 GO

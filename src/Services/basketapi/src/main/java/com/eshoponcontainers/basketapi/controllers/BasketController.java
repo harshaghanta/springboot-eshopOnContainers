@@ -80,7 +80,7 @@ public class BasketController {
                 basketCheckout.getCardTypeId(), basketCheckout.getBuyer(),
                 basketCheckout.getRequestId(), basket);
 
-        log.info("RequestID: {}",event.getRequestId());
+        log.info("RequestID: {}", event.getRequestId());
 
         try {
             eventBus.publish(event);

@@ -1,4 +1,4 @@
-spring.profiles.active: local
+spring.profiles.active: dev
 springdoc.swagger-ui.path: /swagger-ui-custom.html
 
 logging:

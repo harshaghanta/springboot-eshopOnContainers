@@ -42,6 +42,9 @@
                 <column name="IdentityGuid" nullable="false" />
             </basic>
             <basic name="name" optional="true" />
+            <basic name="updateTime">
+                <column name="UpdateTime" nullable="false" />
+            </basic>
             <one-to-many name="paymentMethods" mapped-by="buyer" fetch="LAZY">
                 <!-- <join-column name="BuyerId" referenced-column-name="Id"  /> -->
                 <cascade>

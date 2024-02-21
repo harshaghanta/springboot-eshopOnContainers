@@ -38,6 +38,9 @@ public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler
         buyer.verifyOrAddPaymentMethod(cardTypeId, paymentMethodAlias, event.getCardNumber(),
                 event.getCardSecurityNumber(), event.getCardHolderName(), event.getCardExpiration(),
                 event.getOrder().getId());
+        
+        //Added to trigger force update on buyer as domain event is not getting raised when there is no change
+        buyer.setUpateTime(new Date());
 
         if (buyerExisted)
             buyerRepository.update(buyer);
