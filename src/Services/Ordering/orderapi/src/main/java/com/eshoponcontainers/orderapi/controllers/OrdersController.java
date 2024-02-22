@@ -23,6 +23,7 @@ import com.eshoponcontainers.orderapi.application.viewModels.CardType;
 import com.eshoponcontainers.orderapi.application.viewModels.Order;
 import com.eshoponcontainers.orderapi.application.viewModels.OrderDraftDTO;
 import com.eshoponcontainers.orderapi.application.viewModels.OrderSummary;
+import com.eshoponcontainers.orderapi.services.IdentityService;
 
 import an.awesome.pipelinr.Pipeline;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ public class OrdersController {
 
     private final Pipeline pipeline;
     private final OrderQueries orderQueries;
+    private final IdentityService identityService;
 
     @PutMapping("/cancel")
     public ResponseEntity<Void> cancelOrder(@RequestBody CancelOrderCommand command, @RequestHeader(name = "x-requestid") String requestId) {        
@@ -74,9 +76,8 @@ public class OrdersController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<OrderSummary>> getOrders() {
-        //TODO: HIGH : NEED TO REMOVE THE HARDCODED USER ID
-        String strUserId = "3d13ed19-e065-44d4-80c1-5c5c20fe10b9";
+    public ResponseEntity<List<OrderSummary>> getOrders() {        
+        String strUserId = identityService.getUserId();
         UUID userId  =  UUID.fromString(strUserId);
         List<OrderSummary> orders = orderQueries.getOrdersFromUser(userId);
         return ResponseEntity.ok().body(orders);
@@ -98,11 +99,11 @@ public class OrdersController {
         return ResponseEntity.ok().body(orderDraft);
     }
 
-    @PostMapping("/createorder")
-    public String CreateOrder(@RequestBody CreateOrderCommand command) {
-       Boolean status = pipeline.send(command);
+    // @PostMapping("/createorder")
+    // public String CreateOrder(@RequestBody CreateOrderCommand command) {
+    //    Boolean status = pipeline.send(command);
         
-        return "successfull";
-    }
+    //     return "successfull";
+    // }
     
 }

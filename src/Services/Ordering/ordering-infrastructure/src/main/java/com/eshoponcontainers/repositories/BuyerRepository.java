@@ -46,7 +46,7 @@ public class BuyerRepository implements IBuyerRepository {
         
         criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("identityUUID"), buyerIdentityUUID));
         
-        Buyer buyer = entityManager.createQuery(criteriaQuery).getSingleResult();
+        Buyer buyer = entityManager.createQuery(criteriaQuery).getResultStream().findFirst().orElse(null);
         return buyer;
     }
 

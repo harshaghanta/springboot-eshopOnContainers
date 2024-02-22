@@ -116,6 +116,7 @@ public class DefaultIntegrationEventLogService implements IntegrationEventLogSer
     private void updateEventStatus(UUID eventId, EventStateEnum status) {
         // Optional<IntegrationEventLogEntry> optionalEventLogEntry =
         // eventLogRepository.findById(eventId);
+        entityManager.getTransaction().begin();
         IntegrationEventLogEntry eventLogEntry = entityManager.find(IntegrationEventLogEntry.class, eventId);
         // if(optionalEventLogEntry.isPresent()) {
         if (eventLogEntry != null) {
@@ -128,6 +129,7 @@ public class DefaultIntegrationEventLogService implements IntegrationEventLogSer
             }
             // eventLogRepository.save(event);
             entityManager.merge(eventLogEntry);
+            entityManager.getTransaction().commit();
         }
     }
 }

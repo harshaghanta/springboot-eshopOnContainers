@@ -2,6 +2,7 @@ package com.eshoponcontainers.aggregatesModel.buyerAggregate;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.eshoponcontainers.events.BuyerAndPaymentMethodVerifiedDomainEvent;
@@ -16,15 +17,21 @@ public class Buyer extends Entity implements IAggregateRoot {
     private String identityUUID;
     private String name;
     private List<PaymentMethod> paymentMethods;
+    private Date updateTime;
 
     protected Buyer() {
         paymentMethods = new ArrayList<>();
+        this.updateTime = new Date();
     }
 
     public Buyer(String identity, String name) {
         this();
         this.identityUUID = identity;
         this.name = name;
+    }    
+
+    public void setUpateTime(Date upateTime) {
+        this.updateTime = upateTime;
     }
 
     public PaymentMethod verifyOrAddPaymentMethod(int cardTypeId, String alias, String cardNumber,
