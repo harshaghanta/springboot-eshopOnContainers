@@ -90,6 +90,7 @@ public class IntegrationEventLogEntry {
         //TODO: HIGH: CHECK THE POSSIBILITY OF INJECT OBJECTMAPPER
         
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
         
         this.event = (IntegrationEvent) objectMapper.readValue(this.content, eventType);
     }

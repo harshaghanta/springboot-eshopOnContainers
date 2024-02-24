@@ -17,14 +17,19 @@ import com.eshoponcontainers.services.IntegrationEventLogService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional.TxType;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class DefaultIntegrationEventLogService implements IntegrationEventLogService {
 
     // IntegrationEventLogRepository eventLogRepository;
@@ -56,6 +61,8 @@ public class DefaultIntegrationEventLogService implements IntegrationEventLogSer
         // EventStateEnum.NOT_PUBLISHED);
         List<IntegrationEventLogEntry> eventlogEntries = null;
 
+        entityManager.getTransaction().begin();
+
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<IntegrationEventLogEntry> criteria = criteriaBuilder.createQuery(IntegrationEventLogEntry.class);
         Root<IntegrationEventLogEntry> root = criteria.from(IntegrationEventLogEntry.class);
@@ -67,6 +74,21 @@ public class DefaultIntegrationEventLogService implements IntegrationEventLogSer
                 .where(criteriaBuilder.and(transactionFilter, eventStateFilter));
 
         eventlogEntries = entityManager.createQuery(criteriaQuery).getResultList();
+        entityManager.getTransaction().commit();
+        // String strQuery = "SELECT iel FROM IntegrationEventLogEntry iel WHERE
+        // iel.transactionId = :transactionId AND " +
+        // "iel.state = :state";
+        // String nativeQuery = "SELECT * FROM IntegrationEventLog iel WHERE
+        // iel.TransactionId = :transactionId AND " +
+        // "iel.state = :state";
+        // Query query = entityManager.createQuery(strQuery);
+        // Query query = entityManager.createNativeQuery(nativeQuery);
+        // query.setParameter("transactionId", transactionId.toString());
+        // query.setParameter("state", 0);
+
+        // eventlogEntries = query.getResultList();
+
+        log.info("Retrieved {} eventlog entries for transaction: {}", eventlogEntries.size(), transactionId.toString());
 
         if (eventlogEntries != null && !eventlogEntries.isEmpty()) {
             eventlogEntries.sort(Comparator.comparing(IntegrationEventLogEntry::getCreationTime));
@@ -95,12 +117,14 @@ public class DefaultIntegrationEventLogService implements IntegrationEventLogSer
     }
 
     @Override
+    @Transactional(value = TxType.SUPPORTS)
     public void markEventAsPublished(UUID eventId) {
 
         updateEventStatus(eventId, EventStateEnum.PUBLISHED);
     }
 
     @Override
+    @Transactional(value = TxType.SUPPORTS)
     public void markEventAsInProgress(UUID eventId) {
 
         updateEventStatus(eventId, EventStateEnum.IN_PROGRESS);
@@ -116,7 +140,7 @@ public class DefaultIntegrationEventLogService implements IntegrationEventLogSer
     private void updateEventStatus(UUID eventId, EventStateEnum status) {
         // Optional<IntegrationEventLogEntry> optionalEventLogEntry =
         // eventLogRepository.findById(eventId);
-        entityManager.getTransaction().begin();
+        // entityManager.getTransaction().begin();
         IntegrationEventLogEntry eventLogEntry = entityManager.find(IntegrationEventLogEntry.class, eventId);
         // if(optionalEventLogEntry.isPresent()) {
         if (eventLogEntry != null) {
@@ -129,7 +153,7 @@ public class DefaultIntegrationEventLogService implements IntegrationEventLogSer
             }
             // eventLogRepository.save(event);
             entityManager.merge(eventLogEntry);
-            entityManager.getTransaction().commit();
+            // entityManager.getTransaction().commit();
         }
     }
 }
