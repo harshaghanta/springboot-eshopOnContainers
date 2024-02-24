@@ -1,5 +1,6 @@
 package com.eshoponcontainers.catalogapi.services;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -24,9 +25,9 @@ public class CatalogIntegrationService {
     private final EventBus eventBus;  
 
     @Transactional
-    public void saveEventAndCatalogChanges(IntegrationEvent event, CatalogItem requestedItem) {
+    public void saveEventAndCatalogChanges(IntegrationEvent event, List<CatalogItem> requestedItem) {
 
-        catalogItemRepository.save(requestedItem);
+        catalogItemRepository.saveAll(requestedItem);
         //TODO : HIGH : NEED TO GET TRANSSACTION ID
         UUID transactionId = UUID.randomUUID();
         eventLogService.saveEvent(event, transactionId);

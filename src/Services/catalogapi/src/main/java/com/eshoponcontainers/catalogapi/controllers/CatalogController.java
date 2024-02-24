@@ -193,11 +193,13 @@ public class CatalogController {
         BigDecimal newPrice = requestedItem.getPrice();
 
         boolean raisePriceChangedEvent = oldPrice != newPrice;
+        List<CatalogItem> catitems = new ArrayList<>();
+        catitems.add(requestedItem);
 
         if (raisePriceChangedEvent) {
             ProductPriceChangedIntegrationEvent productPriceChangedIntegrationEvent = new ProductPriceChangedIntegrationEvent(
                     requestedItem.getId(), requestedItem.getPrice(), oldPrice);
-            catalogIntegrationService.saveEventAndCatalogChanges(productPriceChangedIntegrationEvent, requestedItem);
+            catalogIntegrationService.saveEventAndCatalogChanges(productPriceChangedIntegrationEvent, catitems);
             catalogIntegrationService.publishThroughEventBus(productPriceChangedIntegrationEvent);
         } else {
             catalogItemRepository.save(requestedItem);

@@ -2,6 +2,7 @@ package com.eshoponcontainers.catalogapi.entities;
 
 import java.math.BigDecimal;
 
+import com.eshoponcontainers.catalogapi.excep.CatalogDomainException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
@@ -96,20 +97,20 @@ public class CatalogItem {
     // catalogBrand = value;
     // }
 
-    // public int removeStock(int quantityDesired) {
+    public int removeStock(int quantityDesired) {
 
-    //     if (this.availableStock == 0) {
-    //         throw new CatalogDomainException(String.format("Empty stock, product item %s is sold out", this.name));
-    //     }
+        if (this.availableStock == 0) {
+            throw new CatalogDomainException(String.format("Empty stock, product item %s is sold out", this.name));
+        }
 
-    //     if (quantityDesired <= 0) {
-    //         throw new CatalogDomainException("Item units desired should be greater than zero");
-    //     }
+        if (quantityDesired <= 0) {
+            throw new CatalogDomainException("Item units desired should be greater than zero");
+        }
 
-    //     int removed = Math.min(quantityDesired, this.availableStock);
-    //     this.setAvailableStock(this.availableStock - removed);
-    //     return removed;
-    // }
+        int removed = Math.min(quantityDesired, this.availableStock);
+        this.setAvailableStock(this.availableStock - removed);
+        return removed;
+    }
 
     // public int addStock(int quantity) {
     //     int original = this.availableStock;
