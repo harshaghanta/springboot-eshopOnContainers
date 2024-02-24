@@ -7,8 +7,9 @@
     <mapped-superclass class="com.eshoponcontainers.seedWork.Entity" access="FIELD">
         <entity-listeners>
             <entity-listener class="com.eshoponcontainers.listeners.EntityEventListener">
-                <pre-persist method-name="preUpdate"></pre-persist>
-                <pre-update method-name="preUpdate"></pre-update>
+                <pre-persist method-name="prePersist"></pre-persist>
+                <!-- <pre-update method-name="preUpdate"></pre-update> -->
+                <post-update method-name="postUpdate"></post-update>
             </entity-listener>
         </entity-listeners>
         <attributes>
@@ -122,6 +123,12 @@
     <entity class="com.eshoponcontainers.aggregatesModel.orderAggregate.Order" access="FIELD"
         name="Order">
         <table name="[ordering].[orders]"></table>
+        <!-- <exclude-superclass-listeners />
+        <entity-listeners>
+            <entity-listener class="com.eshoponcontainers.listeners.EntityEventListener">  
+                <pre-update method-name="preUpdate"></pre-update>
+            </entity-listener>
+        </entity-listeners> -->
         <attributes>
             <id name="id">
                 <generated-value strategy="IDENTITY"></generated-value>
@@ -170,7 +177,7 @@
 
             <transient name="isDraft" />
         </attributes>
-
+        
     </entity>
 
 

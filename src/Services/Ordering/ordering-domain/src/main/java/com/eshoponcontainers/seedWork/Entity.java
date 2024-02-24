@@ -7,8 +7,6 @@ import java.util.List;
 
 import an.awesome.pipelinr.Notification;
 
-
-
 public abstract class Entity {
 
     private Integer requestedHashCode;

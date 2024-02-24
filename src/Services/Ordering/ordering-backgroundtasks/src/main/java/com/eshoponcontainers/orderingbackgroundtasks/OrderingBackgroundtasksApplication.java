@@ -38,7 +38,7 @@ public class OrderingBackgroundtasksApplication {
 		}));
 	}
 
-	@Scheduled(fixedDelay = 10000) // Run every 1000 milliseconds (1 second)
+	@Scheduled(fixedDelay = 30000) // Run every  (30 second)
 	public void backgroundProcess() {
 		if (shutdownRequested) {
 

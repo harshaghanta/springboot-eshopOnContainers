@@ -30,7 +30,7 @@ public class OrderStatusChangedToAwaitingValidationDomainEventHandler implements
 
     @Override
     public void handle(OrderStatusChangedToAwaitingValidationDomainEvent event) {
-        log.trace("Order with Id:{} has been successfully updated to status {}", event.getOrderId(), OrderStatus.AwaitingValidation.name());
+        log.info("Order with Id:{} has been successfully updated to status {}", event.getOrderId(), OrderStatus.AwaitingValidation.name());
         
         Order order = orderRepository.get(event.getOrderId());
         var buyer = buyerRepository.findById(order.getBuyerId().toString());
@@ -40,8 +40,9 @@ public class OrderStatusChangedToAwaitingValidationDomainEventHandler implements
             .collect(Collectors.toList());
 
         //TODO: HIGH: Need to Find TransactionID
-        UUID transactionId = UUID.randomUUID();        
+        UUID transactionId = UUID.randomUUID();
         var integrationEvent = new OrderStatusChangedToAwaitingValidationIntegrationEvent(event.getOrderId(), order.getOrderStatus().name(), buyer.getName(), orderItems);
+        log.info("Saving OrderStatusChangedToAwaitingValidationIntegrationEvent with transactionId:{}", transactionId);
         orderingIntegrationEventService.addAndSaveEvent(integrationEvent, transactionId);
     }
 

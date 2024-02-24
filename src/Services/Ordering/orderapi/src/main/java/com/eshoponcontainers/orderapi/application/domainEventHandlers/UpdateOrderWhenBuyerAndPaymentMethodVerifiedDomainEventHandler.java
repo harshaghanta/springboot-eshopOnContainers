@@ -18,11 +18,14 @@ public class UpdateOrderWhenBuyerAndPaymentMethodVerifiedDomainEventHandler impl
 
     @Override
     public void handle(BuyerAndPaymentMethodVerifiedDomainEvent event) {
+        log.info("Receieved the BuyerAndPaymentMethodVerifiedDomainEvent with buyer: {} for order: {}" , event.getBuyer().getId(),
+            event.getOrderId() );
         var order = orderRepository.get(event.getOrderId());
         order.setBuyerId(event.getBuyer().getId());
         order.setPaymentMethodId(event.getPaymentMethod().getId());
+        orderRepository.getUnitOfWork().saveChanges();
 
-        log.trace("Order with Id: {} has been successfully updated with a payment method {} {}", event.getOrderId(), event.getPaymentMethod().getId());
+        log.info("Order with Id: {} has been successfully updated with a payment method {} {}", event.getOrderId(), event.getPaymentMethod().getId());
     }
 
 }
