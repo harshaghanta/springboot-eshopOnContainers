@@ -44,6 +44,10 @@
 		},
 		{
 			"path": "src/Keycloak"
+		},
+		{
+			"name": "ordering-notification",
+			"path": "src/Services/Ordering/ordering-notification"
 		}
 	],
 	"settings": {
