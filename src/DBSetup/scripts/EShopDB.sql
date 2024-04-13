@@ -95,6 +95,23 @@ PRIMARY KEY CLUSTERED
 END
 GO
 
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Subscriptions]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE [dbo].[Subscriptions](
+		[Id] [int] IDENTITY(1,1) NOT NULL,
+		[Type] [int] NOT NULL,
+		[Date] [datetime2](7) NOT NULL,
+		[DestUrl] [nvarchar](max) NULL,
+		[Token] [nvarchar](max) NULL,
+		[UserId] [nvarchar](max) NULL,
+		CONSTRAINT [PK_Subscriptions] PRIMARY KEY CLUSTERED 
+		(
+			[Id] ASC
+		)
+	)
+	END
+GO
+
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK20xg7a5wq0gllbnknf5rg31oo]') AND parent_object_id = OBJECT_ID(N'[dbo].[Catalog]'))
 	ALTER TABLE [dbo].[Catalog]  WITH CHECK ADD  CONSTRAINT [FK20xg7a5wq0gllbnknf5rg31oo] FOREIGN KEY([CatalogBrandId])
 	REFERENCES [dbo].[CatalogBrand] ([Id])
@@ -153,7 +170,6 @@ GO
 
 SET IDENTITY_INSERT dbo.Catalog OFF;  
 GO  
-
 
 
 -- IF NOT EXISTS(SELECT TOP 1 1 FROM [dbo].[IntegrationEventLog])

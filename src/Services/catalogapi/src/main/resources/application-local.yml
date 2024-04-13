@@ -21,3 +21,4 @@ eventbus:
 
 #springdoc.swagger-ui.path: /swagger-ui-custom.html
 server.port: 9090 
+# server.servlet.context-path: /catalog-api

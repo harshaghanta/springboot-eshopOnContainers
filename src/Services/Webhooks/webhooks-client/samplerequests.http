@@ -1,0 +1,22 @@
+var baseUrl = "http://localhost:5116";
+
+POST http://localhost:8080 HTTP/1.1
+X-eshop-whtoken: 6168DB8D-DC58-4094-AF24-483278923590
+
+{
+    "when" : ,
+    "payload": "",
+    "type": "OrderPaid"
+}
+
+###
+OPTIONS http://localhost:5116/check
+X-eshop-whtoken: 6168DB8D-DC58-4094-AF24-483278923590
+
+###
+GET http://localhost:5116/check2 HTTP/1.1
+
+###
+POST http://localhost:5116/checkpost HTTP/1.1
+
+X-eshop-whtoken: 6168DB8D-DC58-4094-AF24-483278923590

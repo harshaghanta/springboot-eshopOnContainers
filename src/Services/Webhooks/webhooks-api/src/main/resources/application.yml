@@ -1,0 +1,6 @@
+server:
+  port: 5113
+
+spring.profiles.active: local
+spring.application.name: webhooks-api
+
