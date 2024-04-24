@@ -10,9 +10,11 @@ import com.eshoponcontainers.orderapi.application.viewModels.OrderItemDTO;
 import an.awesome.pipelinr.Command;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class CreateOrderCommand implements Command<Boolean> {
 
     private List<OrderItemDTO> orderItems;

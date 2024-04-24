@@ -4,8 +4,10 @@ import com.eshoponcontainers.exceptions.OrderingDomainException;
 import com.eshoponcontainers.seedWork.Entity;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class OrderItem extends Entity {
     private int productId;
     private String productName;
@@ -30,6 +32,7 @@ public class OrderItem extends Entity {
         this.unitPrice = unitPrice;
         this.discount = discount;
         this.units = units;
+        this.pictureUrl = pictureUrl;
     }
 
     public void setNewDiscount(double discount) {

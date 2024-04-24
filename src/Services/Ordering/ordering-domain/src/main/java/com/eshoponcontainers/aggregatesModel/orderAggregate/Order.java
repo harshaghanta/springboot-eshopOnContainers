@@ -19,8 +19,10 @@ import com.eshoponcontainers.seedWork.Entity;
 import com.eshoponcontainers.seedWork.IAggregateRoot;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class Order extends Entity implements IAggregateRoot {
 
     private Date orderDate;

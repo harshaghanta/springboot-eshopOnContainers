@@ -27,6 +27,7 @@ public class CreateOrderCommandHandler implements Command.Handler<CreateOrderCom
 
     @Override
     public Boolean handle(CreateOrderCommand command) {
+        log.trace("Received CreateOrderCommand: {}", command);
         var orderStartedIntegrationEvent = new OrderStartedIntegrationEvent(command.getUserId());
         UUID transactionId = TransactionContext.getTransactionId();
         orderingIntegrationEventService.addAndSaveEvent(orderStartedIntegrationEvent);
@@ -41,7 +42,7 @@ public class CreateOrderCommandHandler implements Command.Handler<CreateOrderCom
             order.addOrderItem(orderItem.productId(), orderItem.productName(), orderItem.unitPrice()   , orderItem.discount(), orderItem.pictureUrl(), orderItem.units());
         }
 
-        log.info("Creating Order: -", order);
+        log.info("Creating Order: - {}", order);
         orderRepository.add(order);
         return orderRepository.getUnitOfWork().saveChanges();
     }

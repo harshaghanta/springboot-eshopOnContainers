@@ -8,9 +8,11 @@ import com.eshoponcontainers.seedWork.ValueObject;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Address extends ValueObject {
 
     private String street;
