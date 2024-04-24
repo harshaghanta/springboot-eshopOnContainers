@@ -1,15 +1,5 @@
-spring.profiles.active: local
+spring.profiles.active: dev
 spring.application.name: webhooks-client
-server:
-  port: 5116
-
-settings:
-  token: 6168DB8D-DC58-4094-AF24-483278923590
-  identityUrl: 
-  callbackUrl:
-  webhookUrl: http://webhooks-api
-  selfUrl: http://webhooks-client/
-  validateToken: true
 
 oauthIssuerUrl: http://host.docker.internal:8095/realms/eshoponcontainers
 

@@ -11,3 +11,7 @@ eventbus:
   retryCount: ${eventbus.retryCount}
 
 oauthIssuerUrl: http://keycloak:8080/realms/eshoponcontainers
+
+logging:
+  level:
+    com.eshoponcontainers: DEBUG

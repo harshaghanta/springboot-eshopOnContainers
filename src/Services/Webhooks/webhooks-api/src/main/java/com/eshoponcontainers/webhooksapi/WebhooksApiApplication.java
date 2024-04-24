@@ -9,5 +9,4 @@ public class WebhooksApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(WebhooksApiApplication.class, args);
 	}
-
 }

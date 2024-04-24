@@ -1,1 +1,4 @@
 
+logging:
+  level:
+    com.eshoponcontainers: DEBUG

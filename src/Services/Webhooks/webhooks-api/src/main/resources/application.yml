@@ -1,6 +1,6 @@
-server:
-  port: 5113
-
-spring.profiles.active: local
+spring.profiles.active: dev
 spring.application.name: webhooks-api
 
+logging:
+  level:
+    com.eshoponcontainers.eventbus: DEBUG

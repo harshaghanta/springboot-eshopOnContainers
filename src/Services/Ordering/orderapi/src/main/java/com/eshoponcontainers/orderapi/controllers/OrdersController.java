@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 // import com.eshoponcontainers.aggregatesModel.buyerAggregate.CardType;
 import com.eshoponcontainers.orderapi.application.commands.CancelOrderCommand;
-import com.eshoponcontainers.orderapi.application.commands.CreateOrderCommand;
 import com.eshoponcontainers.orderapi.application.commands.CreateOrderDraftCommand;
 import com.eshoponcontainers.orderapi.application.commands.ShipOrderCommand;
 import com.eshoponcontainers.orderapi.application.queries.OrderQueries;

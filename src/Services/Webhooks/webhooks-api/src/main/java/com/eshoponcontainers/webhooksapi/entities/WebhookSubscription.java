@@ -8,10 +8,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
 @Table(name = "Subscriptions")
+@ToString
 public class WebhookSubscription {
 
     @Id

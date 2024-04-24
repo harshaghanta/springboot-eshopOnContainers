@@ -29,7 +29,7 @@ public class CreateOrderCommandHandler implements Command.Handler<CreateOrderCom
     public Boolean handle(CreateOrderCommand command) {
         var orderStartedIntegrationEvent = new OrderStartedIntegrationEvent(command.getUserId());
         UUID transactionId = TransactionContext.getTransactionId();
-        orderingIntegrationEventService.addAndSaveEvent(orderStartedIntegrationEvent, transactionId);
+        orderingIntegrationEventService.addAndSaveEvent(orderStartedIntegrationEvent);
 
         var address = new Address(command.getStreet(), command.getCity(), command.getState(), command.getCountry(),
                 command.getZipCode());

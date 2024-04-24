@@ -35,8 +35,8 @@ public class StartUp {
         eventBus.subscribe(GracePeriodConfirmedIntegrationEvent.class, GracePeriodConfirmedIntegrationEventHandler.class);
         eventBus.subscribe(OrderStockConfirmedIntegrationEvent.class, OrderStockConfirmedIntegrationEventHandler.class);
         eventBus.subscribe(OrderStockRejectedIntegrationEvent.class, OrderStockRejectedIntegrationEventHandler.class);
-        // eventBus.subscribe(OrderPaymentFailedIntegrationEvent.class, OrderPaymentFailedIntegrationEventHandler.class);
-        // eventBus.subscribe(OrderPaymentSucceededIntegrationEvent.class, OrderPaymentSucceededIntegrationEventHandler.class);
+        eventBus.subscribe(OrderPaymentFailedIntegrationEvent.class, OrderPaymentFailedIntegrationEventHandler.class);
+        eventBus.subscribe(OrderPaymentSucceededIntegrationEvent.class, OrderPaymentSucceededIntegrationEventHandler.class);
 
     }
 }

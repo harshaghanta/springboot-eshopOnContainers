@@ -35,11 +35,6 @@ public class CheckController {
         }
     }
 
-    @RequestMapping(value =  "/check2", method = RequestMethod.GET)
-    public ResponseEntity<?> check2() {
-       return ResponseEntity.ok().body("Test");
-    }
-
     @PostMapping("/checkpost")
     public ResponseEntity<?> checkpost() {
         if(settings.isValidateToken()) {

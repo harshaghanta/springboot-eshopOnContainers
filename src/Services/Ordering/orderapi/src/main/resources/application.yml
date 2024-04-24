@@ -5,3 +5,14 @@ logging:
   level:
     org.springframework.security.oauth2.jwt: DEBUG
     org.hibernate.type: TRACE
+
+
+spring.datasource.hikari:
+  maximum-pool-size: 10
+  minimum-idle: 5
+  connection-timeout: 30000
+  idle-timeout: 600000
+  max-lifetime: 1800000
+  pool-name: HikariCP
+  validation-timeout: 3000
+  leak-detection-threshold: 2000

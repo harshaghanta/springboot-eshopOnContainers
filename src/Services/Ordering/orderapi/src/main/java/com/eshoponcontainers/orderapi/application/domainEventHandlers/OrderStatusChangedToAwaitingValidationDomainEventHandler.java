@@ -43,18 +43,18 @@ public class OrderStatusChangedToAwaitingValidationDomainEventHandler
                 .collect(Collectors.toList());
 
         // TODO: HIGH: Need to Find TransactionID
-        UUID transactionId = TransactionContext.getTransactionId();
-        if (transactionId == null) {
-            transactionId = UUID.randomUUID();
-            log.info("TransactionContext not found while invoking {} . Using new TransactionID: {}",
-                    this.getClass().getSimpleName(),
-                    transactionId.toString());
-        }
+        // UUID transactionId = TransactionContext.getTransactionId();
+        // if (transactionId == null) {
+        //     transactionId = UUID.randomUUID();
+        //     log.info("TransactionContext not found while invoking {} . Using new TransactionID: {}",
+        //             this.getClass().getSimpleName(),
+        //             transactionId.toString());
+        // }
 
         var integrationEvent = new OrderStatusChangedToAwaitingValidationIntegrationEvent(event.getOrderId(),
                 order.getOrderStatus().name(), buyer.getName(), orderItems);
-        log.info("Saving OrderStatusChangedToAwaitingValidationIntegrationEvent with transactionId:{}", transactionId);
-        orderingIntegrationEventService.addAndSaveEvent(integrationEvent, transactionId);
+        // log.info("Saving OrderStatusChangedToAwaitingValidationIntegrationEvent with transactionId:{}", TransactionContext.getTransactionId());
+        orderingIntegrationEventService.addAndSaveEvent(integrationEvent);
     }
 
 }

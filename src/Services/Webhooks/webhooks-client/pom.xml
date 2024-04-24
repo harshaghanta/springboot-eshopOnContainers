@@ -85,6 +85,8 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>webhooks-client</finalName>
 	</build>
+
 
 </project>

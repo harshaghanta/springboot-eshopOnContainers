@@ -1,6 +1,7 @@
 package com.eshoponcontainers.eventbus.abstractions;
 
 import java.util.List;
+import java.util.HashMap;
 
 import com.eshoponcontainers.eventbus.SubscriptionInfo;
 import com.eshoponcontainers.eventbus.events.IntegrationEvent;
@@ -21,5 +22,7 @@ public interface EventBusSubscriptionManager {
     Class getEventTypeByName(String eventName);
 
     <T extends IntegrationEvent> List<SubscriptionInfo> getHandlersForEvent(Class<T> eventType);
+
+    HashMap<String, List<SubscriptionInfo>> getAllSubscriptions();
     
 }

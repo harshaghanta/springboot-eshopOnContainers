@@ -27,11 +27,13 @@ public class OrderStatusChangedToStockConfirmedDomainEventHandler implements Not
 
     @Override
     public void handle(OrderStatusChangedToStockConfirmedDomainEvent event) {
-        log.trace("Order with Id: {} has been successfully updated to status {} ({})", event.getOrderId(), OrderStatus.StockConfirmed.name(), OrderStatus.StockConfirmed.getId());
+        log.info("Order with Id: {} has been successfully updated to status {} ({})", event.getOrderId(), OrderStatus.StockConfirmed.name(), OrderStatus.StockConfirmed.getId());
         Order order = orderRepository.get(event.getOrderId());
         var buyer = buyerRepository.findById(order.getBuyerId().toString());
-        UUID transactionId = UUID.randomUUID();
+
+        log.info("Received OrderID: {} from order object and OrderID: {} from event object", order.getId(), event.getOrderId());
+        // UUID transactionId = UUID.randomUUID();
         OrderStatusChangedToStockConfirmedIntegrationEvent integrationEvent = new OrderStatusChangedToStockConfirmedIntegrationEvent(order.getId(), order.getOrderStatus().name(), buyer.getName());
-        orderingIntegrationEventService.addAndSaveEvent(integrationEvent, transactionId);
+        orderingIntegrationEventService.addAndSaveEvent(integrationEvent);
     }
 }

@@ -94,7 +94,7 @@ public class OrderQueries {
         List<OrderSummary> orders = new ArrayList<>();
         for (Object rowObject : resultList) {
             Object[] rowData = (Object[]) rowObject;
-            OrderSummary summary = new OrderSummary((Integer) rowData[0], ((java.sql.Timestamp)rowData[1]).toInstant(), (String) rowData[2], ((BigDecimal) rowData[3]).doubleValue());
+            OrderSummary summary = new OrderSummary((Integer) rowData[0], ((java.sql.Timestamp)rowData[1]), (String) rowData[2], ((BigDecimal) rowData[3]).doubleValue());
             orders.add(summary);
         }
         return orders;

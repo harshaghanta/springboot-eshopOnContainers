@@ -10,5 +10,13 @@ spring:
       naming.physical-strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
       naming.implicit-strategy: "org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl"
 
+eventbus:
+  host: "host.docker.internal"
+  username:
+  password:
+  retryCount: 5
+
+server:
+  port: 5113
 
 oauthIssuerUrl: http://host.docker.internal:8095/realms/eshoponcontainers

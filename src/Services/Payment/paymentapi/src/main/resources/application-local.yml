@@ -1,0 +1,8 @@
+eventbus:
+  host: "host.docker.internal"
+  username:
+  password:
+  retryCount: 5
+
+server:
+  port: 9099

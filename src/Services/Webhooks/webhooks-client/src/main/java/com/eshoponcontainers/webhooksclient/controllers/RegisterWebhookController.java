@@ -2,14 +2,7 @@ package com.eshoponcontainers.webhooksclient.controllers;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -22,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.eshoponcontainers.webhooksclient.Settings;
 import com.eshoponcontainers.webhooksclient.models.WebhookSubscriptionRequest;
-import com.eshoponcontainers.webhooksclient.utils.AccessTokenUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -71,13 +63,11 @@ public class RegisterWebhookController {
         }
 
         ResponseData responseData = new ResponseData();
-
-        // Set the access token
-        WebClient.create(settings.getWebhookUrl())
+        
+        webClient
                 .post()
                 .uri("/api/v1/webhooks")
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + AccessTokenUtils.getAccessToken())
                 .bodyValue(payload)
                 .exchangeToMono(response -> {
                     if (response.statusCode().is2xxSuccessful()) {

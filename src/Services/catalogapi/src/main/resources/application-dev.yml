@@ -18,3 +18,7 @@ eventbus:
   retryCount: ${eventbus.retryCount}
 
 springdoc.swagger-ui.path: /swagger-ui-custom.html
+
+logging:
+  level:
+    com.eshoponcontainers: DEBUG

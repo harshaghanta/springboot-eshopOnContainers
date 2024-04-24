@@ -69,6 +69,13 @@
                 <p>(Data since last time web started up). <strong>Note: </strong>Must manually refresh this page.
                 <p>
                 <table class="table">
+                    <!-- Iterate webhooks object from model and print all properties -->
+                    <tr th:each="webhook : ${webhooks}">
+
+                        <td>[[${webhook.when}]]</td>
+                        <td>[[${webhook.data}]]</td>
+                        <td>[[${webhook.token}]]</td>
+                    </tr>
                 </table>
             </div>
 

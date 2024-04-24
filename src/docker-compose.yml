@@ -102,6 +102,40 @@ services:
     image: redis:alpine
     networks:
     - simpbridgenetwork
+  
+  webhooks-api:    
+    build:
+      context: .
+      dockerfile: Services/Webhooks/webhooks-api/Dockerfile
+    env_file:
+    - .env
+    depends_on:
+    - db
+    - eventbus
+    ports:
+    - 5113:8080
+    networks:
+    - simpbridgenetwork
+  webhooks-client:    
+    build:
+      context: .
+      dockerfile: Services/Webhooks/webhooks-client/Dockerfile
+    env_file:
+    - .env
+    ports:
+    - 5114:8080
+    networks:
+    - simpbridgenetwork
+  payment-api:
+    build:
+      context: .
+      dockerfile: Services/Payment/paymentapi/Dockerfile
+    env_file:
+    - .env
+    ports:
+    - 5108:8080
+    networks:
+    - simpbridgenetwork
 
 networks:
   simpbridgenetwork:

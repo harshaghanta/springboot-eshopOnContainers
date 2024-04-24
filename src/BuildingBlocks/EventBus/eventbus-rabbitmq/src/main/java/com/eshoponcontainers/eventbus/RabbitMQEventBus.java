@@ -160,8 +160,13 @@ public class RabbitMQEventBus implements EventBus {
                     objectMapper.findAndRegisterModules();
                    
                     String eventName = envelope.getRoutingKey();
+                    log.debug("Consuming event: {}", eventName);
+
                     Class eventType = eventBusSubscriptionManager.getEventTypeByName(eventName);
                     Object event = objectMapper.readValue(body, eventType);
+
+                    log.info("Event received: {}", event);
+                    
                     List<SubscriptionInfo> subscriptions = eventBusSubscriptionManager.getHandlersForEvent(eventType);
 
                     for (SubscriptionInfo subscription : subscriptions) {

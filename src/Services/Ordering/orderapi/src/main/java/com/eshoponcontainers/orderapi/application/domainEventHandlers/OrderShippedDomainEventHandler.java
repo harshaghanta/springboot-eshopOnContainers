@@ -36,7 +36,7 @@ public class OrderShippedDomainEventHandler implements Notification.Handler<Orde
         var buyer = buyerRepository.findById(order.getBuyerId().toString());
         
         OrderStatusChangedToShippedIntegrationEvent integrationEvent = new OrderStatusChangedToShippedIntegrationEvent(order.getId(), order.getOrderStatus().name(), buyer.getName());
-        orderingIntegrationEventService.addAndSaveEvent(integrationEvent, transactionId);
+        orderingIntegrationEventService.addAndSaveEvent(integrationEvent);
     }
 
 }

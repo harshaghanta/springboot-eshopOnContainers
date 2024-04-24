@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,12 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eshoponcontainers.webhooksapi.dto.WebhookSubscriptionRequest;
 import com.eshoponcontainers.webhooksapi.entities.WebhookSubscription;
 import com.eshoponcontainers.webhooksapi.entities.WebhookType;
+import com.eshoponcontainers.webhooksapi.integrationevents.eventHandlers.OrderStatusChangedToPaidIntegrationEventHandler;
+import com.eshoponcontainers.webhooksapi.integrationevents.events.OrderStatusChangedToPaidIntegrationEvent;
 import com.eshoponcontainers.webhooksapi.repositories.WebhookSubscritpionRepository;
 import com.eshoponcontainers.webhooksapi.services.GrantUrlTesterService;
 import com.eshoponcontainers.webhooksapi.services.IdentityService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +33,7 @@ public class WebhooksController {
     private final WebhookSubscritpionRepository webhookSubscritpionRepository;
     private final IdentityService identityService;
     private final GrantUrlTesterService grantUrlTesterService;
+    private final OrderStatusChangedToPaidIntegrationEventHandler eventHandler;
 
     @GetMapping
     public ResponseEntity<?> listByUser() {
@@ -58,8 +61,8 @@ public class WebhooksController {
             var subscription = new WebhookSubscription();
             subscription.setDate(LocalDateTime.now());
             subscription.setDestUrl(request.getUrl());
-            //  convert request.getType() to WebhookType
-            
+            // convert request.getType() to WebhookType
+
             subscription.setType(WebhookType.valueOf(request.getEvent()));
             subscription.setToken(token);
             subscription.setUserId(identityService.getUserId());
@@ -81,4 +84,13 @@ public class WebhooksController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("Subscriptions %s not found", id));
     }
+
+    @GetMapping("/testEventInvoke")
+    public ResponseEntity<?> testEventInvoke() {
+        var event = new OrderStatusChangedToPaidIntegrationEvent(1,
+                List.of(new OrderStatusChangedToPaidIntegrationEvent.OrderStockItem(1, 3)));
+        eventHandler.handle(event);
+        return ResponseEntity.ok().build();
+    }
+
 }

@@ -18,4 +18,5 @@ services:
   basketdata:
     ports:
     - "6379:6379"
+
   

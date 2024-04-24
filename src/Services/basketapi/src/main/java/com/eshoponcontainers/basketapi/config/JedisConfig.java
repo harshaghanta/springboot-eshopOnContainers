@@ -3,6 +3,7 @@ package com.eshoponcontainers.basketapi.config;
 import java.time.Duration;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -21,7 +22,8 @@ public class JedisConfig {
     private String host;
 
     @Bean
-    @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+    @Scope(value =BeanDefinition.SCOPE_PROTOTYPE, proxyMode = ScopedProxyMode.TARGET_CLASS)
+    // @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
     public Jedis jedis(JedisPool jedisPool) {
         log.info("Printing basketdata host: {}", host);
 

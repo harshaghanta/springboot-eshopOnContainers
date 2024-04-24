@@ -8,9 +8,11 @@ import com.eshoponcontainers.orderapi.application.commands.SetPaidOrderStatusCom
 
 import an.awesome.pipelinr.Command;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class SetPaidOrderStatusCommandHandler implements Command.Handler<SetPaidOrderStatusCommand, Boolean> {
     
     private final IOrderRepository orderRepository;
@@ -24,8 +26,11 @@ public class SetPaidOrderStatusCommandHandler implements Command.Handler<SetPaid
             e.printStackTrace();
         }
         Order order = orderRepository.get(command.getOrderNumber());
-        if(order == null)
+        if(order == null) {
+            log.warn("Order with Id: {} not found", command.getOrderNumber());
             return false;
+        }
+            
         
         order.SetPaidStatus();
         return orderRepository.getUnitOfWork().saveChanges();

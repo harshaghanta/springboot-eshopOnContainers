@@ -32,13 +32,11 @@ public class OrderStatusChangedToPaidDomainEventHandler
     @Override
     public void handle(OrderStatusChangedToPaidDomainEvent event) {
 
-        log.trace("Order with Id: {} has been successfully updated to status {} ({})", event.getOrderId(),
+        log.info("Order with Id: {} has been successfully updated to status {} ({})", event.getOrderId(),
                 OrderStatus.Paid.name(), OrderStatus.Paid.getId());
 
         Order order = orderRepository.get(event.getOrderId());
         var buyer = buyerRepository.findById(order.getBuyerId().toString());
-
-        UUID transactionId = UUID.randomUUID();
 
         List<OrderStockItem> orderStockList = event.getOrderItems().stream()
                 .map(item -> new OrderStockItem(item.getProductId(), item.getUnits()))
@@ -46,7 +44,7 @@ public class OrderStatusChangedToPaidDomainEventHandler
 
         var integrationEvent = new OrderStatusChangedToPaidIntegrationEvent(event.getOrderId(),
                 order.getOrderStatus().name(), buyer.getName(), orderStockList);
-        orderingIntegrationEventService.addAndSaveEvent(integrationEvent, transactionId);
+        orderingIntegrationEventService.addAndSaveEvent(integrationEvent);
 
     }
 

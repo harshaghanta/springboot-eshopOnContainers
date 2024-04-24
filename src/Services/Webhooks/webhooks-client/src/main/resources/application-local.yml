@@ -1,3 +1,6 @@
+server:
+  port: 5114
+
 settings:
   token: 6168DB8D-DC58-4094-AF24-483278923590
   identityUrl: 

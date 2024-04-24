@@ -1,7 +1,5 @@
 package com.eshoponcontainers.orderapi.application.domainEventHandlers;
 
-import java.util.UUID;
-
 import org.springframework.stereotype.Component;
 
 import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
@@ -33,8 +31,6 @@ public class OrderCancelledDomainEventHandler implements Notification.Handler<Or
         var buyer = buyerRepository.findById(order.getBuyerId().toString());
 
         var orderStatusChangedToCancelledIntegrationEvent = new OrderStatusChangedToCancelledIntegrationEvent(order.getId(), order.getOrderStatus().name(), buyer.getName());
-        UUID transactionId = UUID.randomUUID();
-        orderingIntegrationEventService.addAndSaveEvent(orderStatusChangedToCancelledIntegrationEvent, transactionId);
-        orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
+        orderingIntegrationEventService.addAndSaveEvent(orderStatusChangedToCancelledIntegrationEvent);        
     }
 }

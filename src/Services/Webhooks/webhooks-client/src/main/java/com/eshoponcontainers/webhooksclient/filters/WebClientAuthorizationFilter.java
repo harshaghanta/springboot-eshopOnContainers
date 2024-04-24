@@ -13,11 +13,15 @@ public class WebClientAuthorizationFilter implements ExchangeFilterFunction {
 
     @Override
     public Mono<ClientResponse> filter(ClientRequest request, ExchangeFunction next) {
-        
-        String accessToken = AccessTokenUtils.getAccessToken();
-        if(accessToken != null)
-            request.headers().setBearerAuth(accessToken);
-        return next.exchange(request);
-    }
 
+        String accessToken = AccessTokenUtils.getAccessToken();
+        if (accessToken != null) {
+            ClientRequest newRequest = ClientRequest.from(request).headers(headers -> {
+                headers.setBearerAuth(accessToken);
+            }).build();
+            return next.exchange(newRequest);
+        } else {
+            return next.exchange(request);
+        }
+    }
 }

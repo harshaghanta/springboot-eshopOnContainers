@@ -12,7 +12,7 @@ import com.eshoponcontainers.eventbus.events.IntegrationEvent;
 
 public class InMemoryEventBusSubscriptionManager implements EventBusSubscriptionManager {
 
-    HashMap<String, ArrayList<SubscriptionInfo>> handlers = new HashMap<>();
+    HashMap<String, List<SubscriptionInfo>> handlers = new HashMap<>();
     private ArrayList<Class> eventTypes = new ArrayList<>();
     
     public InMemoryEventBusSubscriptionManager() {
@@ -89,6 +89,8 @@ public class InMemoryEventBusSubscriptionManager implements EventBusSubscription
 
         return handlers.get(eventName);
     }
-    
-
+    @Override
+    public  HashMap<String, List<SubscriptionInfo>> getAllSubscriptions() {
+        return handlers;
+    }
 }

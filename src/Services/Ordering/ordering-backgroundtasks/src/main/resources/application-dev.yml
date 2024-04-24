@@ -12,3 +12,7 @@ eventbus:
   retryCount: ${eventbus.retryCount}
 
 gracePeriodTime: 1
+
+logging:
+  level:
+    com.eshoponcontainers: DEBUG

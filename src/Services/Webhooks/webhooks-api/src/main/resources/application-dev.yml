@@ -1,1 +1,23 @@
+spring:
+  datasource:    
+    url: ${catalog.datasource.url}
+    username: ${catalog.datasource.username}
+    password: ${catalog.datasource.password}
+    driverClassName: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming.physical-strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
+      naming.implicit-strategy: "org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl"
+
+eventbus:
+  host: ${eventbus.host}
+  username: ${eventbus.username}
+  password: ${eventbus.password}
+  retryCount: ${eventbus.retryCount}
+
 oauthIssuerUrl: http://keycloak:8080/realms/eshoponcontainers
+
+logging:
+  level:
+    com.eshoponcontainers: DEBUG

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.eshoponcontainers.entities.IntegrationEventLogEntry;
 import com.eshoponcontainers.eventbus.abstractions.EventBus;
 import com.eshoponcontainers.eventbus.events.IntegrationEvent;
+import com.eshoponcontainers.orderapi.services.TransactionContext;
 import com.eshoponcontainers.services.IntegrationEventLogService;
 
 import lombok.RequiredArgsConstructor;
@@ -42,9 +43,9 @@ public class OrderingIntegrationEventService implements IOrderingIntegrationEven
     }
 
     @Override
-    public void addAndSaveEvent(IntegrationEvent event, UUID transactionId) {
+    public void addAndSaveEvent(IntegrationEvent event) {
         log.info("----- Enqueuing integration event {} to repository ({})", event.getId(), event);
-        eventLogService.saveEvent(event, transactionId);
+        eventLogService.saveEvent(event, TransactionContext.getTransactionId());
     }
 
 }
