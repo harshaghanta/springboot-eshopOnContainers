@@ -8,6 +8,7 @@ eventbus:
   username:
   password:
   retryCount: 5
+  subscriptionClientName: "Basket"
 
 oauthIssuerUrl: http://keycloak:8080/realms/eshoponcontainers
 

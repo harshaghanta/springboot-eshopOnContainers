@@ -15,7 +15,7 @@ spring:
             client-id: webhookclient
             authorization-grant-type: authorization_code
             scope: openid, profile
-            client-secret: mWvdHgqp6araT56e7aMqNBt2BBk5z7lm
+            client-secret: VRCq3Dwuoxhye942DZmWbmKn6qHbbfvE
             redirect-uri: ${settings.selfUrl}/login/oauth2/code/keycloak
         provider:
           keycloak:

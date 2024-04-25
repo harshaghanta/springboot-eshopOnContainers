@@ -3,8 +3,4 @@ eventbus:
   username: ${eventbus.username}
   password: ${eventbus.password}
   retryCount: ${eventbus.retryCount}
-  subscriptionClientName: "Payment"
-
-logging:
-  level:
-    com.eshoponcontainers: DEBUG
+  subscriptionClientName: "Ordering"

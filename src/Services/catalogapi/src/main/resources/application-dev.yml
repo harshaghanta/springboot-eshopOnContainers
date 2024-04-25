@@ -16,6 +16,7 @@ eventbus:
   username: ${eventbus.username}
   password: ${eventbus.password}
   retryCount: ${eventbus.retryCount}
+  subscriptionClientName: "Catalog"
 
 springdoc.swagger-ui.path: /swagger-ui-custom.html
 

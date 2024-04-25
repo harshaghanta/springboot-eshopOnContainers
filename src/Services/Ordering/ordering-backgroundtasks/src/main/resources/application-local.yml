@@ -11,6 +11,7 @@ eventbus:
   username: 
   password: 
   retryCount: 5
+  subscriptionClientName: "BackgroundTasks"
 
 
 gracePeriodTime: 1

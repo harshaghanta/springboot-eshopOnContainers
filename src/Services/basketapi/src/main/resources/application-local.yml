@@ -12,6 +12,7 @@ eventbus:
   username:
   password:
   retryCount: 5
+  subscriptionClientName: "Basket"
 
 server.port: 9095
 

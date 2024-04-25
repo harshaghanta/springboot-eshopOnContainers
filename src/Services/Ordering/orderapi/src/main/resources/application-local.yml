@@ -10,6 +10,7 @@ eventbus:
   username:
   password:
   retryCount: 5
+  subscriptionClientName: "Ordering"
 
 springdoc.swagger-ui.path: /swagger-ui-custom.html
 server.port: 9090 

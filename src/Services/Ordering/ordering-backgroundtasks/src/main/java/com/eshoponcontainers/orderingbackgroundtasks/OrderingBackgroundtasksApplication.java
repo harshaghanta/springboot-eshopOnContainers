@@ -17,7 +17,7 @@ import com.eshoponcontainers.orderingbackgroundtasks.repositories.OrderRepositor
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.eshoponcontainers")
 @EnableScheduling
 @Slf4j
 @RequiredArgsConstructor
