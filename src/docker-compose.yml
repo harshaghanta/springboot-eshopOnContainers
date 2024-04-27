@@ -7,8 +7,10 @@ services:
     env_file:
     - .env
     depends_on:
-    - db
-    - eventbus
+      db:
+        condition: service_healthy
+      eventbus:
+        condition: service_healthy
     ports:
     - 8081:8080
     networks:
@@ -20,8 +22,10 @@ services:
     env_file:
     - .env
     depends_on:
-    - basketdata
-    - eventbus
+      db:
+        condition: service_healthy
+      basketdata:
+        condition: service_started
     ports:
     - 8083:8080
     networks:
@@ -46,6 +50,12 @@ services:
     ports:
     - 5672:5672 
     - 15672:15672
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
   ordering-api:    
     build:
       context: .
@@ -53,8 +63,10 @@ services:
     env_file:
     - .env
     depends_on:
-    - db
-    - eventbus
+      db:
+        condition: service_healthy
+      eventbus:
+        condition: service_healthy
     ports:
     - 8082:8080
     networks:
@@ -66,8 +78,10 @@ services:
     env_file:
     - .env
     depends_on:
-    - db
-    - eventbus
+      db:
+        condition: service_healthy
+      eventbus:
+        condition: service_healthy
     networks:
       - simpbridgenetwork
   webspa:
@@ -85,6 +99,13 @@ services:
     - KEYCLOAK_ADMIN=admin
     - KEYCLOAK_ADMIN_PASSWORD=admin 
     - DB_VENDOR=h2
+    - KC_HEALTH_ENABLED=true
+    healthcheck:
+      test: timeout 10s bash -c ':> /dev/tcp/localhost/8080'
+      interval: 30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
     volumes:
       - ./Keycloak:/opt/keycloak/data/import
     command: -v start-dev --import-realm
@@ -110,8 +131,10 @@ services:
     env_file:
     - .env
     depends_on:
-    - db
-    - eventbus
+      db:
+        condition: service_healthy
+      eventbus:
+        condition: service_healthy
     ports:
     - 5113:8080
     networks:
@@ -122,6 +145,9 @@ services:
       dockerfile: Services/Webhooks/webhooks-client/Dockerfile
     env_file:
     - .env
+    depends_on:
+      keycloak:
+        condition: service_healthy
     ports:
     - 5114:8080
     networks:
@@ -132,6 +158,9 @@ services:
       dockerfile: Services/Payment/paymentapi/Dockerfile
     env_file:
     - .env
+    depends_on:      
+      eventbus:
+        condition: service_healthy
     ports:
     - 5108:8080
     networks:
