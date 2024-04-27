@@ -36,9 +36,9 @@ public class RedisBasketDataRepository {
         CustomerBasket basket = null;
         try {
             objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
-            basket = objectMapper.readValue(strBasket, CustomerBasket.class);
             if (!StringUtils.hasText(strBasket))
                 return null;
+            basket = objectMapper.readValue(strBasket, CustomerBasket.class);
         } catch (JsonProcessingException e) {
 
             log.error("Error occured while deserializing basket:" + customerId, e);
