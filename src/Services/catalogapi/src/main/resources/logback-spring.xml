@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Add logback json configuration-->
+<configuration>
+    <!-- Create a Standard Console Appender-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+
+    
+    <appender name="jsonFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./logs/catalog-api.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./logs/catalog-api-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+            <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+                <prettyPrint>true</prettyPrint>
+            </jsonFormatter>
+            <timestampFormat>yyyy-MM-dd'T'HH:mm:ss.SSSZ</timestampFormat>
+            <appendLineSeparator>true</appendLineSeparator>
+            <includeContextName>false</includeContextName>
+            <includeLevel>true</includeLevel>
+            <includeThreadName>true</includeThreadName>
+            <includeMessage>true</includeMessage>
+            <includeLoggerName>true</includeLoggerName>
+            <stackTraceAsString>true</stackTraceAsString>
+            <customField>{
+                "app": "eshoponcontainers"
+            }</customField>
+        </layout>
+    </appender>
+
+    <!-- Specify an appended which writes to the Elastic Search -->
+    <appender name="elasticsearch" class="com.internetitem.logback.elasticsearch.ElasticsearchAppender">
+        <url>http://localhost:9200/_bulk</url> <!-- Replace with your Elasticsearch host and port -->
+        <index>logback</index>
+        <type>logs</type>
+        <errorLoggerName>es-errors</errorLoggerName>
+        <includeCallerData>false</includeCallerData>
+        <rawJsonMessage>false</rawJsonMessage>
+        <properties>
+            <property>
+                <name>app</name>
+                <value>eshoponcontainers</value>
+                <allowEmpty>false</allowEmpty>
+            </property>
+        </properties>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="jsonFileAppender" />
+
+    </root>
+</configuration>
