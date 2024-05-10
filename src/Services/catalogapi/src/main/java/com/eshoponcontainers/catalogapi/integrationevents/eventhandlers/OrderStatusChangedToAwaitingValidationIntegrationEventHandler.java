@@ -59,7 +59,6 @@ public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler
             catalogIntegrationService.publishThroughEventBus(integrationEvent);
         };
 
-        runnable.run();
         return runnable;
     }
 }

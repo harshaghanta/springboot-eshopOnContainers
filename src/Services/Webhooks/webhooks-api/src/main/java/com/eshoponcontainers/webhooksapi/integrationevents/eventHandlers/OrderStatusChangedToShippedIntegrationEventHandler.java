@@ -31,7 +31,7 @@ public class OrderStatusChangedToShippedIntegrationEventHandler implements Integ
             var webhook = new WebhookData(WebhookType.OrderShipped, event);
             webhooksSender.sendAll(subscriptions, webhook);
         };
-        runnable.run();
+        
         return runnable;
     }
 

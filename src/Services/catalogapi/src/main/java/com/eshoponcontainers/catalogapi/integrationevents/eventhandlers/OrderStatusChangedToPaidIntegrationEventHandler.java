@@ -36,7 +36,7 @@ public class OrderStatusChangedToPaidIntegrationEventHandler
             }
             catalogItemRepository.saveAll(catItems);
         };
-        runnable.run();
+        
         return runnable;
     }
 

@@ -27,7 +27,7 @@ public class CreateOrderCommandHandler implements Command.Handler<CreateOrderCom
 
     @Override
     public Boolean handle(CreateOrderCommand command) {
-        log.trace("Received CreateOrderCommand: {}", command);
+        log.info("Received CreateOrderCommand: {}", command);
         var orderStartedIntegrationEvent = new OrderStartedIntegrationEvent(command.getUserId());
         UUID transactionId = TransactionContext.getTransactionId();
         orderingIntegrationEventService.addAndSaveEvent(orderStartedIntegrationEvent);

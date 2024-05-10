@@ -15,7 +15,7 @@ public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler
         Runnable runnable = () -> {
 
         };
-        runnable.run();
+        
         return runnable;
     }
 

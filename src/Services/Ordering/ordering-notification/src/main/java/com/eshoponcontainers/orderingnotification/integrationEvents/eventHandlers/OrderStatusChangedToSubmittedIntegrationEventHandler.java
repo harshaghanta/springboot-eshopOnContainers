@@ -12,7 +12,7 @@ public class OrderStatusChangedToSubmittedIntegrationEventHandler
         Runnable runnable = () -> {
 
         };
-        runnable.run();
+        
         return runnable;
     }
 

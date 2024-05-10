@@ -15,7 +15,7 @@ public class OrderStatusChangedToShippedIntegrationEventHandler
         Runnable runnable = () -> {
 
         };
-        runnable.run();
+        
         return runnable;
     }
 

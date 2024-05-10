@@ -11,7 +11,7 @@ public class OrderStatusChangedToPaidIntegrationEventHandler implements Integrat
         Runnable runnable = () -> {
 
         };
-        runnable.run();
+        
         return runnable;
     }
 

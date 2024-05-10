@@ -22,7 +22,10 @@ public class UserCheckOutAcceptedIntegrationEventHandler
 
     @Override
     public Runnable handle(UserCheckoutAcceptedIntegrationEvent event) {
+
         Runnable runnable = () -> {
+            log.info("----- UserCheckoutAcceptedIntegrationEvent Received: {}----", event);
+            
             if (event.getRequestId() != null) {
 
                 var command = new CreateOrderCommand(event.getBasket().getItems().stream().collect(Collectors.toList()),
@@ -42,7 +45,7 @@ public class UserCheckOutAcceptedIntegrationEventHandler
                 log.warn("Invalid IntegrationEvent - RequestId is missing - {}", event);
             }
         };
-        runnable.run();
+        
         return runnable;
     }
 

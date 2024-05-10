@@ -17,7 +17,7 @@ public class ProductPriceChangedIntegrationEventHandler implements IntegrationEv
         Runnable runnable = () -> {
             log.info("ProductPriceChangeIntegration event: ProductId: {}, OldPrice: {}, NewPrice: {}", event.getProductId(), event.getOldPrice(), event.getNewPrice());
         };
-        runnable.run();
+        
         return runnable;
         
     }

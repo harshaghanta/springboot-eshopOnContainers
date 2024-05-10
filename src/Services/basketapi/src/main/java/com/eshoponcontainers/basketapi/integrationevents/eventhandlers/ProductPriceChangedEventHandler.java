@@ -37,7 +37,6 @@ public class ProductPriceChangedEventHandler implements IntegrationEventHandler<
       }
     };
 
-    runnable.run();
     return runnable;
   }
 
@@ -45,7 +44,8 @@ public class ProductPriceChangedEventHandler implements IntegrationEventHandler<
     List<BasketItem> itemsToUpdate = basket.getItems().stream().filter(item -> item.getProductId() == productId)
         .toList();
     if (itemsToUpdate != null) {
-      log.info("---ProductPriceChangedIntegrationEventHandler - Updating items in basket for user: {}", basket.getBuyerId() );
+      log.info("---ProductPriceChangedIntegrationEventHandler - Updating items in basket for user: {}",
+          basket.getBuyerId());
       for (BasketItem basketItem : itemsToUpdate) {
         if (basketItem.getUnitPrice() == oldPrice) {
           double originalPrice = basketItem.getUnitPrice();

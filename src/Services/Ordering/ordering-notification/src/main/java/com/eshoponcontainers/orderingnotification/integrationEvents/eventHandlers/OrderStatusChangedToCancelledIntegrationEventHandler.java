@@ -14,7 +14,7 @@ public class OrderStatusChangedToCancelledIntegrationEventHandler implements Int
         Runnable runnable = () -> {
 
         };
-        runnable.run();
+        
         return runnable;
     }
 

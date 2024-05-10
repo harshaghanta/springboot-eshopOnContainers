@@ -29,7 +29,7 @@ public class OrderStatusChangedToPaidIntegrationEventHandler implements Integrat
             log.info(null, "Sending WebhookData: {} to {} subscriptions", whook, subscriptions.size());
             sender.sendAll(subscriptions, whook);
         };
-        runnable.run();
+        
         return runnable;
     }
 }

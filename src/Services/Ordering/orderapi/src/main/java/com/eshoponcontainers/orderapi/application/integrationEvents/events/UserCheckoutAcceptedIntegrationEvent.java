@@ -6,6 +6,7 @@ import com.eshoponcontainers.orderapi.application.viewModels.CustomerBasket;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class UserCheckoutAcceptedIntegrationEvent extends IntegrationEvent {
 
     private String userId;

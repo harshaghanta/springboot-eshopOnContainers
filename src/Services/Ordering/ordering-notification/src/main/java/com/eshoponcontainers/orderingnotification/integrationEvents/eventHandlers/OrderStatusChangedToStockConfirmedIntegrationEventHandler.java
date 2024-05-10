@@ -11,7 +11,7 @@ public class OrderStatusChangedToStockConfirmedIntegrationEventHandler implement
         Runnable runnable = () -> {
 
         };
-        runnable.run();
+        
         return runnable;
     }
 

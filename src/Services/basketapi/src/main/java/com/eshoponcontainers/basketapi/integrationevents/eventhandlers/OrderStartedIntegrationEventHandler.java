@@ -27,7 +27,7 @@ public class OrderStartedIntegrationEventHandler implements IntegrationEventHand
                 basketDataRepository.deleteBasket(event.getUserId());
             }
         };
-        runnable.run();
+        
         return runnable;
         
     }

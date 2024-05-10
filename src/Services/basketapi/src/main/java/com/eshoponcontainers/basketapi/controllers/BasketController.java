@@ -45,7 +45,9 @@ public class BasketController {
 
     @PostMapping()
     public ResponseEntity<CustomerBasket> updateBasket(@RequestBody CustomerBasket basket) {
+        log.info("Received update basket request : {} for the basket with id: {}", basket,  basket.getBuyerId());
         CustomerBasket updatedBasket = basketDataRepository.updateBasket(basket);
+        log.info("Sending updated Basket: {} to client",  updatedBasket);
         return ResponseEntity.ok(updatedBasket);
     }
 

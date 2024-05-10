@@ -41,7 +41,7 @@ public class OrderStatusChangedToStockConfirmedIntegrationEventHandler
             }
             eventBus.publish(paymentEvent);
         };
-        runnable.run();
+        
         return runnable;
     }
 
