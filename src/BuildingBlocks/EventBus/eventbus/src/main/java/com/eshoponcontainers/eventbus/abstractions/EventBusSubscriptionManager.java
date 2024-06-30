@@ -11,7 +11,7 @@ public interface EventBusSubscriptionManager {
 
     <T extends IntegrationEvent, TH extends IntegrationEventHandler<T>> void addSubscription(Class<T> eventType, Class<TH> eventHandlerType);
 
-    <T extends IntegrationEvent, TH extends IntegrationEventHandler<T>> void removeSubscription();
+    <T extends IntegrationEvent, TH extends IntegrationEventHandler<T>> void removeSubscription(Class<T> eventType, Class<TH> eventhandlerType);
 
     <T extends IntegrationEvent> String getEventKey(Class<T> eventType);
 
@@ -24,5 +24,7 @@ public interface EventBusSubscriptionManager {
     <T extends IntegrationEvent> List<SubscriptionInfo> getHandlersForEvent(Class<T> eventType);
 
     HashMap<String, List<SubscriptionInfo>> getAllSubscriptions();
+
+    boolean isEmpty();
     
 }

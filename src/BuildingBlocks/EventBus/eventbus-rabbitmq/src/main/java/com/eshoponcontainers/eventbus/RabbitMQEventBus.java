@@ -119,12 +119,6 @@ public class RabbitMQEventBus implements EventBus {
         }
     }
 
-    @Override
-    public <T extends IntegrationEvent, TH extends IntegrationEventHandler<T>> void unsubscribe() {
-        // TODO Auto-generated method stub
-
-    }
-
     private Channel createConsumerChannel() {
         if(!persistentConnection.isConnected()) {
             persistentConnection.tryConnect();
@@ -211,6 +205,13 @@ public class RabbitMQEventBus implements EventBus {
         else {
             log.error("StartBasicConsume can't call on consumerChannel == null");
         }
+    }
+
+    @Override
+    public <T extends IntegrationEvent, TH extends IntegrationEventHandler<T>> void unsubscribe(Class<T> eventType,
+            Class<TH> eventhandlerType) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'unsubscribe'");
     }
 
 }
