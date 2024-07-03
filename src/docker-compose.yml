@@ -1,4 +1,3 @@
-version: '3.4'
 services:
   catalog-api:    
     build:
@@ -166,6 +165,45 @@ services:
     ports:
     - 5108:8080
     networks:
+    - simpbridgenetwork  
+    healthcheck:
+      test: timeout 10s bash -c ':> /dev/tcp/localhost/8200'
+      interval: 30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+  vault:
+    image: hashicorp/vault
+    container_name: vault
+    cap_add:
+      - IPC_LOCK
+    ports:
+    - 8200:8200    
+    command: ["vault", "server", "-config=/vault/config/vault-config.json"]
+    volumes:
+      - ./Vault/config:/vault/config
+      - ./Vault/data:/vault/data
+    networks:
+    - simpbridgenetwork
+
+  vault-init:
+    image: "hashicorp/vault"
+    container_name: vault-init
+    command:
+      - "sh"
+      - "-c"
+      - "/vault/scripts/vault-init.sh"
+    environment:
+      VAULT_ADDR: http://vault:8200
+    volumes:
+      - ./Vault/scripts/vault-init.sh:/vault/scripts/vault-init.sh
+      - ./Vault/keys:/vault/keys
+      - ./Vault/root:/vault/root
+    depends_on:
+      vault:
+        condition: service_started
+    networks:
     - simpbridgenetwork
 
   # using Dockerfile filebeat to get around the file permission issue
@@ -200,10 +238,12 @@ services:
       - elasticsearch
     networks:
     - simpbridgenetwork
+    
 
 volumes:
   applog_volume:
   esdata:
+  vault_data:
 
 networks:
   simpbridgenetwork:

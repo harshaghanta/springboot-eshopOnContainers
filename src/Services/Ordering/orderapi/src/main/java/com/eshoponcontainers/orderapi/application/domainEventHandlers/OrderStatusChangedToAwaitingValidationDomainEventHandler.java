@@ -1,7 +1,6 @@
 package com.eshoponcontainers.orderapi.application.domainEventHandlers;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
@@ -13,7 +12,6 @@ import com.eshoponcontainers.events.OrderStatusChangedToAwaitingValidationDomain
 import com.eshoponcontainers.orderapi.application.integrationEvents.OrderingIntegrationEventService;
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStatusChangedToAwaitingValidationIntegrationEvent;
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStockItem;
-import com.eshoponcontainers.orderapi.services.TransactionContext;
 import com.eshoponcontainers.repositories.BuyerRepository;
 
 import an.awesome.pipelinr.Notification;

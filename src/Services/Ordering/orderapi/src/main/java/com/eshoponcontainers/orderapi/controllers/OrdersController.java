@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 // import com.eshoponcontainers.aggregatesModel.buyerAggregate.CardType;
 import com.eshoponcontainers.orderapi.application.commands.CancelOrderCommand;
+import com.eshoponcontainers.orderapi.application.commands.CreateOrderCommand;
 import com.eshoponcontainers.orderapi.application.commands.CreateOrderDraftCommand;
 import com.eshoponcontainers.orderapi.application.commands.ShipOrderCommand;
 import com.eshoponcontainers.orderapi.application.queries.OrderQueries;
@@ -56,7 +57,7 @@ public class OrdersController {
         
         Boolean result = pipeline.send(command);
 
-        log.info("---Sending command: {} - {}: {}, ({}})", CancelOrderCommand.class.getSimpleName(), "OrderNumber", command.getOrderNumber(), command);
+        log.info("---Sending command: {} - {}: {}, ({})", CancelOrderCommand.class.getSimpleName(), "OrderNumber", command.getOrderNumber(), command);
 
         if(!result)
             return ResponseEntity.badRequest().build();
@@ -98,11 +99,11 @@ public class OrdersController {
         return ResponseEntity.ok().body(orderDraft);
     }
 
-    // @PostMapping("/createorder")
-    // public String CreateOrder(@RequestBody CreateOrderCommand command) {
-    //    Boolean status = pipeline.send(command);
+    @PostMapping("/createorder")
+    public String CreateOrder(@RequestBody CreateOrderCommand command) {
+       Boolean status = pipeline.send(command);
         
-    //     return "successfull";
-    // }
+        return "successfull";
+    }
     
 }

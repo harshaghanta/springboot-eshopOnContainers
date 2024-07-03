@@ -8,7 +8,7 @@
         <entity-listeners>
             <entity-listener class="com.eshoponcontainers.listeners.EntityEventListener">
                 <pre-persist method-name="prePersist"></pre-persist>
-                <!-- <pre-update method-name="preUpdate"></pre-update> -->
+                <pre-update method-name="preUpdate"></pre-update>
                 <post-update method-name="postUpdate"></post-update>
             </entity-listener>
         </entity-listeners>
@@ -50,6 +50,9 @@
                 <!-- <join-column name="BuyerId" referenced-column-name="Id"  /> -->
                 <cascade>
                     <cascade-persist />
+                    <cascade-merge />
+                    <cascade-remove />
+
                 </cascade>
                 
             </one-to-many>

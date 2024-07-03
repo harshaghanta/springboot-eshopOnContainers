@@ -1,10 +1,10 @@
 package com.eshoponcontainers;
 
-import java.util.List;
-import java.util.ListIterator;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.concurrent.Executors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.eshoponcontainers.context.DomainContext;
@@ -13,11 +13,11 @@ import com.eshoponcontainers.seedWork.IUnitOfWork;
 import an.awesome.pipelinr.Notification;
 import an.awesome.pipelinr.Pipeline;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
-@Scope("prototype")
-// @Slf4j
+// @Scope("prototype")
+ @Slf4j
 public class UnitOfWork implements IUnitOfWork {
 
     // @PersistenceContext
@@ -40,15 +40,28 @@ public class UnitOfWork implements IUnitOfWork {
 
             // Flush the changes to synchronize with the database
             // This is required for Preupdate event to be triggered.
-            entityManager.flush();
+
             
-            List<Notification> domainEvents = DomainContext.getDomainEvents();
+            // log.info("Before flush call on Entity manager from thread: {}", Thread.currentThread().getName());
+            // entityManager.flush();
+            //With out flush call BuyerAndPaymentMethodVerifiedDomainEvent is not captured
+            //Added Cascade Persist and remove for Buyer
+            // Thread.sleep(5_000);
+            // log.info("After flush call on Entity manager from thread: {}", Thread.currentThread().getName());
+
+            Set<Notification> domainEvents = DomainContext.getDomainEvents();
             if (domainEvents != null) {
-                ListIterator<Notification> listIterator = domainEvents.listIterator();
+                Iterator<Notification> listIterator = domainEvents.iterator();
                 while (listIterator.hasNext()) {
                     Notification event = listIterator.next();
                     listIterator.remove();
                     pipeline.send(event);
+                   
+                    // Executors.newCachedThreadPool().submit(() -> {
+                    //     DomainContext.clearContext();
+                    //     pipeline.send(event);
+                    // });                    
+                    
                 }
                 
                 // if(domainEvents.size() > 0) {

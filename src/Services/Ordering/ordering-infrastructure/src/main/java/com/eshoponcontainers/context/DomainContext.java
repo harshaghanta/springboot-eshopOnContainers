@@ -1,24 +1,24 @@
 package com.eshoponcontainers.context;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import an.awesome.pipelinr.Notification;
 
 public class DomainContext {
 
-    private static ThreadLocal<List<Notification>> threadLocal = new ThreadLocal<>();
+    private static ThreadLocal<Set<Notification>> threadLocal = new ThreadLocal<>();
 
     public static void addDomainEvents(Collection<Notification> notifications) {
-        List<Notification> notificationList = threadLocal.get();
+        Set<Notification> notificationList = threadLocal.get();
         if(notificationList == null)
-            notificationList = new ArrayList<>();
+            notificationList = new HashSet<>();
         notificationList.addAll(notifications);
         threadLocal.set(notificationList);
     }
 
-    public static List<Notification> getDomainEvents() {
+    public static Set<Notification> getDomainEvents() {
         return threadLocal.get();
     }
 

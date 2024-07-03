@@ -1,7 +1,5 @@
 package com.eshoponcontainers.orderapi.application.commandHandlers;
 
-import java.util.UUID;
-
 import org.springframework.stereotype.Component;
 
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Address;
@@ -11,7 +9,6 @@ import com.eshoponcontainers.orderapi.application.commands.CreateOrderCommand;
 import com.eshoponcontainers.orderapi.application.integrationEvents.OrderingIntegrationEventService;
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStartedIntegrationEvent;
 import com.eshoponcontainers.orderapi.application.viewModels.OrderItemDTO;
-import com.eshoponcontainers.orderapi.services.TransactionContext;
 
 import an.awesome.pipelinr.Command;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +26,6 @@ public class CreateOrderCommandHandler implements Command.Handler<CreateOrderCom
     public Boolean handle(CreateOrderCommand command) {
         log.info("Received CreateOrderCommand: {}", command);
         var orderStartedIntegrationEvent = new OrderStartedIntegrationEvent(command.getUserId());
-        UUID transactionId = TransactionContext.getTransactionId();
         orderingIntegrationEventService.addAndSaveEvent(orderStartedIntegrationEvent);
 
         var address = new Address(command.getStreet(), command.getCity(), command.getState(), command.getCountry(),
