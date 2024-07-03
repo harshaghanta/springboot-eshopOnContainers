@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.eshoponcontainers.catalogapi.entities.CatalogItem;
 import com.eshoponcontainers.catalogapi.integrationevents.events.OrderStatusChangedToPaidIntegrationEvent;
+import com.eshoponcontainers.catalogapi.integrationevents.events.OrderStockItem;
 import com.eshoponcontainers.catalogapi.repositories.CatalogItemRepository;
 import com.eshoponcontainers.eventbus.abstractions.IntegrationEventHandler;
 
@@ -24,10 +25,10 @@ public class OrderStatusChangedToPaidIntegrationEventHandler
     @Override
     public Runnable handle(OrderStatusChangedToPaidIntegrationEvent event) {
         Runnable runnable = () -> {
-            log.info("----- Handling integration event: {} at {AppName} - ({})", event.getId(), "Catalog", event);
+            log.info("----- Handling integration event: {} at {} - ({})", event.getId(), "Catalog", event);
             var catItems = new ArrayList<CatalogItem>();
 
-            for (OrderStatusChangedToPaidIntegrationEvent.OrderStockItem item : event.getItems()) {
+            for (OrderStockItem item : event.getOrderStockItems()) {
                 Optional<CatalogItem> optCatalogItem = catalogItemRepository.findById(item.getProductId());
                 if (optCatalogItem.isPresent()) {
                     catItems.add(optCatalogItem.get());

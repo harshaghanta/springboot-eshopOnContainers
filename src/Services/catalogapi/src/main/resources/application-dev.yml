@@ -1,4 +1,13 @@
 spring:
+  # cloud:
+  #   vault:
+  #     token: myroot
+  #     uri: http://vault:8200
+  #     kv:
+  #       enabled: true
+  #       backend: secret
+  #       profile-separator: "/"
+  #       application-name: catalog-api
   datasource:    
     url: ${catalog.datasource.url}
     username: ${catalog.datasource.username}

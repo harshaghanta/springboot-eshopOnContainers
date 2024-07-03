@@ -1,1 +1,9 @@
-spring.profiles.active: dev
+spring:
+  application:
+    name: catalog-api
+  profiles.active: dev
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming.physical-strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
+      naming.implicit-strategy: "org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl"

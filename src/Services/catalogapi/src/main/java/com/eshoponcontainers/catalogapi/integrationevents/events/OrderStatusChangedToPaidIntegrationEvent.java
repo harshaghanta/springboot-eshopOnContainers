@@ -18,22 +18,6 @@ import lombok.Setter;
 public class OrderStatusChangedToPaidIntegrationEvent extends IntegrationEvent {
 
     private int orderId;
-    private Collection<OrderStatusChangedToPaidIntegrationEvent.OrderStockItem> items;
-
-    public int getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
-    }
-
-    @Getter
-    @AllArgsConstructor
-    public class OrderStockItem {
-        
-        private int productId;
-        private int units;
-    }
+    private Collection<OrderStockItem> orderStockItems;
     
 }

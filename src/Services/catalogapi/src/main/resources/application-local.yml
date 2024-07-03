@@ -1,14 +1,35 @@
 spring:
+  # cloud:
+  #   vault:
+  #     token: myroot
+  #     uri: http://host.docker.internal:8200
+  #     kv:
+  #       enabled: true
+  #       backend: "eshoponcontainers"
+  #       application-name: "catalog-api"
   datasource:    
     url: "jdbc:sqlserver://host.docker.internal:9133;databaseName=CatalogDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
     username: sa
     password: Pass@word
     driverClassName: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
-  jpa:
-    hibernate:
-      ddl-auto: update
-      naming.physical-strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
-      naming.implicit-strategy: "org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl"
+    # url: ${datasource.url}
+    # username: ${datasource.username}
+    # password: ${datasource.password}
+    # driverClassName: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+  
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    env:
+      post:
+        enabled: true
+      exposure:
+        include: "*"
 
 
 picBaseUrl: "http://host.docker.internal:5202/catalog-api/api/v1/catalog/items/[0]/pic/"
@@ -23,3 +44,6 @@ eventbus:
 #springdoc.swagger-ui.path: /swagger-ui-custom.html
 server.port: 9090 
 # server.servlet.context-path: /catalog-api
+logging:
+  level:
+    org.springframework.cloud.vault: DEBUG
