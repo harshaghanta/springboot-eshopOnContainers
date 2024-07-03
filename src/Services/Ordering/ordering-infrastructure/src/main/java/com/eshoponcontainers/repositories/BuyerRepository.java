@@ -35,6 +35,8 @@ public class BuyerRepository implements IBuyerRepository {
     @Override
     public Buyer update(Buyer buyer) {
         entityManager.merge(buyer);
+        //TODO: HACK : to be removed. Find out why merge is not triggering the preupdate event on the Buyer entity
+        entityManager.flush();        
         return buyer;
     }
 
