@@ -41,4 +41,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=build /src/Services/Ordering/ordering-backgroundtasks/target/ordering-backgroundtasks.jar ./ordering-backgroundtasks.jar
 
-ENTRYPOINT ["java", "-jar", "ordering-backgroundtasks.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "ordering-backgroundtasks.jar"]

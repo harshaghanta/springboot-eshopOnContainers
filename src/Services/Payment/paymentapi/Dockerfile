@@ -51,7 +51,7 @@ COPY --from=build /src/Services/Payment/paymentapi/target/paymentapi.jar ./payme
 # ENTRYPOINT ["sh", "-c", "sleep 60 && java -jar webhooks-api.jar"]
 # ENTRYPOINT sleep 60 && java -jar webhooks-api.jar
 # Sleep not working . Giving error during startup 
-ENTRYPOINT ["java", "-jar", "paymentapi.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "paymentapi.jar"]
 
 
 

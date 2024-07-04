@@ -42,4 +42,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=build /src/Services/Ordering/orderapi/target/order-api.jar ./order-api.jar
 
-ENTRYPOINT ["java", "-jar", "order-api.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "order-api.jar"]

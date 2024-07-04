@@ -51,7 +51,7 @@ COPY --from=build /src/Services/Webhooks/webhooks-api/target/webhooks-api.jar ./
 # ENTRYPOINT ["sh", "-c", "sleep 60 && java -jar webhooks-api.jar"]
 # ENTRYPOINT sleep 60 && java -jar webhooks-api.jar
 # Sleep not working . Giving error during startup 
-ENTRYPOINT ["java", "-jar", "webhooks-api.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "webhooks-api.jar"]
 
 
 

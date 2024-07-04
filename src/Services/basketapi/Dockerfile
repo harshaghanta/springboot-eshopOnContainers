@@ -33,4 +33,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=build /src/Services/basketapi/target/basket-api.jar ./basket-api.jar
 
-ENTRYPOINT [ "java", "-jar", "basket-api.jar" ]
+ENTRYPOINT [ "java", "-Dspring.profiles.active=dev", "-jar", "basket-api.jar" ]

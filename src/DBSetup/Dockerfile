@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/mssql/server:2019-latest
+#Added to bypass the file permission issue
 USER root
 # 
 # RUN chmod 755 /usr

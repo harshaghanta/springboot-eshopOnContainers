@@ -51,7 +51,7 @@ COPY --from=build /src/Services/catalogapi/target/catalog-api.jar ./catalog-api.
 # ENTRYPOINT ["sh", "-c", "sleep 60 && java -jar catalog-api.jar"]
 # ENTRYPOINT sleep 60 && java -jar catalog-api.jar
 # Sleep not working . Giving error during startup 
-ENTRYPOINT ["java", "-jar", "catalog-api.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "catalog-api.jar"]
 
 
 
