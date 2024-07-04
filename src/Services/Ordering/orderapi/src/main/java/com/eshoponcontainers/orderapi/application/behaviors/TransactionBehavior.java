@@ -31,6 +31,7 @@ public class TransactionBehavior implements Command.Middleware {
         UUID transactionId = null;
         try {
             if (transaction.isActive()) {
+                log.info( "Already inside a transaction with id: {} ", TransactionContext.getTransactionId());
                 return next.invoke();
             }
 

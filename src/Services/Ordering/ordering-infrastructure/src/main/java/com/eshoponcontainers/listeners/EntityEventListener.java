@@ -14,21 +14,37 @@ import lombok.extern.slf4j.Slf4j;
 public class EntityEventListener {
 
     public void preUpdate(Entity entity) {
-        log.info("PreUpdate event triggered for the entity: {}", entity.getClass().getSimpleName());
 
-        captureDomainEvents(entity);
+        try {
+            log.info("PreUpdate event triggered for the entity: {}", entity.getClass().getSimpleName());
+    
+            captureDomainEvents(entity);
+            
+        } catch (Exception e) {
+            log.error("Error in preUpdate event for the entity: {}", entity.getClass().getSimpleName(), e);
+        }
 
     }
 
     public void postUpdate(Entity entity) {
-        log.info("PostUpdate event triggered for the entity: {}", entity.getClass().getSimpleName());
-
-        captureDomainEvents(entity);
+        try {
+            
+            log.info("PostUpdate event triggered for the entity: {}", entity.getClass().getSimpleName());
+    
+            captureDomainEvents(entity);
+        } catch (Exception e) {
+            log.error("Error in postUpdate event for the entity: {}", entity.getClass().getSimpleName(), e);
+        }
     }
 
     public void prePersist(Entity entity) {
-        log.info("PrePersist event triggered for the entity: {}", entity.getClass().getSimpleName());
-        captureDomainEvents(entity);
+        try {
+            
+            log.info("PrePersist event triggered for the entity: {}", entity.getClass().getSimpleName());
+            captureDomainEvents(entity);
+        } catch (Exception e) {
+            log.error("Error in prePersist event for the entity: {}", entity.getClass().getSimpleName(), e);
+        }
     }
 
     private void captureDomainEvents(Entity entity) {
