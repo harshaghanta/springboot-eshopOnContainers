@@ -247,3 +247,4 @@ volumes:
 
 networks:
   simpbridgenetwork:
+    driver: bridge
