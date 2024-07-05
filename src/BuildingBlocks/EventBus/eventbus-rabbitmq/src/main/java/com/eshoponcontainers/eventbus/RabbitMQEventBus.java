@@ -206,7 +206,7 @@ public class RabbitMQEventBus implements EventBus {
             try {
                 consumerChannel.basicConsume(subscribtionName, false, consumer);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
+                log.error("Error in basicConsume: {}", e.getMessage());
                 e.printStackTrace();
             }
         } else {
