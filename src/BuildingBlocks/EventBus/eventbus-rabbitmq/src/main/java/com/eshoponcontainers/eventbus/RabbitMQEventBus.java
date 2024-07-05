@@ -67,7 +67,7 @@ public class RabbitMQEventBus implements EventBus {
             e.printStackTrace();
         }
 
-        //TODO: HIGH : INJECT OBJECTMAPPER
+        // TODO: HIGH : INJECT OBJECTMAPPER
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
         byte[] messageBytes = null;
@@ -120,7 +120,7 @@ public class RabbitMQEventBus implements EventBus {
     }
 
     private Channel createConsumerChannel() {
-        if(!persistentConnection.isConnected()) {
+        if (!persistentConnection.isConnected()) {
             persistentConnection.tryConnect();
         }
 
@@ -140,59 +140,67 @@ public class RabbitMQEventBus implements EventBus {
     private void startBasicConsume() {
         log.info("Starting RabbitMQ basic consume");
 
-        if(consumerChannel != null) {
-            
+        if (consumerChannel != null) {
+
             DefaultConsumer consumer = new DefaultConsumer(consumerChannel) {
-               @Override
-               public void handleDelivery(String consumerTag, Envelope envelope, BasicProperties properties,
-                       byte[] body) throws IOException {
+                @Override
+                public void handleDelivery(String consumerTag, Envelope envelope, BasicProperties properties,
+                        byte[] body) throws IOException {
 
-                    
-                    //TODO: HIGH : INJECT OBJECT MAPPER 
+                    try {
 
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    objectMapper.findAndRegisterModules();
-                   
-                    String eventName = envelope.getRoutingKey();
-                    log.debug("Consuming event: {}", eventName);
+                        // TODO: HIGH : INJECT OBJECT MAPPER
 
-                    Class eventType = eventBusSubscriptionManager.getEventTypeByName(eventName);
-                    Object event = objectMapper.readValue(body, eventType);
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        objectMapper.findAndRegisterModules();
 
-                    log.info("Event received: {}", event);
-                    
-                    List<SubscriptionInfo> subscriptions = eventBusSubscriptionManager.getHandlersForEvent(eventType);
+                        String eventName = envelope.getRoutingKey();
+                        log.debug("Consuming event: {}", eventName);
 
-                    for (SubscriptionInfo subscription : subscriptions) {
-                        
-                        Class handler = subscription.getHandler();
-                        try {
-                            // Object instance = handler.newInstance();
-                            Object instance = context.getBean(handler);
-                            Method methodInfo = handler.getMethod("handle",  eventType);
-                            Runnable runnable = (Runnable)  methodInfo.invoke(instance, event);
-                            runnable.run();
-                            
-                        }catch (IllegalAccessException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } catch (NoSuchMethodException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } catch (SecurityException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } catch (IllegalArgumentException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } catch (InvocationTargetException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } 
+                        Class eventType = eventBusSubscriptionManager.getEventTypeByName(eventName);
+                        Object event = objectMapper.readValue(body, eventType);
+
+                        log.info("Event received: {}", event);
+
+                        List<SubscriptionInfo> subscriptions = eventBusSubscriptionManager
+                                .getHandlersForEvent(eventType);
+
+                        for (SubscriptionInfo subscription : subscriptions) {
+
+                            Class handler = subscription.getHandler();
+                            try {
+                                // Object instance = handler.newInstance();
+                                Object instance = context.getBean(handler);
+                                Method methodInfo = handler.getMethod("handle", eventType);
+                                Runnable runnable = (Runnable) methodInfo.invoke(instance, event);
+                                runnable.run();
+
+                            } catch (IllegalAccessException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            } catch (NoSuchMethodException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            } catch (SecurityException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            } catch (IllegalArgumentException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                        }
+
+                        consumerChannel.basicAck(envelope.getDeliveryTag(), false);
+
+                    } catch (Exception e) {
+                        log.error("Error occured in handleDelivery: {}", e.getMessage());
                     }
 
-                    consumerChannel.basicAck(envelope.getDeliveryTag(), false);
-               }
+                }
+
             };
 
             try {
@@ -201,8 +209,7 @@ public class RabbitMQEventBus implements EventBus {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             log.error("StartBasicConsume can't call on consumerChannel == null");
         }
     }
