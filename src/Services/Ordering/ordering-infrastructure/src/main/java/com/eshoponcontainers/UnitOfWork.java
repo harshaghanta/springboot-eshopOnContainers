@@ -2,7 +2,6 @@ package com.eshoponcontainers;
 
 import java.util.Iterator;
 import java.util.Set;
-import java.util.concurrent.Executors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,7 +11,6 @@ import com.eshoponcontainers.seedWork.IUnitOfWork;
 
 import an.awesome.pipelinr.Notification;
 import an.awesome.pipelinr.Pipeline;
-import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -21,8 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 public class UnitOfWork implements IUnitOfWork {
 
     // @PersistenceContext
-    @Autowired
-    private EntityManager entityManager;
+    
+    
 
     @Autowired
     private Pipeline pipeline;

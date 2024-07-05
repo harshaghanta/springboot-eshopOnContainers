@@ -26,6 +26,7 @@ public class TransactionBehavior implements Command.Middleware {
     @Override
     public <R, C extends Command<R>> R invoke(C command, Next<R> next) {
         var className = command.getClass().getSimpleName();
+        log.info("EntityManager hashcode: {} in TransactionBehavior", entityManager.hashCode());
         EntityTransaction transaction = entityManager.getTransaction();
         R response = null;
         UUID transactionId = null;

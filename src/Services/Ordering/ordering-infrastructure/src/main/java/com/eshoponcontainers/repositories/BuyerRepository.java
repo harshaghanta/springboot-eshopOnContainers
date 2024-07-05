@@ -6,18 +6,18 @@ import com.eshoponcontainers.aggregatesModel.buyerAggregate.Buyer;
 import com.eshoponcontainers.aggregatesModel.buyerAggregate.IBuyerRepository;
 import com.eshoponcontainers.seedWork.IUnitOfWork;
 
-import an.awesome.pipelinr.Pipeline;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class BuyerRepository implements IBuyerRepository {
 
-    private final Pipeline pipeline;
     private final EntityManager entityManager;
     private final IUnitOfWork unitOfWork;
 
@@ -27,13 +27,15 @@ public class BuyerRepository implements IBuyerRepository {
     }
 
     @Override
-    public Buyer add(Buyer buyer) {       
+    public Buyer add(Buyer buyer) {
+        log.info("EntityManager hashcode: {} in BuyerRepository Add", entityManager.hashCode());       
         entityManager.persist(buyer);
         return buyer;
     }
 
     @Override
     public Buyer update(Buyer buyer) {
+        log.info("EntityManager hashcode: {} in BuyerRepository update", entityManager.hashCode());       
         entityManager.merge(buyer);
         //TODO: HACK : to be removed. Find out why merge is not triggering the preupdate event on the Buyer entity
         entityManager.flush();        
@@ -42,6 +44,7 @@ public class BuyerRepository implements IBuyerRepository {
 
     @Override
     public Buyer find(String buyerIdentityUUID) {
+        log.info("EntityManager hashcode: {} in BuyerRepository find", entityManager.hashCode());       
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Buyer> criteriaQuery = criteriaBuilder.createQuery(Buyer.class);
         Root<Buyer> root = criteriaQuery.from(Buyer.class);
@@ -49,11 +52,14 @@ public class BuyerRepository implements IBuyerRepository {
         criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("identityUUID"), buyerIdentityUUID));
         
         Buyer buyer = entityManager.createQuery(criteriaQuery).getResultStream().findFirst().orElse(null);
+        if(buyer == null)
+            log.info("Buyer not found for id: {}", buyerIdentityUUID);
         return buyer;
     }
 
     @Override
     public Buyer findById(String id) {
+        log.info("EntityManager hashcode: {} in BuyerRepository find", entityManager.hashCode());       
         Buyer buyer = entityManager.find(Buyer.class, id);
         return buyer;
     }
