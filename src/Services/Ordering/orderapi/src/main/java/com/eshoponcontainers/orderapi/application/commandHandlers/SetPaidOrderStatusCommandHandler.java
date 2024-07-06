@@ -19,12 +19,12 @@ public class SetPaidOrderStatusCommandHandler implements Command.Handler<SetPaid
     @Override
     public Boolean handle(SetPaidOrderStatusCommand command) {
         // Simulate a work time for validating the payment
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        // try {
+        //     Thread.sleep(10000);
+        // } catch (InterruptedException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
         Order order = orderRepository.get(command.getOrderNumber());
         if(order == null) {
             log.warn("Order with Id: {} not found", command.getOrderNumber());

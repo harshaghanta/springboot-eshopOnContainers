@@ -18,12 +18,12 @@ public class SetStockConfirmedOrderStatusCommandHandler
     @Override
     public Boolean handle(SetStockConfirmedOrderStatusCommand command) {
         // Simulate a work time for validating the payment
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        // try {
+        //     Thread.sleep(10000);
+        // } catch (InterruptedException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
         Order order = orderRepository.get(command.getOrderNumber());
         if(order == null)
             return false;
