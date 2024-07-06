@@ -13,19 +13,18 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class GracePeriodConfirmedIntegrationEventHandler implements IntegrationEventHandler<GracePeriodConfirmedIntegrationEvent> {
+public class GracePeriodConfirmedIntegrationEventHandler
+        implements IntegrationEventHandler<GracePeriodConfirmedIntegrationEvent> {
 
     private final Pipeline pipeline;
 
     @Override
     public Runnable handle(GracePeriodConfirmedIntegrationEvent event) {
-        log.info("----- Handling integration event: {} at {} - {}", event.getId(), "Ordering", event );
+        log.info("----- Handling integration event: {} at {} - {}", event.getId(), "Ordering", event);
         var command = new SetAwaitingValidationOrderStatusCommand(event.getOrderId());
         log.info("----- Sending command: {} - {}: {} {}",
-            command.getClass().getSimpleName(), "OrderNumber", command.getOrderNumber(), command);
-        Runnable task = () -> pipeline.send(command);
-        task.run();
-        return task;
+                command.getClass().getSimpleName(), "OrderNumber", command.getOrderNumber(), command);
+        return () -> pipeline.send(command);
     }
 
 }

@@ -22,9 +22,7 @@ public class OrderStockConfirmedIntegrationEventHandler implements IntegrationEv
         var command = new SetStockConfirmedOrderStatusCommand(event.getOrderId());
         log.info("----- Sending command: {} - {}: {} {}",
             command.getClass().getSimpleName(), "OrderNumber", command.getOrderNumber(), command);
-        Runnable task = () -> pipeline.send(command);
-        task.run();
-        return task;
+        return () -> pipeline.send(command);
     }
 
 }

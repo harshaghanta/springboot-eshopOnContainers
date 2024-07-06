@@ -22,9 +22,7 @@ public class OrderPaymentSucceededIntegrationEventHandler implements Integration
         var command = new SetPaidOrderStatusCommand(event.getOrderId());
         log.info("----- Sending command: {} - {}: {} {}",
             command.getClass().getSimpleName(), "OrderNumber", command.getOrderNumber(), command);
-        Runnable task = () -> pipeline.send(command);
-        task.run();
-        return task;
+        return () -> pipeline.send(command);        
     }
 
 }

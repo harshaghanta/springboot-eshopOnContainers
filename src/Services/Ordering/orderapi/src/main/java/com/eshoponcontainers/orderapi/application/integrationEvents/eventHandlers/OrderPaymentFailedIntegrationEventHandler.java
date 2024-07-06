@@ -25,9 +25,7 @@ public class OrderPaymentFailedIntegrationEventHandler implements IntegrationEve
         var command = new CancelOrderCommand(event.getOrderId());
         log.info("----- Sending command: {} - {}: {} {}",
             command.getClass().getSimpleName(), "OrderNumber", command.getOrderNumber(), command);
-        Runnable task = () -> pipeline.send(command);
-        task.run();
-        return task;
+        return () -> pipeline.send(command);        
     }
 
 }
