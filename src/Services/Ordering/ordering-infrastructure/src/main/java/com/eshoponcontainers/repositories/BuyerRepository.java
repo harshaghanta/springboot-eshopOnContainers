@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.eshoponcontainers.aggregatesModel.buyerAggregate.Buyer;
 import com.eshoponcontainers.aggregatesModel.buyerAggregate.IBuyerRepository;
+import com.eshoponcontainers.config.EntityManagerUtil;
 import com.eshoponcontainers.seedWork.IUnitOfWork;
 
 import jakarta.persistence.EntityManager;
@@ -16,9 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class BuyerRepository implements IBuyerRepository {
-
-    private final EntityManager entityManager;
+public class BuyerRepository implements IBuyerRepository {    
+    
     private final IUnitOfWork unitOfWork;
 
     @Override
@@ -28,6 +28,7 @@ public class BuyerRepository implements IBuyerRepository {
 
     @Override
     public Buyer add(Buyer buyer) {
+        EntityManager entityManager = EntityManagerUtil.getEntityManager();
         log.info("EntityManager hashcode: {} in BuyerRepository Add", entityManager.hashCode());       
         entityManager.persist(buyer);
         return buyer;
@@ -35,6 +36,7 @@ public class BuyerRepository implements IBuyerRepository {
 
     @Override
     public Buyer update(Buyer buyer) {
+        EntityManager entityManager = EntityManagerUtil.getEntityManager();
         log.info("EntityManager hashcode: {} in BuyerRepository update", entityManager.hashCode());       
         entityManager.merge(buyer);
         //TODO: HACK : to be removed. Find out why merge is not triggering the preupdate event on the Buyer entity
@@ -44,6 +46,7 @@ public class BuyerRepository implements IBuyerRepository {
 
     @Override
     public Buyer find(String buyerIdentityUUID) {
+        EntityManager entityManager = EntityManagerUtil.getEntityManager();
         log.info("EntityManager hashcode: {} in BuyerRepository find", entityManager.hashCode());       
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Buyer> criteriaQuery = criteriaBuilder.createQuery(Buyer.class);
@@ -59,6 +62,7 @@ public class BuyerRepository implements IBuyerRepository {
 
     @Override
     public Buyer findById(String id) {
+        EntityManager entityManager = EntityManagerUtil.getEntityManager();
         log.info("EntityManager hashcode: {} in BuyerRepository find", entityManager.hashCode());       
         Buyer buyer = entityManager.find(Buyer.class, id);
         return buyer;

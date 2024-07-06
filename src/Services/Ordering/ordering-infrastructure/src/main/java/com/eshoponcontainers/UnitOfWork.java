@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.eshoponcontainers.config.EntityManagerUtil;
 import com.eshoponcontainers.context.DomainContext;
 import com.eshoponcontainers.seedWork.IUnitOfWork;
 
@@ -41,7 +42,10 @@ public class UnitOfWork implements IUnitOfWork {
 
             
             // log.info("Before flush call on Entity manager from thread: {}", Thread.currentThread().getName());
-            // entityManager.flush();
+            //NOTE: Needed as there are places where in persist or update are not called 
+            // in the entitymanager. and this flush will trigger the domainevent collection
+            // which is needed for triggering domainevents 
+             EntityManagerUtil.getEntityManager().flush();
             //With out flush call BuyerAndPaymentMethodVerifiedDomainEvent is not captured
             //Added Cascade Persist and remove for Buyer
             // Thread.sleep(5_000);

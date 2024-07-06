@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import com.eshoponcontainers.config.EntityManagerUtil;
 import com.eshoponcontainers.orderapi.application.integrationEvents.OrderingIntegrationEventService;
 import com.eshoponcontainers.orderapi.services.TransactionContext;
 
@@ -20,12 +21,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class TransactionBehavior implements Command.Middleware {
 
-    private final EntityManager entityManager;
     private final OrderingIntegrationEventService orderingIntegrationEventService;
 
     @Override
     public <R, C extends Command<R>> R invoke(C command, Next<R> next) {
+        log.info("Entering transaction behavior for command: {}", command.getClass().getSimpleName());
         var className = command.getClass().getSimpleName();
+        EntityManager entityManager = EntityManagerUtil.getEntityManager();
         log.info("EntityManager hashcode: {} in TransactionBehavior", entityManager.hashCode());
         EntityTransaction transaction = entityManager.getTransaction();
         R response = null;
@@ -41,6 +43,7 @@ public class TransactionBehavior implements Command.Middleware {
             transactionId = TransactionContext.getTransactionId();
             log.info("----- Begin transaction {} for {} ({})", transactionId, className, command);
             response = next.invoke();
+            log.info("Exiting transaction behavior for command: {}", command.getClass().getSimpleName());
             transaction.commit();
             TransactionContext.clearContext();
             log.info("----- commit transaction {} for {} ",transactionId, className);
@@ -48,6 +51,20 @@ public class TransactionBehavior implements Command.Middleware {
         } catch (Exception e) {
             log.error("ERROR Handling transaction for {}", className);
             throw e;
+        }
+        finally {
+            if(transaction.isActive()) {
+                transaction.rollback();
+                TransactionContext.clearContext();
+                log.info("----- rollback transaction {} for {} ",transactionId, className);
+            }
+            //cleanup entity manager
+            if(entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
+                EntityManagerUtil.closeEntityManager();
+            }
+                
+
         }
         return response;
     }
