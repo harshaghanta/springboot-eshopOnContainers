@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "sql-data.fullname" . }}
+  labels:
+    app: {{ template "sql-data.name" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    chart: {{ template "sql-data.chart" . }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  - port: {{ .Values.service.externalPort }}
+    targetPort: {{ .Values.service.internalPort }}
+    protocol: TCP
+    name: {{ .Values.service.name }}
+  selector:
+    app: {{ template "sql-data.name" . }}
+    release: {{ .Release.Name }}

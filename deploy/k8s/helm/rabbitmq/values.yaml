@@ -1,0 +1,25 @@
+replicaCount: 1
+
+image:
+  repository: rabbitmq
+  pullPolicy: IfNotPresent  
+  tag: "3-management-alpine"
+
+service:
+  type: ClusterIP
+  internalPort: 5672
+  externalPort: 5672
+
+resources:
+  # requests:
+  #   memory: "64Mi"
+  #   cpu: "250m"
+  #   limits:
+  #     memory: "128Mi"
+  #     cpu: "500m"
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

@@ -1,0 +1,59 @@
+replicaCount: 1
+pathBase: /catalog-api
+clusterName: eshop-aks
+
+image:
+  repository: eshop/catalogapi
+  pullPolicy: IfNotPresent  
+  tag: "latest"
+
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+env:
+  configmap:
+    - name: "catalog.datasource.url"
+      key: catalog__dataSourceUrl
+    - name: "catalog.picBaseUrl"
+      key: catalog__picBaseUrl
+    # - name: EventBusConnection
+    #   key: all__EventBusConnection
+    - name: "catalog.datasource.username"
+      key: catalog__dataSourceUsername
+    - name: "catalog.datasource.password"
+      key: catalog__dataSourcePassword
+    - name: "eventbus.host"
+      key: eventbus__host
+    - name: "eventbus.username"
+      key: eventbus__username
+    - name: "eventbus.password"
+      key: eventbus__password
+    - name: "eventbus.retryCount"
+      key: eventbus__retryCount
+
+  values:
+    - name: PORT
+      value: "80"
+  probes:
+    liveness:
+      path: /liveness
+      initialDelaySeconds: 10
+      periodSeconds: 15
+      port: 80
+    readiness:
+      path: /hc
+      timeoutSeconds: 5
+      intialDelaySeconds: 90
+      periodSeconds: 60
+      port: 80
+  

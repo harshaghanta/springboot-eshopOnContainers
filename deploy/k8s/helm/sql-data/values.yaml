@@ -1,0 +1,20 @@
+replicaCount: 1
+
+image:
+  repository: eshop/db
+  pullPolicy: Never
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  internalPort: 1433
+  externalPort: 9433
+  name: sql-service
+  
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

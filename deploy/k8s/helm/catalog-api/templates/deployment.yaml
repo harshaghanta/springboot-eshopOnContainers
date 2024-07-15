@@ -1,0 +1,81 @@
+{{- $name:= include "catalog-api.fullname" . -}}
+{{- $cfgname:= printf "%s-%s" "cfg" $name -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "catalog-api.fullname" .}}
+  labels:
+    app: {{ template "catalog-api.fullname" . }}
+    chart: {{  template "catalog-api.chart" . }}
+    release: {{ .Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "catalog-api.name" . }}
+      release: {{ .Release.Name}}
+  replicas: {{ .Values.replicaCount}}
+  template:
+    metadata:
+      labels:
+        app: {{ template "catalog-api.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ template "fqdn-image" .}}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: PATH_BASE
+              value: {{ .Values.pathBase }}
+            - name: k8sname
+              value: {{ .Values.clusterName }}
+            {{- if .Values.env.values }}
+            {{- range .Values.env.values }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+            {{- end }}
+            {{- end }}
+            {{- if .Values.env.configmap }}
+            {{- range .Values.env.configmap }}
+            - name: {{ .name }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ $cfgname }}
+                  key: {{ .key }}
+            {{- end }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 80
+          # livenessProbe:
+          #   httpGet:
+          #     path: {{ .Values.env.probes.liveness.path }}
+          #     port: {{ .Values.env.probes.liveness.port }}
+          #   initialDelaySeconds: {{ .Values.env.probes.liveness.initialDelaySeconds }}
+          #   periodSeconds: {{ .Values.env.probes.liveness.periodSeconds }}
+          #   timeoutSeconds: {{ .Values.env.probes.liveness.timeoutSeconds }}
+          # readinessProbe:
+          #   httpGet:
+          #     path: {{ .Values.env.probes.readiness.path}}
+          #     port: {{ .Values.env.probes.readiness.port }}
+          #   initialDelaySeconds: {{ .Values.env.probes.readiness.initialDelaySeconds }}
+          #   periodSeconds: {{ .Values.env.probes.readiness.periodSeconds }}
+          #   timeoutSeconds: {{ .Values.env.probes.readiness.timeoutSeconds }}          
+          {{- with .Values.resources -}}
+          {{- if ne (toYaml .) "{}\n" }}
+          resources:
+          {{ toYaml . | indent 12 }}
+          {{- end -}}          
+          {{- end -}}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+          {{ toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.affinity }}
+          affinity:
+          {{ toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations:
+          {{ toYaml . | nindent 12 }}
+          {{- end -}}

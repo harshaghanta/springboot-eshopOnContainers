@@ -1,0 +1,33 @@
+inf:
+  tls:
+    enabled: false
+    issuer: ""
+  sql:
+    host: eshop-sql-data
+    common:
+      user: sa
+      pwd: Pass@word
+      pid: Developer
+      TrustServerCertificate: true
+    catalog:
+      datasourceUrl: "jdbc:sqlserver://eshop-sql-data:9433;databaseName=CatalogDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
+      db: CatalogDb
+    ordering:
+      db: OrderDb
+  mongo:
+    host: 
+  redis:
+    basket:
+      svc: basket-data
+      constr: basket-data
+    keystore:
+      svc: keystore-data
+      constr: keystore-data
+  eventbus:
+    svc: eshop-rabbitmq
+    user: guest
+    pwd: guest
+    retryCount: "5"
+  k8s:
+    dns: ""
+    local: false
