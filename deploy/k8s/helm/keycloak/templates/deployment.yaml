@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "keycloak.fullname" . }}
+  labels:
+    app: {{ template "keycloak.name" . }}
+    chart: {{ template "keycloak.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:  
+  replicas: {{ .Values.replicaCount }}  
+  selector:
+    matchLabels:
+      app: {{ template "keycloak.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:      
+      labels:
+        app: {{ template "keycloak.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      volumes:
+        - name: keycloak-config
+          configMap:
+            name: {{ template "keycloak.fullname" . }}-cm
+      containers:
+        - name: {{ .Chart.Name }}          
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: keycloak
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          command: ["/opt/keycloak/bin/kc.sh", "-v", "start-dev", "--import-realm" ]
+            
+          env:
+          {{- if .Values.env.values }}
+          {{- range .Values.env.values }}
+          - name: {{ .name }}
+            value: {{ .value | quote }}
+          {{- end }}
+          {{- end }}
+          
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}          
+          volumeMounts:
+            - name: keycloak-config
+              mountPath: "/opt/keycloak/data/import/" 
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end -}}

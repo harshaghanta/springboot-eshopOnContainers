@@ -1,0 +1,13 @@
+{{- $name := include "keycloak.fullname" . -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $name }}-cm
+  labels:
+    app: {{ template "keycloak.name" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    chart: {{ template "keycloak.chart" . }}
+data:
+  eshoponcontainers-realm.json: |-
+  {{ .Files.Get "files/eshoponcontainers-realm.json" | indent 4 }}
