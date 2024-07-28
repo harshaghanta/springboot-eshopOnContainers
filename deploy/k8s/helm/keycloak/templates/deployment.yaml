@@ -29,7 +29,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: keycloak
-              containerPort: {{ .Values.service.port }}
+              containerPort: 8080
               protocol: TCP
           command: ["/opt/keycloak/bin/kc.sh", "-v", "start-dev", "--import-realm" ]
             

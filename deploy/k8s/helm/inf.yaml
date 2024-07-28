@@ -3,17 +3,18 @@ inf:
     enabled: false
     issuer: ""
   sql:
-    host: eshop-sql-data
+    host: springeshop-sql-data
     common:
       user: sa
       pwd: Pass@word
       pid: Developer
       TrustServerCertificate: true
     catalog:
-      datasourceUrl: "jdbc:sqlserver://eshop-sql-data:9433;databaseName=CatalogDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
+      datasourceUrl: "jdbc:sqlserver://springeshop-sql-data:9433;databaseName=CatalogDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
       db: CatalogDb
     ordering:
       db: OrderDb
+      datasourceUrl: "jdbc:sqlserver://springeshop-sql-data:9433;databaseName=OrderDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
   mongo:
     host: 
   redis:
@@ -24,10 +25,13 @@ inf:
       svc: keystore-data
       constr: keystore-data
   eventbus:
-    svc: eshop-rabbitmq
+    svc: springeshop-rabbitmq
     user: guest
     pwd: guest
     retryCount: "5"
+  issuer:
+    svc: keycloak
+    port: "8080"
   k8s:
     dns: ""
     local: false

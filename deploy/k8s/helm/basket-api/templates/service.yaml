@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "basket-api.fullname" . }}
+  labels:
+    app: {{ template "basket-api.name" . }}
+    release: {{ .Release.Name }}
+    chart: {{ template "basket-api.chart" . }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "basket-api.name" . }}
+    release: {{ .Release.Name }}

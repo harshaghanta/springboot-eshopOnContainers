@@ -1,0 +1,25 @@
+{{ $name:= include "webspa.fullname" . -}}
+{{- $serviceName :=  . -}}
+{{- $servicePort := .Values.service.externalPort -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-{{ $name }}
+  labels:
+    app: {{ template "webspa.name" . }}
+    chart: {{ template "webspa.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  ingressClassName: nginx
+  rules:    
+    - host: localhost
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service: 
+              name: {{ include "webspa.fullname" . }}
+              port:
+                number: {{ .Values.service.port }}

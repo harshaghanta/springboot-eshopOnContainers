@@ -1,0 +1,57 @@
+replicaCount: 1
+pathBase: /basket-api
+
+image:
+  repository: eshop/basketapi
+  pullPolicy: IfNotPresent  
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: "8080"
+
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+env:
+  urls:
+  configmap:
+    - name: "eventbus.host"
+      key: eventbus__host
+    - name: "eventbus.username"
+      key: eventbus__username
+    - name: "eventbus.password"
+      key: eventbus__password
+    - name: "eventbus.retryCount"
+      key: eventbus__retryCount
+    - name: "issuer.host"
+      key: issuer__host
+    - name: "issuer.port"
+      key: issuer__port
+    - name: "basketdata.host"
+      key: basketdata__host
+  
+  values:
+    - name: SERVER_SERVLET_CONTEXT_PATH
+      value: "/basket-api"
+  
+
+probes:
+  liveness:
+    path: /liveness
+    initialDelaySeconds: 10
+    periodSeconds: 15
+    port: 80
+  readiness:
+    path: /hc
+    timeoutSeconds: 5
+    initialDelaySeconds: 90
+    periodSeconds: 60
+    port: 80
+

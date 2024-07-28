@@ -1,0 +1,37 @@
+replicaCount: 1
+pathBase: /webshoppingapigw
+
+image:
+  repository: envoyproxy/envoy
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "v1.21.0"
+
+service:
+  type: ClusterIP
+  port: 8082
+  adminPort: 8083
+
+resources: {}
+
+env: {}
+
+envoy:
+  configPath: "/etc/envoy"
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+probes:
+  liveness:    
+    path: /ready
+    initialDelay: 5
+    periodSeconds: 15
+    port: 8001
+readiness:  
+  path: /ready
+  initialDelaySeconds: 5
+  periodSeconds: 60
+  port: 8001

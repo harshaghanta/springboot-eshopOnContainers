@@ -1,0 +1,46 @@
+{{ $name:= include "basket-api.fullname" .}}
+{{ $cfgname:= printf "%s-%s" $name "cm" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "basket-api.fullname" . }}
+  labels:
+    app: {{ template "basket-api.name" . }}
+    release: {{ .Release.Name }}
+    chart: {{ template "basket-api.chart" . }}
+    heritage: {{ .Release.Service }}
+spec:  
+  replicas: {{ .Values.replicaCount }}  
+  selector:
+    matchLabels:
+      app: {{ template "basket-api.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:      
+      labels:
+        app: {{ template "basket-api.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}          
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag  }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- range .Values.env.configmap }}
+            - name: {{ .name }}
+              valueFrom: 
+                configMapKeyRef:
+                  name: "{{ $cfgname }}"
+                  key: {{ .key }}
+            {{- end }}
+            {{- if .Values.env.values -}}
+            {{- range .Values.env.values }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+            {{- end }}
+            {{- end }}
+          ports:
+          - name: http
+            containerPort: {{ .Values.service.port }}
+            protocol: TCP
+          

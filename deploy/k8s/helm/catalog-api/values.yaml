@@ -1,5 +1,4 @@
 replicaCount: 1
-pathBase: /catalog-api
 clusterName: eshop-aks
 
 image:
@@ -42,8 +41,8 @@ env:
       key: eventbus__retryCount
 
   values:
-    - name: PORT
-      value: "80"
+    - name: SERVER_SERVLET_CONTEXT_PATH
+      value: "/catalog-api"
   probes:
     liveness:
       path: /liveness

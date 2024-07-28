@@ -1,0 +1,19 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ template "basket-api.fullname" .}}-cm
+  labels:
+    app: {{ template "basket-api.name" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    chart: {{ template "basket-api.chart" .}}
+data:
+  eventbus__host: {{ .Values.inf.eventbus.svc }}
+  eventbus__username: {{ .Values.inf.eventbus.user }}
+  eventbus__password: {{ .Values.inf.eventbus.pwd }}
+  eventbus__retryCount: "{{ .Values.inf.eventbus.retryCount }}"
+  issuer__host: "{{ .Values.inf.issuer.svc }}"
+  issuer__port: "{{ .Values.inf.issuer.port }}"
+  basketdata__host: "{{ .Values.inf.redis.basket.svc }}"
+
+  
