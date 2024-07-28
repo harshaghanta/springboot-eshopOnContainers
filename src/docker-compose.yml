@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Services/catalogapi/Dockerfile
+    image: springeshop/catalogapi:latest
     env_file:
     - .env
     depends_on:
@@ -20,6 +21,7 @@ services:
     build:
       context: .
       dockerfile: Services/basketapi/Dockerfile
+    image: springeshop/basketapi:latest
     env_file:
     - .env
     depends_on:
@@ -36,6 +38,7 @@ services:
     build:
       context: .
       dockerfile: "DBSetup/Dockerfile"
+    image: springeshop/db:latest
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Pass@word
@@ -61,6 +64,7 @@ services:
     build:
       context: .
       dockerfile: Services/Ordering/orderapi/Dockerfile
+    image: springeshop/orderingapi:latest
     env_file:
     - .env
     depends_on:
@@ -76,6 +80,7 @@ services:
     build:
       context: .
       dockerfile: Services/Ordering/ordering-backgroundtasks/Dockerfile
+    image: springeshop/orderingbackgroundtasks:latest
     env_file:
     - .env
     depends_on:
@@ -88,7 +93,8 @@ services:
   webspa:
     build:
       context: .
-      dockerfile: Web/WebSpa/server/Dockerfile  
+      dockerfile: Web/WebSpa/server/Dockerfile
+    image: springeshop/webspa:latest
     ports:
     - 8080:8080
     networks:
@@ -129,6 +135,7 @@ services:
     build:
       context: .
       dockerfile: Services/Webhooks/webhooks-api/Dockerfile
+    image: springeshop/webhooksapi:latest
     env_file:
     - .env
     depends_on:
@@ -144,6 +151,7 @@ services:
     build:
       context: .
       dockerfile: Services/Webhooks/webhooks-client/Dockerfile
+    image: springeshop/webhooksclient:latest
     env_file:
     - .env
     depends_on:
@@ -157,6 +165,7 @@ services:
     build:
       context: .
       dockerfile: Services/Payment/paymentapi/Dockerfile
+    image: springeshop/paymentapi:latest
     env_file:
     - .env
     depends_on:      
