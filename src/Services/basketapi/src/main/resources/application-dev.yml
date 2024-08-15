@@ -10,8 +10,25 @@ eventbus:
   retryCount: ${eventbus.retryCount}
   subscriptionClientName: "Basket"
 
-oauthIssuerUrl: http://${issuer.host}:${issuer.port}/realms/eshoponcontainers
+oauthIssuerUrl: http://keycloak:8085/keycloak/realms/eshoponcontainers
 
 logging:
   level:
     com.eshoponcontainers: DEBUG
+
+#enable management endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    info:
+      enabled: true
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true

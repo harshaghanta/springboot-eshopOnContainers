@@ -16,7 +16,7 @@ app:
     catalog: catalog-api                                  # service name for catalog api
     ordering: ordering-api                                # service name for ordering api
     orderingbackgroundtasks: ordering-backgroundtasks     # service name for orderingbackgroundtasks
-    kecloak: keycloak                                     # service name for keycloak
+    keycloak: keycloak                                     # service name for keycloak
     spa: webspa                                           # service name for web spa
     webshoppingapigw: webshoppingapigw                    # service name for webshoppingapigw
     payment: payment-api                                  # service name for payment api

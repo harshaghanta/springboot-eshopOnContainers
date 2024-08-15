@@ -127,7 +127,7 @@ static_resources:
             address:
               socket_address:
                 address: basket-api
-                port_value: 8080
+                port_value: 8084
   - name: ordering
     connect_timeout: 0.25s
     type: strict_dns

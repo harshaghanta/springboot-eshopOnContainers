@@ -32,6 +32,8 @@ inf:
   issuer:
     svc: keycloak
     port: "8080"
+    url: "http://localhost/keycloak/realms/eshoponcontainers"
+    internalUrl: "http://keycloak/keycloak/realms/eshoponcontainers"
   k8s:
-    dns: ""
+    dns: "localhost"
     local: false

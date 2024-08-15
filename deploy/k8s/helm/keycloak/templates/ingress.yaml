@@ -1,0 +1,31 @@
+{{- $serviceName :=  .Values.app.svc.keycloak -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ template "keycloak.fullname" . }}
+  labels:
+    app: {{ template "keycloak.name" . }}
+    chart: {{ template "keycloak.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  # since keycloak baseurl is modified and matching with the keycloak url in client,
+  # we don't need to rewrite the url  
+  # Before adding these 2 annotations was getting Bad gateway error 
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-buffers-number: "4"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "16k"
+  #   nginx.ingress.kubernetes.io/rewrite-target: /$2
+  #   nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - path: /keycloak(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .Values.inf.issuer.svc }}
+                port:
+                  number: {{ .Values.service.port }}

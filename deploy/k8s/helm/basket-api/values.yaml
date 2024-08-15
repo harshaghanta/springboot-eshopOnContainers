@@ -2,13 +2,13 @@ replicaCount: 1
 pathBase: /basket-api
 
 image:
-  repository: eshop/basketapi
+  repository: springeshop/basketapi
   pullPolicy: IfNotPresent  
   tag: "latest"
 
 service:
   type: ClusterIP
-  port: "8080"
+  port: "8084"
 
 
 resources: {}
@@ -36,6 +36,8 @@ env:
       key: issuer__port
     - name: "basketdata.host"
       key: basketdata__host
+    - name: "issuer.url"
+      key: issuer__url
   
   values:
     - name: SERVER_SERVLET_CONTEXT_PATH

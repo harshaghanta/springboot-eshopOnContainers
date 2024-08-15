@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "basket-api.fullname" . }}
+  name: {{ .Values.app.svc.basket }}
   labels:
     app: {{ template "basket-api.name" . }}
     release: {{ .Release.Name }}

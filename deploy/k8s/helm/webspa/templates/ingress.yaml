@@ -1,6 +1,4 @@
 {{ $name:= include "webspa.fullname" . -}}
-{{- $serviceName :=  . -}}
-{{- $servicePort := .Values.service.externalPort -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -10,6 +8,10 @@ metadata:
     chart: {{ template "webspa.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+  # Works directly with out annotations for the webspa, when other ingress rules doesnt exist
+  # annotations:
+  #   nginx.ingress.kubernetes.io/rewrite-target: /$2
+  #   nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
   rules:    

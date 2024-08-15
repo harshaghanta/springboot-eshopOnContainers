@@ -1,5 +1,6 @@
 {{- $protocol := include "protocol" . -}}
 {{- $webshoppingapigw := include "url-of" (list .Values.app.ingress.entries.webshoppingapigw .) -}}
+{{- $keycloak:= include "url-of" (list .Values.app.ingress.entries.keycloak .) -}}
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -12,10 +13,10 @@ metadata:
 data:
   application.yml: |
     config-data:
-      identityUrl: "http://localhost:8080/realms/eshoponcontainers/protocol"
+      identityUrl: {{$protocol}}://{{$keycloak}}/realms/eshoponcontainers/protocol
       basketUrl: "http://host.docker.internal:8083"
       marketingUrl: null
-      purchaseUrl: "http://localhost/webshoppingapigw"
+      purchaseUrl: {{$protocol}}://{{$webshoppingapigw}}
       signalrHubUrl: "http://host.docker.internal:8090"
       activateCampaignDetailFunction: "False"
       useCustomizationData: true

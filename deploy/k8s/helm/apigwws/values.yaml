@@ -25,13 +25,16 @@ tolerations: []
 
 affinity: {}
 probes:
-  liveness:    
-    path: /ready
-    initialDelay: 5
-    periodSeconds: 15
-    port: 8001
-readiness:  
-  path: /ready
+  liveness:
+    httpGet:
+      path: /ready
+      port: 8080
+    initialDelaySeconds: 5
+    periodSeconds: 15      
+  readiness:
+    httpGet:
+      path: /ready
+      port: 8080
   initialDelaySeconds: 5
   periodSeconds: 60
-  port: 8001
+  

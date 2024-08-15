@@ -15,5 +15,6 @@ data:
   issuer__host: "{{ .Values.inf.issuer.svc }}"
   issuer__port: "{{ .Values.inf.issuer.port }}"
   basketdata__host: "{{ .Values.inf.redis.basket.svc }}"
+  issuer__url: "{{ .Values.inf.issuer.internalUrl }}"
 
   

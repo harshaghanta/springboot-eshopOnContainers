@@ -12,7 +12,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
-  catalog__picBaseUrl: {{ $protocol }}:{{ $webshoppingapigw }}/c/api/v1/catalog/items/[0]/pic/
+  catalog__picBaseUrl: {{ $protocol }}://{{ $webshoppingapigw }}/c/api/v1/catalog/items/[0]/pic
   catalog__dataSourceUrl: {{ .Values.inf.sql.catalog.datasourceUrl }}
   catalog__dataSourceUsername: {{ .Values.inf.sql.common.user }}
   catalog__dataSourcePassword: {{ .Values.inf.sql.common.pwd }}
