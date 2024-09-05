@@ -31,7 +31,7 @@ spec:
             - name: keycloak
               containerPort: 8080
               protocol: TCP
-          command: ["/opt/keycloak/bin/kc.sh", "-v", "start-dev", "--import-realm", "--hostname"  ]            
+          command: ["/opt/keycloak/bin/kc.sh", "-v", "start-dev", "--import-realm" ]            
           env:
           {{- if .Values.env.values }}
           {{- range .Values.env.values }}
