@@ -6,3 +6,21 @@ spring:
 logging:
   level:
     org.springframework.security.oauth2.jwt: DEBUG
+
+#enable management endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    info:
+      enabled: true
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+

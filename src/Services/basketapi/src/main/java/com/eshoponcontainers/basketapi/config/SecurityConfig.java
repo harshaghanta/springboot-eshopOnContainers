@@ -29,6 +29,7 @@ public class SecurityConfig {
 		http
 			.authorizeHttpRequests((authorize) -> authorize
 				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+				.antMatchers("/actuator/**").permitAll()
 				.anyRequest().authenticated()
 			)
 			.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -40,6 +41,7 @@ public class SecurityConfig {
 
     @Bean
 	public JwtDecoder jwtDecoder() {
+		log.info("Printing oauthIssuerUrl: {}", oauthIssuerUrl);
 		// log.info("IssuerUrl:{}", oauthIssuerUrl);
 		// return JwtDecoders.fromIssuerLocation(oauthIssuerUrl);
 		String jwkSetUri = oauthIssuerUrl + "/protocol/openid-connect/certs";
