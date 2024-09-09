@@ -1,51 +1,50 @@
+{{ $name := include "ordering-api.fullname" . }}
+{{ $cfgname := printf "%s-%s" $name "cm" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "ordering-api.fullname" . }}
+  name: {{ $name }}
   labels:
-    {{- include "ordering-api.labels" . | nindent 4 }}
-spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+    app: {{ include "ordering-api.name" . }}
+    chart: {{ include "ordering-api.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:  
+  replicas: {{ .Values.replicaCount }}  
   selector:
     matchLabels:
-      {{- include "ordering-api.selectorLabels" . | nindent 6 }}
+      app: {{ include "ordering-api.name" . }}
+      release: {{ .Release.Name }}
   template:
-    metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+    metadata:      
       labels:
-        {{- include "ordering-api.labels" . | nindent 8 }}
-        {{- with .Values.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+        app: {{ include "ordering-api.name" . }}
+        release: {{ .Release.Name }}  
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "ordering-api.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag}}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+          {{- if .Values.env.configmap }}
+          {{- range .Values.env.configmap }}
+            - name: {{ .name }}
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ $cfgname }}"
+                  key: {{ .key }}
+          {{- end }}
+          {{- end }}
           {{- if .Values.env.values }}
           {{- range .Values.env.values }}
             - name: {{ .name }}
               value: {{ .value | quote }}
           {{- end }}
-          {{- end }}          
+          {{- end }}
+          
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: 8080
               protocol: TCP
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
