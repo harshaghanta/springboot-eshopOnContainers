@@ -23,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderQueries {
 
+    private final EntityManager entityManager;
+
     public Order getOrder(int id) {
         String strQuery = """
                 select o.[Id] as ordernumber,o.OrderDate as date, o.Description as description,
@@ -32,7 +34,7 @@ public class OrderQueries {
                 FROM [ordering].[orders] o LEFT JOIN [ordering].[orderitems] oi ON o.Id = oi.orderid
                 LEFT JOIN [ordering].[orderstatus] os on o.OrderStatusId = os.Id
                 WHERE o.Id= :orderId""";
-        EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        // EntityManager entityManager = EntityManagerUtil.getEntityManager();
         try {
             Query query = entityManager.createNativeQuery(strQuery);
             query.setParameter("orderId", id);
@@ -42,7 +44,7 @@ public class OrderQueries {
         } catch (Exception e) {
             throw e;
         } finally {
-            EntityManagerUtil.closeEntityManager();
+            // EntityManagerUtil.closeEntityManager();
         }
 
     }
@@ -87,7 +89,7 @@ public class OrderQueries {
                 GROUP BY o.[Id], o.[OrderDate], os.[Name] ORDER BY o.[Id]
                 """;
 
-        EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        // EntityManager entityManager = EntityManagerUtil.getEntityManager();
         try {
             Query query = entityManager.createNativeQuery(strQuery);
             query.setParameter("userId", userId.toString());
@@ -101,7 +103,7 @@ public class OrderQueries {
         } catch (Exception e) {
             throw e;
         } finally {            
-            EntityManagerUtil.closeEntityManager();
+            // EntityManagerUtil.closeEntityManager();
         }
     }
 
@@ -118,7 +120,7 @@ public class OrderQueries {
     }
 
     public List<CardType> getCardTypes() {
-        EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        // EntityManager entityManager = EntityManagerUtil.getEntityManager();
         try {
             Query query = entityManager.createNativeQuery("SELECT Id, Name FROM [ordering].[cardtypes]",
                     CardType.class);
@@ -126,7 +128,7 @@ public class OrderQueries {
         } catch (Exception e) {
             throw e;
         } finally {
-            EntityManagerUtil.closeEntityManager();
+            // EntityManagerUtil.closeEntityManager();
         }
     }
 

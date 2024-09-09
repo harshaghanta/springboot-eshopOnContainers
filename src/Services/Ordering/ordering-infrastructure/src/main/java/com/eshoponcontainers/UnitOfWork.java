@@ -12,6 +12,7 @@ import com.eshoponcontainers.seedWork.IUnitOfWork;
 
 import an.awesome.pipelinr.Notification;
 import an.awesome.pipelinr.Pipeline;
+import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -21,7 +22,8 @@ public class UnitOfWork implements IUnitOfWork {
 
     // @PersistenceContext
     
-    
+    @Autowired
+    private EntityManager entityManager;
 
     @Autowired
     private Pipeline pipeline;
@@ -45,7 +47,8 @@ public class UnitOfWork implements IUnitOfWork {
             //NOTE: Needed as there are places where in persist or update are not called 
             // in the entitymanager. and this flush will trigger the domainevent collection
             // which is needed for triggering domainevents 
-             EntityManagerUtil.getEntityManager().flush();
+            entityManager.flush();
+            // EntityManagerUtil.getEntityManager().flush();
             //With out flush call BuyerAndPaymentMethodVerifiedDomainEvent is not captured
             //Added Cascade Persist and remove for Buyer
             // Thread.sleep(5_000);

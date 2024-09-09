@@ -21,13 +21,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class TransactionBehavior implements Command.Middleware {
 
+    private final EntityManager entityManager;
     private final OrderingIntegrationEventService orderingIntegrationEventService;
 
     @Override
     public <R, C extends Command<R>> R invoke(C command, Next<R> next) {
         log.info("Entering transaction behavior for command: {}", command.getClass().getSimpleName());
         var className = command.getClass().getSimpleName();
-        EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        // EntityManager entityManager = EntityManagerUtil.getEntityManager();
         log.info("EntityManager hashcode: {} in TransactionBehavior", entityManager.hashCode());
         EntityTransaction transaction = entityManager.getTransaction();
         R response = null;
@@ -59,10 +60,10 @@ public class TransactionBehavior implements Command.Middleware {
                 log.info("----- rollback transaction {} for {} ",transactionId, className);
             }
             //cleanup entity manager
-            if(entityManager != null && entityManager.isOpen()) {
-                entityManager.close();
-                EntityManagerUtil.closeEntityManager();
-            }
+            // if(entityManager != null && entityManager.isOpen()) {
+                // entityManager.close();
+                // EntityManagerUtil.closeEntityManager();
+            // }
                 
 
         }

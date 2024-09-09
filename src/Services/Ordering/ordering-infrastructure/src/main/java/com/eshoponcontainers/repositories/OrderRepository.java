@@ -18,6 +18,7 @@ public class OrderRepository implements IOrderRepository  {
 
     
     private final IUnitOfWork unitOfWork;
+    private final EntityManager entityManager;
 
     @Override
     public IUnitOfWork getUnitOfWork() {
@@ -27,7 +28,7 @@ public class OrderRepository implements IOrderRepository  {
     
     @Override
     public Order add(Order order) {
-        EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        // EntityManager entityManager = EntityManagerUtil.getEntityManager();
         log.info("EntityManager hashcode: {} in OrderRepository add", entityManager.hashCode());
         entityManager.persist(order);
         return order;
@@ -35,7 +36,7 @@ public class OrderRepository implements IOrderRepository  {
 
     @Override
     public boolean update(Order order) {
-        EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        // EntityManager entityManager = EntityManagerUtil.getEntityManager();
         log.info("EntityManager hashcode: {} in OrderRepository update", entityManager.hashCode());
         order = entityManager.merge(order);
         return true;
@@ -43,7 +44,7 @@ public class OrderRepository implements IOrderRepository  {
 
     @Override
     public Order get(int orderId) {
-        EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        // EntityManager entityManager = EntityManagerUtil.getEntityManager();
         log.info("EntityManager hashcode: {} in OrderRepository get", entityManager.hashCode());
         return entityManager.find(Order.class, orderId);
     }
