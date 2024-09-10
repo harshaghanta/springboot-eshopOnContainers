@@ -1,0 +1,53 @@
+{{ $name:= include "ordering-backgroundtasks.fullname" . }}
+{{ $cfgname:= printf "%s-%s" $name "cm" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ordering-backgroundtasks.fullname" . }}
+  labels:
+    app: {{ include "ordering-backgroundtasks.name" . }}
+    chart: {{ include "ordering-backgroundtasks.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:  
+  replicas: {{ .Values.replicaCount }}  
+  selector:
+    matchLabels:
+      app: {{ include "ordering-backgroundtasks.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "ordering-backgroundtasks.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}          
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag  }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- range .Values.env.configmap }}
+            - name: {{ .name }}
+              valueFrom: 
+                configMapKeyRef:
+                  name: "{{ $cfgname }}"
+                  key: {{ .key }}
+            {{- end }}                 
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

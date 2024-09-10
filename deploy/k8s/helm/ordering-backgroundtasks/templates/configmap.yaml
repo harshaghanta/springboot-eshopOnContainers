@@ -1,0 +1,20 @@
+{{ $name:= include "ordering-backgroundtasks.fullname" . }}
+{{ $cfgname:= printf "%s-%s" $name "cm" }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ $cfgname }}
+  labels:
+    app: {{ template "ordering-backgroundtasks.name" . }}
+    chart: {{ template "ordering-backgroundtasks.chart" . }}
+    release: {{ .Release.Name}}
+    heritage: {{ .Release.Service }}
+data:
+  eventbus__host: {{ .Values.inf.eventbus.svc }}
+  eventbus__username: {{ .Values.inf.eventbus.user }}
+  eventbus__password: {{ .Values.inf.eventbus.pwd }}
+  eventbus__retryCount: "{{ .Values.inf.eventbus.retryCount }}"
+  ordering__dataSourceUrl: {{ .Values.inf.sql.ordering.datasourceUrl }}
+  ordering__dataSourceUsername: {{ .Values.inf.sql.common.user }}
+  ordering__dataSourcePassword: {{ .Values.inf.sql.common.pwd }}
+  
