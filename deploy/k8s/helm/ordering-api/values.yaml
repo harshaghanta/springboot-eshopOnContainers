@@ -18,18 +18,16 @@ env:
     key: eventbus__username
   - name: "eventbus.password"
     key: eventbus__password
-  # - name: "eventbus.retryCount"
-  #   key: eventbus__retryCount
-  - name: "issuer.host"
-    key: issuer__host
-  - name: "issuer.port"
-    key: issuer__port
+  - name: "eventbus.retryCount"
+    key: eventbus__retryCount  
   - name: "orderapi.datasource.url"
     key: ordering__dataSourceUrl
   - name: "orderapi.datasource.username"
     key: ordering__dataSourceUsername
   - name: "orderapi.datasource.password"
     key: ordering__dataSourcePassword
+  - name: "issuer.url"
+    key: issuer__url
 
   values:
     - name: SERVER_SERVLET_CONTEXT_PATH

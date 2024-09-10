@@ -11,7 +11,7 @@ eventbus:
   retryCount: ${eventbus.retryCount}
   subscriptionClientName: "Ordering"
 
-oauthIssuerUrl: http://keycloak:8080/realms/eshoponcontainers
+oauthIssuerUrl: ${issuer.url}
 
 logging:
   level:
