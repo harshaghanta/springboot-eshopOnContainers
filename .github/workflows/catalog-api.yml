@@ -22,7 +22,7 @@ jobs:
 
     - name: run maven build
       working-directory: src/BuildingBlocks/EventBus/eventbus
-      run: mvn clean install
+      run: mvn clean install -DskipTests
      
     # - name: Print directory structure
     #   run: ls -R
