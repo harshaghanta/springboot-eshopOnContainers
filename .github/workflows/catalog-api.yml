@@ -34,7 +34,7 @@ jobs:
       run: mvn clean install -DskipTests
 
     - name: Build Catalog API
-      working-directory: src/Services/Catalog/catalogapi
+      working-directory: src/Services/catalogapi
       run: mvn clean install -DskipTests
     
     # - name: Print directory structure
