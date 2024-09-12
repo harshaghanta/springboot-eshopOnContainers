@@ -19,12 +19,10 @@ jobs:
         java-version: '17' # Change to Java 17 version
         distribution: 'temurin' # Use AdoptOpenJDK 1.3 as the distribution
 
-    - name: Set up Maven
-      uses: actions/setup-java@v2
-      with:
-        java-version: '17' # Use the same Java version as above
-        maven-version: '3.6' # Specify the Maven version
 
+    - name: run maven build
+      run: mvn clean install
+     
     - name: Print directory structure
       run: ls -R
 
