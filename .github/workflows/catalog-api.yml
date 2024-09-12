@@ -21,10 +21,11 @@ jobs:
 
 
     - name: run maven build
+      working-directory: src/BuildingBlocks/EventBus/eventbus
       run: mvn clean install
      
-    - name: Print directory structure
-      run: ls -R
+    # - name: Print directory structure
+    #   run: ls -R
 
     # - name: Build catalog-api
     #   run: |
