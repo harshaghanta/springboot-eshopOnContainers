@@ -1,0 +1,33 @@
+name: Catalog API Build
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17' # Change to Java 17 version
+
+    - name: Set up Maven
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17' # Use the same Java version as above
+        maven-version: '3.6' # Specify the Maven version
+
+    - name: Print directory structure
+      run: ls -R
+
+    # - name: Build catalog-api
+    #   run: |
+    #     cd catalog-api
+    #     mvn clean install # Use Maven as the build command
