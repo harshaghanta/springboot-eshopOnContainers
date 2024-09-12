@@ -32,6 +32,10 @@ jobs:
     - name: Build IntegrationEventLog
       working-directory: src/BuildingBlocks/EventBus/integration-eventlog
       run: mvn clean install -DskipTests
+
+    - name: Build Catalog API
+      working-directory: src/Services/Catalog/catalogapi
+      run: mvn clean install -DskipTests
     
     # - name: Print directory structure
     #   run: ls -R
