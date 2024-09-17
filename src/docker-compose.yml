@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Services/catalogapi/Dockerfile
-    image: harshaghanta/catalogapi:latest
+    image: ${REGISTRY:-springeshop}/catalogapi:latest
     env_file:
     - .env
     depends_on:
@@ -21,7 +21,7 @@ services:
     build:
       context: .
       dockerfile: Services/basketapi/Dockerfile
-    image: springeshop/basketapi:latest
+    image: ${REGISTRY:-springeshop}/basketapi:latest
     env_file:
     - .env
     depends_on:
@@ -64,7 +64,7 @@ services:
     build:
       context: .
       dockerfile: Services/Ordering/orderapi/Dockerfile
-    image: springeshop/orderingapi:latest
+    image: ${REGISTRY:-springeshop}/orderingapi:latest
     env_file:
     - .env
     depends_on:
@@ -80,7 +80,7 @@ services:
     build:
       context: .
       dockerfile: Services/Ordering/ordering-backgroundtasks/Dockerfile
-    image: springeshop/orderingbackgroundtasks:latest
+    image: ${REGISTRY:-springeshop}/orderingbackgroundtasks:latest
     env_file:
     - .env
     depends_on:
@@ -94,7 +94,7 @@ services:
     build:
       context: .
       dockerfile: Web/WebSpa/server/Dockerfile
-    image: springeshop/webspa:latest
+    image: ${REGISTRY:-springeshop}/webspa:latest
     ports:
     - 8080:8080
     networks:
@@ -136,7 +136,7 @@ services:
     build:
       context: .
       dockerfile: Services/Webhooks/webhooks-api/Dockerfile
-    image: springeshop/webhooksapi:latest
+    image: ${REGISTRY:-springeshop}/webhooksapi:latest
     env_file:
     - .env
     depends_on:
@@ -152,7 +152,7 @@ services:
     build:
       context: .
       dockerfile: Services/Webhooks/webhooks-client/Dockerfile
-    image: springeshop/webhooksclient:latest
+    image: ${REGISTRY:-springeshop}/webhooksclient:latest
     env_file:
     - .env
     depends_on:
@@ -166,7 +166,7 @@ services:
     build:
       context: .
       dockerfile: Services/Payment/paymentapi/Dockerfile
-    image: springeshop/paymentapi:latest
+    image: ${REGISTRY:-springeshop}/paymentapi:latest
     env_file:
     - .env
     depends_on:      
