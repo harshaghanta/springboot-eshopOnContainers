@@ -40,7 +40,7 @@ runs:
 
   - name: Compose Push ${{ inputs.service }}
     shell: bash
-    run: sudo -E docker-compose push ${{ inputs.service }}
+    run: sudo -E docker compose push ${{ inputs.service }}
     working-directory: ./src
     env:
       REGISTRY: ${{ inputs.registry_endpoint }}
