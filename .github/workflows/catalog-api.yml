@@ -25,7 +25,7 @@ jobs:
     - name: Build & publish docker images
       uses: ./.github/workflows/composite/build-push
       with:
-        service: ${{ env.service }}
+        service: ${{ env.SERVICE }}
         registry_host: ${{ secrets.REGISTRY_HOST }}        
         registry_endpoint: ${{ secrets.REGISTRY_ENDPOINT }}
         image_name: ${{ env.IMAGE }}
