@@ -5,42 +5,31 @@ on:
     branches:
       - main
 
+    paths:
+    - src/BuildingBlocks/**
+    - src/Services/catalogapi/**
+    - .github/workflows/catalog-api.yml
+
+env:
+  SERVICE: catalog-api
+  IMAGE: catalogapi
+
 jobs:
-  build:
+  BuildLinux:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up JDK
-      uses: actions/setup-java@v4
+    - name: Build & publish docker images
+      uses: ./github/workflows/composite/build-push
       with:
-        java-version: '17' # Change to Java 17 version
-        distribution: 'temurin' # Use AdoptOpenJDK 1.3 as the distribution
+        service: ${{ env.service }}
+        registry_host: ${{ secrets.REGISTRY_HOST }}        
+        registry_endpoint: ${{ secrets.REGISTRY_ENDPOINT }}
+        image_name: ${{ env.IMAGE }}
+        registry_username: ${{ secrets.DOCKER_USERNAME }}
+        registry_password: ${{ secrets.DOCKER_PASSWORD }}
 
-
-    - name: Build EventBus
-      working-directory: src/BuildingBlocks/EventBus/eventbus
-      run: mvn clean install -DskipTests
-
-  
-    - name: Build EventBusRabbitMQ
-      working-directory: src/BuildingBlocks/EventBus/eventbus-rabbitmq
-      run: mvn clean install -DskipTests
-
-    - name: Build IntegrationEventLog
-      working-directory: src/BuildingBlocks/EventBus/integration-eventlog
-      run: mvn clean install -DskipTests
-
-    - name: Build Catalog API
-      working-directory: src/Services/catalogapi
-      run: mvn clean install -DskipTests
-    
-    # - name: Print directory structure
-    #   run: ls -R
-
-    # - name: Build catalog-api
-    #   run: |
-    #     cd catalog-api
-    #     mvn clean install # Use Maven as the build command
+   

@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Services/catalogapi/Dockerfile
-    image: springeshop/catalogapi:latest
+    image: harshaghanta/catalogapi:latest
     env_file:
     - .env
     depends_on:
@@ -107,6 +107,7 @@ services:
     - KEYCLOAK_ADMIN_PASSWORD=admin 
     - DB_VENDOR=h2
     - KC_HEALTH_ENABLED=true
+    - KEYCLOAK_FRONTEND_URL=http://localhost:8080/keycloak
     healthcheck:
       test: timeout 10s bash -c ':> /dev/tcp/localhost/8080'
       interval: 30s
