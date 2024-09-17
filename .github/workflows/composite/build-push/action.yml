@@ -20,6 +20,9 @@ inputs:
   registry_password:
     description: 'password for the docker registry'
     required: true
+  registry_namespace:
+    description: 'namespace for the docker registry'
+    required: true
 
 runs:
   using: "composite"
@@ -36,11 +39,11 @@ runs:
     run: sudo -E docker compose build  ${{ inputs.service }}
     working-directory: ./src
     env:
-      REGISTRY: harshaghanta
+      REGISTRY: ${{ inputs.registry_namespace }}
 
   - name: Compose Push ${{ inputs.service }}
     shell: bash
     run: sudo -E docker compose push ${{ inputs.service }}
     working-directory: ./src
     env:
-      REGISTRY: harshaghanta
+      REGISTRY: ${{ inputs.registry_namespace }}
