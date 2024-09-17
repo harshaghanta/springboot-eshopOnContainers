@@ -33,5 +33,6 @@ jobs:
         image_name: ${{ env.IMAGE }}
         registry_username: ${{ secrets.DOCKER_USERNAME }}
         registry_password: ${{ secrets.DOCKER_PASSWORD }}
+        registry_namespace: ${{ secrets.DOCKER_NAMESPACE }}
 
    
