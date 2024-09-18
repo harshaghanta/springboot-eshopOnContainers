@@ -21,6 +21,9 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+                  
+    - name: Frogbot by JFrog              
+      uses: jfrog/frogbot@v2.21.11
 
     - name: Build & publish docker images
       uses: ./.github/workflows/composite/build-push
