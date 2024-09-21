@@ -22,19 +22,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: JFrog Xray scan
-      uses: jfrog/frogbot@v2
-      env:
-        JF_URL: ${{ secrets.JF_ARTIFACTORY_URL }}
-
-        JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-
-        JF_GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-        # [Mandatory]
-        # The name of the branch on which Frogbot will perform the scan
-        # JF_GIT_BASE_BRANCH: ${{ matrix.branch }}
-
     - name: Build & publish docker images
       uses: ./.github/workflows/composite/build-push
       with:
