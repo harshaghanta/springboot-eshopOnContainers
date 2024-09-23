@@ -6,6 +6,10 @@ services:
     image: ${REGISTRY:-springeshop}/catalogapi:latest
     env_file:
     - .env
+    environment:
+      OTEL_TRACES_EXPORTER: "logging"
+      OTEL_METRICS_EXPORTER: "logging"
+      OTEL_LOGS_EXPORTER: "logging"
     depends_on:
       db:
         condition: service_healthy
@@ -38,7 +42,7 @@ services:
     build:
       context: .
       dockerfile: "DBSetup/Dockerfile"
-    image: springeshop/db:latest
+    image: ${REGISTRY:-springeshop}/db:latest
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Pass@word

@@ -53,7 +53,7 @@ COPY --from=build /src/Services/catalogapi/target/opentelemetry-javaagent.jar ./
 # ENTRYPOINT sleep 60 && java -jar catalog-api.jar
 # Sleep not working . Giving error during startup 
 # -javaagent:/opentelemetry-javaagent.jar -Dotel.traces.exporter=logging -Dotel.metrics.exporter=logging -Dotel.logs.exporter=logging
-ENTRYPOINT ["java", "-javaagent:./opentelemetry-javaagent.jar", "-Dotel.logs.exporter=logging", "-Dotel.traces.exporter=logging", "-Dotel.metrics.exporter=logging",  "-Dspring.profiles.active=dev", "-jar", "catalog-api.jar"]
+ENTRYPOINT ["java", "-javaagent:./opentelemetry-javaagent.jar", "-Dspring.profiles.active=dev", "-jar", "catalog-api.jar"]
 
 
 
