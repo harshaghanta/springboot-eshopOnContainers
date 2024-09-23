@@ -7,7 +7,8 @@ services:
     env_file:
     - .env
     environment:
-      OTEL_TRACES_EXPORTER: "logging"
+      OTEL_TRACES_EXPORTER: "jaeger"
+      OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"
       OTEL_METRICS_EXPORTER: "logging"
       OTEL_LOGS_EXPORTER: "logging"
     depends_on:
@@ -15,6 +16,8 @@ services:
         condition: service_healthy
       eventbus:
         condition: service_healthy
+      jaeger:
+        condition: service_started
     ports:
     - 8081:8080
     volumes:
@@ -220,6 +223,17 @@ services:
     networks:
     - simpbridgenetwork
 
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+    - 16686:16686
+    - 14250:14250
+    networks:
+    - simpbridgenetwork
+  
   # using Dockerfile filebeat to get around the file permission issue
   filebeat:
     build:
