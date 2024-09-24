@@ -12,9 +12,9 @@ services:
       OTEL_EXPORTER_ZIPKIN_ENDPOINT: "http://zipkin:9411/api/v2/spans"
       OTEL_METRICS_EXPORTER: "prometheus"
       OTEL_EXPORTER_PROMETHEUS_HOST: "0.0.0.0"
-      OTEL_EXPORTER_PROMETHEUS_PORT: "9464"
-      
-      OTEL_LOGS_EXPORTER: "logging"
+      OTEL_EXPORTER_PROMETHEUS_PORT: "9464"      
+      OTEL_LOGS_EXPORTER: "otlp"
+      OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: "http://collector:4317"
     depends_on:
       db:
         condition: service_healthy
@@ -268,6 +268,24 @@ services:
     depends_on:
       prometheus:
         condition: service_started
+    networks:
+    - simpbridgenetwork
+
+  loki:
+    container_name: loki
+    image: grafana/loki:latest    
+    ports:
+    - 3100:3100
+    networks:
+    - simpbridgenetwork
+
+  collector:
+    container_name: collector
+    image: otel/opentelemetry-collector-contrib:0.110.0
+    ports:
+      - 4317:4317
+    volumes:
+      - ./Monitoring/Collector/otel-collector.yml:/etc/otelcol-contrib/config.yaml
     networks:
     - simpbridgenetwork
 
