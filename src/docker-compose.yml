@@ -7,9 +7,13 @@ services:
     env_file:
     - .env
     environment:
-      OTEL_TRACES_EXPORTER: "jaeger"
+      OTEL_TRACES_EXPORTER: "jaeger,zipkin"
       OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"
-      OTEL_METRICS_EXPORTER: "logging"
+      OTEL_EXPORTER_ZIPKIN_ENDPOINT: "http://zipkin:9411/api/v2/spans"
+      OTEL_METRICS_EXPORTER: "prometheus"
+      OTEL_EXPORTER_PROMETHEUS_HOST: "0.0.0.0"
+      OTEL_EXPORTER_PROMETHEUS_PORT: "9464"
+      
       OTEL_LOGS_EXPORTER: "logging"
     depends_on:
       db:
@@ -17,6 +21,8 @@ services:
       eventbus:
         condition: service_healthy
       jaeger:
+        condition: service_started
+      zipkin:
         condition: service_started
     ports:
     - 8081:8080
@@ -233,6 +239,39 @@ services:
     - 14250:14250
     networks:
     - simpbridgenetwork
+
+  zipkin:
+    image: openzipkin/zipkin:latest
+    container_name: zipkin
+    ports:
+    - 9411:9411
+    networks:
+    - simpbridgenetwork
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    volumes:
+      - ./Monitoring/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+    - 9090:9090
+    networks:
+    - simpbridgenetwork
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    ports:
+    - 3000:3000
+    volumes:
+      - ./Monitoring/Grafana/grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasource.yml
+    depends_on:
+      prometheus:
+        condition: service_started
+    networks:
+    - simpbridgenetwork
+
+
   
   # using Dockerfile filebeat to get around the file permission issue
   filebeat:
