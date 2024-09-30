@@ -41,11 +41,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/catalog")
 @RestControllerAdvice
+@Slf4j
 public class CatalogController {
 
     private final CatalogItemRepository catalogItemRepository;
@@ -70,11 +72,15 @@ public class CatalogController {
             @RequestParam(required = false, defaultValue = "10") Integer pageSize,
             @RequestParam(required = false, name = "ids") String ids) {
 
+        log.info("Entered method getitems");
+
         if (!(ids == null || ids.isEmpty())) {
 
             List<CatalogItem> catalogItems = getCatalogItems(ids);
             if (catalogItems.isEmpty()) {
-                return ResponseEntity.badRequest().body("ids value invalid. Must be comma-separated list of numbers");
+                var message = "ids value invalid. Must be comma-separated list of numbers";
+                log.warn(message);
+                return ResponseEntity.badRequest().body(message);
             }
 
             changeUrlPlaceHolder(catalogItems);
@@ -103,6 +109,7 @@ public class CatalogController {
             return ResponseEntity.ok(catalogItem);
         }
 
+        log.error("Item with id: {} not found",id);
         return ResponseEntity.notFound().build();
 
     }
@@ -185,8 +192,10 @@ public class CatalogController {
 
         Optional<CatalogItem> catalogItem = catalogItemRepository.findById(requestedItem.getId());
         if (!catalogItem.isPresent()) {
+            var message = "Item with id " + requestedItem.getId() + " not found.";
+            log.error(message);
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Item with id " + requestedItem.getId() + " not found.");
+                    .body(message);
         }
 
         BigDecimal oldPrice = catalogItem.get().getPrice();
