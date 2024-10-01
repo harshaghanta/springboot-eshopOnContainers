@@ -1,0 +1,31 @@
+server:
+  http_listen_port: 3200
+  log_level: info
+
+distributor:
+  receivers:    
+    otlp:
+      protocols:
+        grpc:
+        http:
+    # jaeger:                            # the receives all come from the OpenTelemetry collector.  more configuration information can
+    #   protocols:                       # be found there: https://github.com/open-telemetry/opentelemetry-collector/tree/main/receiver
+    #     thrift_http:                   #
+    #     grpc:                          # for a production deployment you should only enable the receivers you need!
+    #     thrift_binary:
+    #     thrift_compact:
+    # zipkin:
+    #   protocols:
+    #     http:
+
+
+
+
+
+storage:
+  trace:
+    backend: local
+    local:
+      path: /var/tempo/blocks
+
+      

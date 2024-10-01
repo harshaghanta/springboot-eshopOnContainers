@@ -7,9 +7,10 @@ services:
     env_file:
     - .env
     environment:
-      OTEL_TRACES_EXPORTER: "jaeger,zipkin"
+      OTEL_TRACES_EXPORTER: "jaeger,zipkin,otlp"
       OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"
       OTEL_EXPORTER_ZIPKIN_ENDPOINT: "http://zipkin:9411/api/v2/spans"
+      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: "http://tempo:4317"
       OTEL_METRICS_EXPORTER: "prometheus"
       OTEL_EXPORTER_PROMETHEUS_HOST: "0.0.0.0"
       OTEL_EXPORTER_PROMETHEUS_PORT: "9464"      
@@ -255,6 +256,7 @@ services:
       - ./Monitoring/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
     - 9090:9090
+    command: ["--enable-feature=exemplar-storage"]
     networks:
     - simpbridgenetwork
 
@@ -286,6 +288,18 @@ services:
       - 4317:4317
     volumes:
       - ./Monitoring/Collector/otel-collector.yml:/etc/otelcol-contrib/config.yaml
+    networks:
+    - simpbridgenetwork
+
+  tempo:
+    container_name: tempo
+    image: grafana/tempo:2.2.2
+    ports:
+    - 4317
+    - 3200
+    command: -config.file=/etc/tempo.yml
+    volumes:
+      - ./Monitoring/Tempo/tempo.yml:/etc/tempo.yml
     networks:
     - simpbridgenetwork
 

@@ -10,7 +10,7 @@ datasources:
     basicAuth: false
     isDefault: false
     version: 1
-    editable: false
+    editable: true
     jsonData:
       httpMethod: GET
   - name: Loki
