@@ -13,6 +13,10 @@ datasources:
     editable: true
     jsonData:
       httpMethod: GET
+      exemplar: true
+      exemplarTraceIdDestinations:
+        - datasourceUid: tempo
+          name: trace_id
   - name: Loki
     type: loki
     uid: loki
@@ -22,4 +26,24 @@ datasources:
     basicAuth: false
     isDefault: false
     version: 1
-    editable: false
+    editable: true
+  - name: Tempo
+    type: tempo
+    uid: tempo
+    access: proxy
+    orgId: 1
+    url: http://tempo:3200
+    basicAuth: false
+    isDefault: false
+    version: 1
+    editable: true
+    jsonData:
+      httpMethod: GET
+      serviceMap:
+        datasourceUid: prometheus
+      tracesToLogsV2:
+        datasourceUid: loki
+        spanStartTimeShift: '-1h'
+        spanEndTimeShift: '1h'
+        filterByTraceID: true
+        tags: [ {key: 'service.name', value: 'job'} ]
