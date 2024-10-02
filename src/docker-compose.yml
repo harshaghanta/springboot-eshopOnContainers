@@ -256,7 +256,7 @@ services:
       - ./Monitoring/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
     - 9090:9090
-    command: ["--enable-feature=exemplar-storage"]
+    command: ["--config.file=/etc/prometheus/prometheus.yml", "--enable-feature=exemplar-storage"]
     networks:
     - simpbridgenetwork
 
