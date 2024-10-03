@@ -47,3 +47,38 @@ datasources:
         spanEndTimeShift: '1h'
         filterByTraceID: true
         tags: [ {key: 'service.name', value: 'job'} ]
+  - name: zipkin
+    type: zipkin
+    uid: zipkin
+    access: proxy
+    orgId: 1
+    url: http://zipkin:9411
+    basicAuth: false
+    isDefault: false
+    version: 1
+    editable: true
+    apiVersion: 1
+    jsonData:
+      tracesToLogsV2:
+        datasourceUid: loki
+        spanStartTimeShift: '-1h'
+        spanEndTimeShift: '1h'
+        filterByTraceID: true
+        tags: [ {key: 'service', value: 'job'} ]
+  - name: Jaeger
+    type: jaeger
+    uid: jaeger
+    access: proxy
+    orgId: 1
+    url: http://jaeger:16686
+    basicAuth: false
+    isDefault: false
+    version: 1
+    editable: true
+    jsonData:
+      tracesToLogsV2:
+        datasourceUid: loki
+        spanStartTimeShift: '-1h'
+        spanEndTimeShift: '1h'
+        filterByTraceID: true
+        tags: [ {key: 'service', value: 'job'} ]
