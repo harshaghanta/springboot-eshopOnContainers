@@ -10,8 +10,8 @@ eventbus:
   retryCount: ${eventbus.retryCount}
   subscriptionClientName: "Basket"
 
-# changed the port to 8080 and removed the vd keycloak as its not working for docker compose
-oauthIssuerUrl: http://keycloak:8080/realms/eshoponcontainers
+
+oauthIssuerUrl: ${issuer.url}
 
 logging:
   level:
