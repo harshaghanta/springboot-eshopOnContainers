@@ -2,7 +2,7 @@
    <img src="https://github.com/dotnet-architecture/eShopOnContainers/raw/dev/img/eshop_logo.png" alt="eShop logo" title="eShopOnContainers" align="right" height="60" />
 </a>
 
-# Spring boot sample Reference Application
+# Springboot Microservices Sample Reference Application
 
 Sample spring boot applicaton, powered by spring boot framework, based on a simplified microservices architecture and Docker containers.
 
