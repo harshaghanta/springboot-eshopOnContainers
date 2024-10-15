@@ -15,4 +15,4 @@ RUN chmod +x ./entrypoint.sh
 
 CMD /bin/bash ./entrypoint.sh
 
-HEALTHCHECK --interval=30s --timeout=30s --start-period=30s --retries=3 CMD [ "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "Pass@word", "-d", "master", "-i", "DbCheck.sql" ]
+HEALTHCHECK --interval=30s --timeout=30s --start-period=30s --retries=3 CMD [ "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", ${SA_PASSWORD}, "-d", "master", "-i", "DbCheck.sql" ]
