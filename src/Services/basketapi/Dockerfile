@@ -32,5 +32,6 @@ RUN mvn -f /src/Services/basketapi/pom.xml package -Dmaven.test.skip=true
 FROM base AS final
 WORKDIR /app
 COPY --from=build /src/Services/basketapi/target/basket-api.jar ./basket-api.jar
+COPY --from=build /src/Services/basketapi/target/opentelemetry-javaagent.jar ./opentelemetry-javaagent.jar
 
-ENTRYPOINT [ "java", "-Dspring.profiles.active=dev", "-jar", "basket-api.jar" ]
+ENTRYPOINT [ "java", "-javaagent:./opentelemetry-javaagent.jar", "-Dspring.profiles.active=dev", "-jar", "basket-api.jar" ]
