@@ -39,6 +39,7 @@ public class JedisConfig {
         poolConfig.setTestOnBorrow(true);
         poolConfig.setTestOnReturn(true);
         poolConfig.setTestWhileIdle(true);
+        poolConfig.setJmxEnabled(false);
         poolConfig.setMinEvictableIdleTimeMillis(Duration.ofSeconds(60).toMillis());
         poolConfig.setTimeBetweenEvictionRunsMillis(Duration.ofSeconds(30).toMillis());
         poolConfig.setNumTestsPerEvictionRun(3);
