@@ -13,6 +13,9 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,9 +30,9 @@ public class SecurityConfig {
     @Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-			.authorizeHttpRequests((authorize) -> authorize
-				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-				.antMatchers("/actuator/**").permitAll()
+			.authorizeHttpRequests((authorize) -> authorize				
+				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+				.requestMatchers("/actuator/**").permitAll()
 				.anyRequest().authenticated()
 			)
 			.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -38,6 +41,18 @@ public class SecurityConfig {
 			);
 		return http.build();
 	}
+
+	 @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://host.docker.internal:8080");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
+    }
 
     @Bean
 	public JwtDecoder jwtDecoder() {

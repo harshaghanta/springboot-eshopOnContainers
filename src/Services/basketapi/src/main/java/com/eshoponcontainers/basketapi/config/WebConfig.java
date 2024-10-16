@@ -6,6 +6,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.util.pattern.PathPatternParser;
 
 @Configuration
 @EnableWebMvc
@@ -20,7 +21,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
         AntPathMatcher matcher = new AntPathMatcher();
-        matcher.setCaseSensitive(false);
+        matcher.setCaseSensitive(false);        
         configurer.setPathMatcher(matcher);
+        
+        PathPatternParser patternParser = new PathPatternParser();
+        patternParser.setMatchOptionalTrailingSeparator(true); // Ignore trailing slashes
+        configurer.setPatternParser(patternParser);
     }
 }
