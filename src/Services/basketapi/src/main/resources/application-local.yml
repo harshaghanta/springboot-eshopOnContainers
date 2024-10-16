@@ -4,7 +4,7 @@ spring:
     client-name: basketapi
 
 
-basketdata.host: host.docker.internal
+basketdata.host: redis://host.docker.internal:6379
 oauthIssuerUrl: http://host.docker.internal:8095/realms/eshoponcontainers
 
 eventbus:
