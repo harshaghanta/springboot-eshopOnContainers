@@ -1,6 +1,5 @@
 package com.eshoponcontainers.basketapi;
 
-import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
 
@@ -10,6 +9,7 @@ import com.eshoponcontainers.basketapi.integrationevents.events.OrderStartedInte
 import com.eshoponcontainers.basketapi.integrationevents.events.ProductPriceChangedIntegrationEvent;
 import com.eshoponcontainers.eventbus.abstractions.EventBus;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
