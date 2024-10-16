@@ -14,7 +14,6 @@ Sample spring boot applicaton, powered by spring boot framework, based on a simp
 
 | Image | Status | Image | Status |
 | ------------- | ------------- | ------------- | ------------- |
-| Web Status |  [![Web Status](https://github.com/dotnet-architecture/eShopOnContainers/workflows/webstatus/badge.svg?branch=dev)](https://github.com/dotnet-architecture/eShopOnContainers/actions?query=workflow%3Awebstatus) | Shopping Aggregator (Web) | [![Web Shopping Aggregator](https://github.com/dotnet-architecture/eShopOnContainers/workflows/webshoppingagg/badge.svg)](https://github.com/dotnet-architecture/eShopOnContainers/actions?query=workflow%3Awebshoppingagg) |
 | Basket API | [![Basket API Build](https://github.com/harshaghanta/springboot-eshopOnContainers/actions/workflows/basket-api.yml/badge.svg)](https://github.com/harshaghanta/springboot-eshopOnContainers/actions/workflows/basket-api.yml) | Shopping Aggregator (Mobile) | [![Mobile Shopping Aggregator](https://github.com/dotnet-architecture/eShopOnContainers/workflows/mobileshoppingagg/badge.svg?branch=dev)](https://github.com/dotnet-architecture/eShopOnContainers/actions?query=workflow%3Amobileshoppingagg) |
 | Catalog API | [![Catalog API Build](https://github.com/harshaghanta/springboot-eshopOnContainers/actions/workflows/catalog-api.yml/badge.svg)](https://github.com/harshaghanta/springboot-eshopOnContainers/actions/workflows/catalog-api.yml) | WebHooks API | [![Webhooks API Build](https://github.com/harshaghanta/springboot-eshopOnContainers/actions/workflows/webhooks-api.yml/badge.svg)](https://github.com/harshaghanta/springboot-eshopOnContainers/actions/workflows/webhooks-api.yml) |
 |Identity API | [![Identity API](https://github.com/dotnet-architecture/eShopOnContainers/workflows/identity-api/badge.svg?branch=dev)](https://github.com/dotnet-architecture/eShopOnContainers/actions?query=workflow%3Aidentity-api) | Web Client (SPA) | [![Web SPA Build](https://github.com/harshaghanta/springboot-eshopOnContainers/actions/workflows/webspa.yml/badge.svg)](https://github.com/harshaghanta/springboot-eshopOnContainers/actions/workflows/webspa.yml) |
@@ -35,7 +34,7 @@ docker-compose up
 You should be able to browse different components of the application by using the below URLs :
 
 ```
-Web SPA :  http://host.docker.internal:5104/
+Web SPA :  http://host.docker.internal:8080
 ```
 
 >Note: If you are running this application in macOS then use `docker.for.mac.localhost` as DNS name in `.env` file and the above URLs instead of `host.docker.internal`.
