@@ -1,2 +1,16 @@
-# Run Microsoft SQl Server and initialization script (at the same time)
-/usr/dbscripts/db-init.sh & /opt/mssql/bin/sqlservr
+#!/bin/bash
+
+# Start SQL Server in the background
+/opt/mssql/bin/sqlservr &
+
+# Capture the PID of the SQL Server process
+SQLSERVR_PID=$!
+
+# Wait for 30 seconds to ensure SQL Server is up and running
+sleep 30s
+
+# Run the initialization script
+/usr/dbscripts/db-init.sh
+
+# Wait for the SQL Server process to finish
+wait $SQLSERVR_PID
