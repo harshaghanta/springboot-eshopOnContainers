@@ -123,6 +123,8 @@ services:
       context: .
       dockerfile: Web/WebSpa/server/Dockerfile
     image: ${REGISTRY:-springeshop}/webspa:latest
+    env_file:
+    - .env
     ports:
     - 8080:8080
     networks:
