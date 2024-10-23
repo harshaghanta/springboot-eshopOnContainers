@@ -4,7 +4,7 @@ WORKDIR /app
 EXPOSE 8080
 
 # Angular Build
-FROM node:12.0 as node-build
+FROM node:12.0 AS node-build
 WORKDIR /src
 
 COPY ./Web/WebSpa/Client/package.json .
