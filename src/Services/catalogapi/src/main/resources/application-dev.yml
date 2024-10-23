@@ -19,6 +19,7 @@ spring:
       naming.physical-strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
       naming.implicit-strategy: "org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl"
 
+allowedCorsOrigin: ${webspa.allowedCorsOrigin}
 picBaseUrl: ${catalog.picBaseUrl}
 eventbus:
   host: ${eventbus.host}
