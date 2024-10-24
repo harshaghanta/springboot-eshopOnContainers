@@ -12,6 +12,7 @@ eventbus:
   subscriptionClientName: "Ordering"
 
 oauthIssuerUrl: ${issuer.url}
+allowedCorsOrigin: ${webspa.allowedCorsOrigin}
 
 logging:
   level:
