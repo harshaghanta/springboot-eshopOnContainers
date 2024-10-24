@@ -6,6 +6,7 @@ spring:
 
 basketdata.host: redis://host.docker.internal:6379
 oauthIssuerUrl: http://host.docker.internal:8095/realms/eshoponcontainers
+allowedCorsOrigin: host.docker.internal:8080
 
 eventbus:
   host: "host.docker.internal"

@@ -27,6 +27,9 @@ public class SecurityConfig {
 	@Value("${oauthIssuerUrl}")
 	private String oauthIssuerUrl;
 
+	@Value("${allowedCorsOrigin}")
+	private String allowedCorsOrigin;
+
     @Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
@@ -47,7 +50,7 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://host.docker.internal:8080");
+        config.addAllowedOrigin(allowedCorsOrigin);
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
