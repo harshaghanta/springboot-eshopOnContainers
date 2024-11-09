@@ -68,20 +68,11 @@ services:
      context: .
      dockerfile: "DBSetup/Dockerfile"
     image: ${REGISTRY:-springeshop}/db:latest
-    # image: mcr.microsoft.com/mssql/server:2022-CU13-ubuntu-22.04
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Pass@word
-    #healthcheck:
-      #test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Pass@word -d master -i /usr/dbscripts/DbCheck.sql"]
-      #interval: 30s
-      #timeout: 30s
-      #retries: 3
-      #start_period: 120s
     ports:
     - 9133:1433
-    # volumes:
-    #   - ./DBSetup/data/:/var/opt/mssql/data/
     networks:
     - simpbridgenetwork
 
