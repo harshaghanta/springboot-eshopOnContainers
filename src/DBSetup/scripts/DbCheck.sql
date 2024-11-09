@@ -1,9 +1,11 @@
+SET nocount on;
 DECLARE @myVariable BIT;
 IF ((SELECT COUNT(1) FROM sys.databases WHERE name IN ('CatalogDB', 'OrderDB')) = 2)
 BEGIN
-    SET @myVariable = 1
+    SET @myVariable = 1    
 END
 
+-- INSERT INTO [ordering].[cardtypes]([Name]) VALUES('HealthCheckDummy');
 
 IF @myVariable = 1
 BEGIN
@@ -21,4 +23,4 @@ BEGIN
     END
 END
 
-SELECT @myVariable
+SELECT  @myVariable

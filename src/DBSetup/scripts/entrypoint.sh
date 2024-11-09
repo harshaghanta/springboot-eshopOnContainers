@@ -10,7 +10,7 @@ SQLSERVR_PID=$!
 sleep 30s
 
 # Run the initialization script
-/usr/dbscripts/db-init.sh
+/usr/src/app/db-init.sh
 
 # Wait for the SQL Server process to finish
 wait $SQLSERVR_PID
