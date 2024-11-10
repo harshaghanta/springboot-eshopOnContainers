@@ -1,69 +1,8 @@
 {
 	"folders": [
 		{
-			"path": "src\\Services\\catalogapi"
-		},
-		{
-			"path": "src\\BuildingBlocks\\EventBus\\eventbus-rabbitmq"
-		},
-		{
-			"path": "src\\BuildingBlocks\\EventBus\\integration-eventlog"
-		},
-		{
-			"name": "basketapi",
-			"path": "src/Services/basketapi"
-		},
-		{
-			"path": "src/BuildingBlocks/EventBus/eventbus"
-		},
-		{
-			"name": "orderapi",
-			"path": "src/Services/Ordering/orderapi"
-		},
-		{
-			"name": "ordering-domain",
-			"path": "src/Services/Ordering/ordering-domain"
-		},
-		{
-			"name": "ordering-infrastructure",
-			"path": "src/Services/Ordering/ordering-infrastructure"
-		},
-		{
-			"name": "server",
-			"path": "src/Web/WebSpa/server"
-		},
-		{
-			"name": "ordering-backgroundtasks",
-			"path": "src/Services/Ordering/ordering-backgroundtasks"
-		},
-		{
-			"path": "src/Web/WebSpa/Client"
-		},
-		{
-			"path": "src/Gateways/Envoy"
-		},
-		{
-			"path": "src/Keycloak"
-		},
-		{
-			"name": "ordering-notification",
-			"path": "src/Services/Ordering/ordering-notification"
-		},
-		{
-			"path": "deploy"
-		},
-		{
-			"path": ".github"
-		},
-		{
-			"path": "src/Monitoring"
-		},
-		{
-			"path": "src/DBSetup"
+			"path": "."
 		}
 	],
-	"settings": {
-		"java.configuration.updateBuildConfiguration": "automatic",
-		"java.dependency.packagePresentation": "hierarchical"
-	}
+	"settings": {}
 }
