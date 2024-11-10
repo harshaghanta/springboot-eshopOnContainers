@@ -48,6 +48,18 @@
 		{
 			"name": "ordering-notification",
 			"path": "src/Services/Ordering/ordering-notification"
+		},
+		{
+			"path": "deploy"
+		},
+		{
+			"path": ".github"
+		},
+		{
+			"path": "src/Monitoring"
+		},
+		{
+			"path": "src/DBSetup"
 		}
 	],
 	"settings": {
