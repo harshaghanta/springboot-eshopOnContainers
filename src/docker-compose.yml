@@ -125,6 +125,9 @@ services:
       context: .
       dockerfile: Web/WebSpa/server/Dockerfile
     image: ${REGISTRY:-springeshop}/webspa:latest
+    depends_on:
+      webshoppingapigw: 
+        condition: service_started
     env_file:
     - .env
     ports:
@@ -158,6 +161,9 @@ services:
     image: envoyproxy/envoy:v1.11.1
     networks:
     - simpbridgenetwork
+    depends_on:
+      catalogapi:
+        condition: service_healthy
 
   basketdata:
     image: redis:alpine
