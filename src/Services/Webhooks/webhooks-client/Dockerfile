@@ -44,6 +44,7 @@ RUN mvn -f /src/Services/Webhooks/webhooks-client/pom.xml package -Dmaven.test.s
 FROM base AS final
 WORKDIR /app
 COPY --from=build /src/Services/Webhooks/webhooks-client/target/webhooks-client.jar ./webhooks-client.jar
+COPY --from=build /src/Services/Webhooks/webhooks-client/target/opentelemetry-javaagent.jar ./opentelemetry-javaagent.jar
 
 # CMD tail -f /dev/null
 
@@ -51,7 +52,7 @@ COPY --from=build /src/Services/Webhooks/webhooks-client/target/webhooks-client.
 # ENTRYPOINT ["sh", "-c", "sleep 60 && java -jar webhooks-api.jar"]
 # ENTRYPOINT sleep 60 && java -jar webhooks-api.jar
 # Sleep not working . Giving error during startup 
-ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "webhooks-client.jar"]
+ENTRYPOINT ["java", "-javaagent:./opentelemetry-javaagent.jar","-Dspring.profiles.active=dev", "-jar", "webhooks-client.jar"]
 
 
 
