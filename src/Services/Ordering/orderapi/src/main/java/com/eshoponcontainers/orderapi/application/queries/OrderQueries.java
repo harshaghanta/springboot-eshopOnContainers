@@ -9,7 +9,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.eshoponcontainers.config.EntityManagerUtil;
+import com.eshoponcontainers.config.EntityManagerProvider;
 import com.eshoponcontainers.orderapi.application.viewModels.CardType;
 import com.eshoponcontainers.orderapi.application.viewModels.Order;
 import com.eshoponcontainers.orderapi.application.viewModels.OrderItem;
@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderQueries {
 
-    private final EntityManager entityManager;
+    private final EntityManagerProvider entityManagerProvider;
 
     public Order getOrder(int id) {
         String strQuery = """
@@ -36,7 +36,7 @@ public class OrderQueries {
                 WHERE o.Id= :orderId""";
         // EntityManager entityManager = EntityManagerUtil.getEntityManager();
         try {
-            Query query = entityManager.createNativeQuery(strQuery);
+            Query query = entityManagerProvider.getEntityManager().createNativeQuery(strQuery);
             query.setParameter("orderId", id);
             List orderData = query.getResultList();
 
@@ -44,7 +44,7 @@ public class OrderQueries {
         } catch (Exception e) {
             throw e;
         } finally {
-            // EntityManagerUtil.closeEntityManager();
+            entityManagerProvider.closeEntityManager();
         }
 
     }
@@ -89,7 +89,7 @@ public class OrderQueries {
                 GROUP BY o.[Id], o.[OrderDate], os.[Name] ORDER BY o.[Id]
                 """;
 
-        // EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        EntityManager entityManager = entityManagerProvider.getEntityManager();
         try {
             Query query = entityManager.createNativeQuery(strQuery);
             query.setParameter("userId", userId.toString());
@@ -103,7 +103,7 @@ public class OrderQueries {
         } catch (Exception e) {
             throw e;
         } finally {            
-            // EntityManagerUtil.closeEntityManager();
+            entityManagerProvider.closeEntityManager();
         }
     }
 
@@ -120,7 +120,7 @@ public class OrderQueries {
     }
 
     public List<CardType> getCardTypes() {
-        // EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        EntityManager entityManager = entityManagerProvider.getEntityManager();
         try {
             Query query = entityManager.createNativeQuery("SELECT Id, Name FROM [ordering].[cardtypes]",
                     CardType.class);
@@ -128,7 +128,7 @@ public class OrderQueries {
         } catch (Exception e) {
             throw e;
         } finally {
-            // EntityManagerUtil.closeEntityManager();
+            entityManagerProvider.closeEntityManager();
         }
     }
 
