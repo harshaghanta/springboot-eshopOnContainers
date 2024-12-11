@@ -18,7 +18,7 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
 
-    <spring.version>5.3.31</spring.version>
+    <spring.version>6.1.15</spring.version>
     <hibernate.version>6.3.0.Final</hibernate.version>
   </properties>
 
@@ -64,7 +64,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-      <version>6.1.2</version>
+      <version>${spring.version}</version>
     </dependency>
 
     <dependency>
