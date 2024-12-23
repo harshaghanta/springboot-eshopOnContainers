@@ -1,9 +1,11 @@
 spring:
   application:
     name: catalog-api
-  profiles.active: dev
+  profiles.active: local
   jpa:
     hibernate:
       ddl-auto: update
       naming.physical-strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
       naming.implicit-strategy: "org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl"
+
+allowedCorsOrigin: "*"
