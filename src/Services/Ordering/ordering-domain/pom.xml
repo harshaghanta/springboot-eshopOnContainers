@@ -28,7 +28,7 @@
     <dependency>
       <groupId>net.sizovs</groupId>
       <artifactId>pipelinr</artifactId>
-      <version>0.8</version>
+      <version>0.9</version>
     </dependency>
 
   </dependencies>
