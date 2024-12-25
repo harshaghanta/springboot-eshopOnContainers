@@ -23,7 +23,7 @@ jobs:
           [
             {
               "id": "github",
-              "username": "${{ secrets.GIT_USERNAME }}",
+              "username": "${{ github.actor }}",
               "password": "${{ secrets.GIT_TOKEN }}"
             }
           ]
