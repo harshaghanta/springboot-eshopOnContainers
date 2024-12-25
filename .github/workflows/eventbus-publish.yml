@@ -23,8 +23,8 @@ jobs:
           [
             {
               "id": "github",
-              "username": "${{ secrets.GITHUB_USERNAME }}",
-              "password": "${{ secrets.GITHUB_TOKEN }}"
+              "username": "${{ secrets.GIT_USERNAME }}",
+              "password": "${{ secrets.GIT_TOKEN }}"
             }
           ]
     - name: Setup JDK 17
