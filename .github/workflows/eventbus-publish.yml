@@ -40,5 +40,5 @@ jobs:
       run: mvn -B package -f src/BuildingBlocks/EventBus/eventbus/pom.xml
 
     - name: Publish to GitHub Packages
-      run: mvn -B deploy -DaltDeploymentRepository=github -f src/BuildingBlocks/EventBus/eventbus/pom.xml
+      run: mvn -B deploy -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/${{ secrets.GIT_USERNAME }}/springboot-eshopOnContainers -f src/BuildingBlocks/EventBus/eventbus/pom.xml
 
