@@ -17,6 +17,16 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - uses: s4u/maven-settings-action@v3.1.0
+      with:
+        servers: |
+          [
+            {
+              "id": "github",
+              "username": "${{ secrets.GITHUB_USERNAME }}",
+              "password": "${{ secrets.GITHUB_TOKEN }}"
+            }
+          ]
     - name: Setup JDK 17
       uses: actions/setup-java@v3
       with:
@@ -28,4 +38,7 @@ jobs:
 
     - name: Build & Package
       run: mvn -B package -f src/BuildingBlocks/EventBus/eventbus/pom.xml
+
+    - name: Publish to GitHub Packages
+      run: mvn -B deploy -f src/BuildingBlocks/EventBus/eventbus/pom.xml
 
