@@ -1,0 +1,31 @@
+name: "Build and publish eventbus to github packages"
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+    paths:
+    - src/BuildingBlocks/EventBus/eventbus/**
+    - .github/workflows/eventbus-publish.yml
+
+jobs:
+  BuildEventBus:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'corretto'
+        java-version: '17'
+
+    - name: Unit Tests
+      run: mvn -B test -f src/BuildingBlocks/EventBus/eventbus/pom.xml
+
+    - name: Build & Package
+      run: mvn -B package -f src/BuildingBlocks/EventBus/eventbus/pom.xml
+
