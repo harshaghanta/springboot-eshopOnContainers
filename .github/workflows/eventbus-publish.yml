@@ -6,7 +6,7 @@ on:
       - main
 
     paths:
-    - src/BuildingBlocks/EventBus/eventbus/**
+    - src/BuildingBlocks/EventBus/**
     - .github/workflows/eventbus-publish.yml
 
 jobs:
@@ -41,12 +41,30 @@ jobs:
             }
           ]
 
-    - name: Unit Tests
+    - name: Run Eventbus Unit Tests
       run: mvn -B test -f src/BuildingBlocks/EventBus/eventbus/pom.xml
 
-    - name: Build & Package
+    - name: Package Eventbus
       run: mvn -B package -f src/BuildingBlocks/EventBus/eventbus/pom.xml
 
-    - name: Publish to GitHub Packages
-      run: mvn -X deploy  -f src/BuildingBlocks/EventBus/eventbus/pom.xml
+    - name: Publish EventBus
+      run: mvn -B deploy -f src/BuildingBlocks/EventBus/eventbus/pom.xml
+
+    - name: Run Eventbus-RabbitMQ  Unit Tests
+      run: mvn -B test -f src/BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml
+
+    - name: Package Eventbus-RabbitMQ 
+      run: mvn -B package -f src/BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml
+
+    - name: Publish EventBus-RabbitMQ 
+      run: mvn -B deploy -f src/BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml
+
+    - name: Run Integration-EventLog Unit Tests
+      run: mvn -B test -f src/BuildingBlocks/EventBus/integration-eventlog/pom.xml
+
+    - name: Package Integration-EventLog
+      run: mvn -B package -f src/BuildingBlocks/EventBus/integration-eventlog/pom.xml
+
+    - name: Publish Integration-EventLog
+      run: mvn -B deploy -f src/BuildingBlocks/EventBus/integration-eventlog/pom.xml
 
