@@ -4,14 +4,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.6</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<groupId>com.eshoponcontainers</groupId>
+		<artifactId>parent-pom</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>com.eshoponcontainers</groupId>
 	<artifactId>basketapi</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>basketapi</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -66,7 +64,7 @@
 
 		<dependency>
 			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>			
+			<artifactId>jedis</artifactId>
 		</dependency>
 
 		<dependency>
@@ -96,23 +94,23 @@
 				</configuration>
 			</plugin>
 			<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-opentelemetry-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeArtifactIds>opentelemetry-javaagent</includeArtifactIds>
-                            <outputDirectory>${project.build.directory}</outputDirectory>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-opentelemetry-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<includeArtifactIds>opentelemetry-javaagent</includeArtifactIds>
+							<outputDirectory>${project.build.directory}</outputDirectory>
 							<stripVersion>true</stripVersion>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 		<finalName>basket-api</finalName>
 	</build>
