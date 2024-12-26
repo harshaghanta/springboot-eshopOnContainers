@@ -22,7 +22,7 @@
     <repository>
       <id>github</id>
       <name>github</name>      
-      <url>https://maven.pkg.github.com/harshaghanta/springboot-eshopOnContainers</url>
+      <url>https://maven.pkg.github.com/harshaghanta/mvnrepository</url>
     </repository>
   </distributionManagement>
 
