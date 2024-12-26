@@ -33,7 +33,7 @@ jobs:
               "password": "${{ secrets.GIT_TOKEN }}"
             }
           ]
-          repositories: |
+        repositories: |
           [
             {
               "id": "github",
