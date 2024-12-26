@@ -33,6 +33,13 @@ jobs:
               "password": "${{ secrets.GIT_TOKEN }}"
             }
           ]
+          repositories: |
+          [
+            {
+              "id": "github",
+              "url": "https://maven.pkg.github.com/${{ github.actor }}/springboot-eshopOnContainers"
+            }
+          ]
 
     - name: Unit Tests
       run: mvn -B test -f src/BuildingBlocks/EventBus/eventbus/pom.xml
