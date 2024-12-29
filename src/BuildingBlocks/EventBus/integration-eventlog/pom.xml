@@ -3,13 +3,17 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.eshoponcontainers</groupId>
     <artifactId>integration-eventlog</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <parent>
+        <groupId>com.eshoponcontainers</groupId>
+        <artifactId>parent-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>        
+    </parent>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <hibernate.version>6.4.4.Final</hibernate.version>
-        <spring.version>5.3.31</spring.version>
+        <spring.version>6.1.15</spring.version>
     </properties>
     <dependencies>
         <dependency>
@@ -27,7 +31,7 @@
           <dependency>
             <groupId>com.eshoponcontainers.eventbus</groupId>
             <artifactId>eventbus</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>

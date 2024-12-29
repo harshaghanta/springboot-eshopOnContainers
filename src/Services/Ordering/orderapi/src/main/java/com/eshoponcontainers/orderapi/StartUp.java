@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.eshoponcontainers.config.EntityManagerUtil;
+import com.eshoponcontainers.config.EntityManagerProvider;
 import com.eshoponcontainers.eventbus.abstractions.EventBus;
 import com.eshoponcontainers.orderapi.application.integrationEvents.eventHandlers.GracePeriodConfirmedIntegrationEventHandler;
 import com.eshoponcontainers.orderapi.application.integrationEvents.eventHandlers.OrderPaymentFailedIntegrationEventHandler;

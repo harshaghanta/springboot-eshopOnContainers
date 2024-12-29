@@ -44,6 +44,7 @@ RUN mvn -f /src/Services/Payment/paymentapi/pom.xml package -Dmaven.test.skip=tr
 FROM base AS final
 WORKDIR /app
 COPY --from=build /src/Services/Payment/paymentapi/target/paymentapi.jar ./paymentapi.jar
+COPY --from=build /src/Services/Payment/paymentapi/target/opentelemetry-javaagent.jar ./opentelemetry-javaagent.jar
 
 # CMD tail -f /dev/null
 
@@ -51,7 +52,7 @@ COPY --from=build /src/Services/Payment/paymentapi/target/paymentapi.jar ./payme
 # ENTRYPOINT ["sh", "-c", "sleep 60 && java -jar webhooks-api.jar"]
 # ENTRYPOINT sleep 60 && java -jar webhooks-api.jar
 # Sleep not working . Giving error during startup 
-ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "paymentapi.jar"]
+ENTRYPOINT ["java", "-javaagent:./opentelemetry-javaagent.jar", "-Dspring.profiles.active=dev", "-jar", "paymentapi.jar"]
 
 
 

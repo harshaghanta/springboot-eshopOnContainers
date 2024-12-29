@@ -6,13 +6,12 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.eshoponcontainers.config.EntityManagerUtil;
+import com.eshoponcontainers.config.EntityManagerProvider;
 import com.eshoponcontainers.context.DomainContext;
 import com.eshoponcontainers.seedWork.IUnitOfWork;
 
 import an.awesome.pipelinr.Notification;
 import an.awesome.pipelinr.Pipeline;
-import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -23,7 +22,7 @@ public class UnitOfWork implements IUnitOfWork {
     // @PersistenceContext
     
     @Autowired
-    private EntityManager entityManager;
+    private EntityManagerProvider entityManagerProvider;
 
     @Autowired
     private Pipeline pipeline;
@@ -47,7 +46,7 @@ public class UnitOfWork implements IUnitOfWork {
             //NOTE: Needed as there are places where in persist or update are not called 
             // in the entitymanager. and this flush will trigger the domainevent collection
             // which is needed for triggering domainevents 
-            entityManager.flush();
+            entityManagerProvider.getEntityManager().flush();
             // EntityManagerUtil.getEntityManager().flush();
             //With out flush call BuyerAndPaymentMethodVerifiedDomainEvent is not captured
             //Added Cascade Persist and remove for Buyer

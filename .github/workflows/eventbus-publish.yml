@@ -1,0 +1,70 @@
+name: "Build and publish eventbus to github packages"
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+    paths:
+    - src/BuildingBlocks/EventBus/**
+    - .github/workflows/eventbus-publish.yml
+
+jobs:
+  BuildEventBus:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Setup JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'corretto'
+        java-version: '17'
+
+    - uses: s4u/maven-settings-action@v3.1.0
+      with:
+        servers: |
+          [
+            {
+              "id": "github",
+              "username": "${{ github.actor }}",
+              "password": "${{ secrets.GIT_TOKEN }}"
+            }
+          ]
+        repositories: |
+          [
+            {
+              "id": "github",
+              "url": "https://maven.pkg.github.com/${{ github.actor }}/mvnrepository"
+            }
+          ]
+
+    - name: Run Eventbus Unit Tests
+      run: mvn -B test -f src/BuildingBlocks/EventBus/eventbus/pom.xml
+
+    - name: Package Eventbus
+      run: mvn -B package -f src/BuildingBlocks/EventBus/eventbus/pom.xml
+
+    - name: Publish EventBus
+      run: mvn -B deploy -f src/BuildingBlocks/EventBus/eventbus/pom.xml
+
+    - name: Run Eventbus-RabbitMQ  Unit Tests
+      run: mvn -B test -f src/BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml
+
+    - name: Package Eventbus-RabbitMQ 
+      run: mvn -B package -f src/BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml
+
+    - name: Publish EventBus-RabbitMQ 
+      run: mvn -B deploy -f src/BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml
+
+    - name: Run Integration-EventLog Unit Tests
+      run: mvn -B test -f src/BuildingBlocks/EventBus/integration-eventlog/pom.xml
+
+    - name: Package Integration-EventLog
+      run: mvn -B package -f src/BuildingBlocks/EventBus/integration-eventlog/pom.xml
+
+    - name: Publish Integration-EventLog
+      run: mvn -B deploy -f src/BuildingBlocks/EventBus/integration-eventlog/pom.xml
+

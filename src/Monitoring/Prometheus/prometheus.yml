@@ -9,5 +9,35 @@ scrape_configs:
     metrics_path: /metrics
     scheme: http
     static_configs:
-      - targets: 
+      - targets:
           - catalog-api:9464
+        labels:
+          application: catalog-api
+      - targets:
+          - basket-api:9464
+        labels:
+          application: basket-api
+      - targets:
+          - ordering-api:9464
+        labels:
+          application: ordering-api
+      - targets:
+          - ordering-backgroundtasks:9464
+        labels:
+          application: ordering-backgroundtasks
+      - targets:
+          - webspa:9464
+        labels:
+          application: webspa
+      - targets:
+          - webhooks-api:9464
+        labels:
+          application: webhooks-api
+      - targets:
+          - webhooks-client:9464
+        labels:
+          application: webhooks-client
+      - targets:
+          - payment-api:9464
+        labels:
+          application: payment-api

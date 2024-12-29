@@ -97,6 +97,16 @@ services:
     image: ${REGISTRY:-springeshop}/orderingapi:latest
     env_file:
     - .env
+    environment:
+      OTEL_TRACES_EXPORTER: "jaeger"
+      OTEL_SERVICE_NAME: "ordering-api"
+      OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"
+      OTEL_METRICS_EXPORTER: "prometheus"
+      OTEL_EXPORTER_PROMETHEUS_HOST: "0.0.0.0"
+      OTEL_EXPORTER_PROMETHEUS_PORT: "9464"
+      OTEL_LOGS_EXPORTER: "otlp"
+      OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: "http://collector:4317"
+      SERVER_SERVLET_CONTEXT_PATH: "/ordering-api"
     depends_on:
       db:
         condition: service_healthy
@@ -113,6 +123,15 @@ services:
     image: ${REGISTRY:-springeshop}/orderingbackgroundtasks:latest
     env_file:
     - .env
+    environment:
+      OTEL_TRACES_EXPORTER: "jaeger"
+      OTEL_SERVICE_NAME: "ordering-backgroundtasks"
+      OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"
+      OTEL_METRICS_EXPORTER: "prometheus"
+      OTEL_EXPORTER_PROMETHEUS_HOST: "0.0.0.0"
+      OTEL_EXPORTER_PROMETHEUS_PORT: "9464"
+      OTEL_LOGS_EXPORTER: "otlp"
+      OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: "http://collector:4317"
     depends_on:
       db:
         condition: service_healthy
@@ -130,6 +149,15 @@ services:
         condition: service_started
     env_file:
     - .env
+    environment:
+      OTEL_TRACES_EXPORTER: "jaeger"
+      OTEL_SERVICE_NAME: "webspa"
+      OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"
+      OTEL_METRICS_EXPORTER: "prometheus"
+      OTEL_EXPORTER_PROMETHEUS_HOST: "0.0.0.0"
+      OTEL_EXPORTER_PROMETHEUS_PORT: "9464"
+      OTEL_LOGS_EXPORTER: "otlp"
+      OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: "http://collector:4317"
     ports:
     - 8080:8080
     networks:
@@ -177,6 +205,15 @@ services:
     image: ${REGISTRY:-springeshop}/webhooksapi:latest
     env_file:
     - .env
+    environment:
+      OTEL_TRACES_EXPORTER: "jaeger"
+      OTEL_SERVICE_NAME: "webhooks-api"
+      OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"
+      OTEL_METRICS_EXPORTER: "prometheus"
+      OTEL_EXPORTER_PROMETHEUS_HOST: "0.0.0.0"
+      OTEL_EXPORTER_PROMETHEUS_PORT: "9464"
+      OTEL_LOGS_EXPORTER: "otlp"
+      OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: "http://collector:4317"
     depends_on:
       db:
         condition: service_healthy
@@ -193,6 +230,15 @@ services:
     image: ${REGISTRY:-springeshop}/webhooksclient:latest
     env_file:
     - .env
+    environment:
+      OTEL_TRACES_EXPORTER: "jaeger"
+      OTEL_SERVICE_NAME: "webhooks-api"
+      OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"
+      OTEL_METRICS_EXPORTER: "prometheus"
+      OTEL_EXPORTER_PROMETHEUS_HOST: "0.0.0.0"
+      OTEL_EXPORTER_PROMETHEUS_PORT: "9464"
+      OTEL_LOGS_EXPORTER: "otlp"
+      OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: "http://collector:4317"
     depends_on:
       keycloak:
         condition: service_healthy
@@ -207,6 +253,15 @@ services:
     image: ${REGISTRY:-springeshop}/paymentapi:latest
     env_file:
     - .env
+    environment:
+      OTEL_TRACES_EXPORTER: "jaeger"
+      OTEL_SERVICE_NAME: "payment-api"
+      OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"
+      OTEL_METRICS_EXPORTER: "prometheus"
+      OTEL_EXPORTER_PROMETHEUS_HOST: "0.0.0.0"
+      OTEL_EXPORTER_PROMETHEUS_PORT: "9464"
+      OTEL_LOGS_EXPORTER: "otlp"
+      OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: "http://collector:4317"
     depends_on:      
       eventbus:
         condition: service_healthy

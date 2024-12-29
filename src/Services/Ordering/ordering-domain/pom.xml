@@ -22,13 +22,13 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.22</version>
+      <version>1.18.36</version>
     </dependency>
 
     <dependency>
       <groupId>net.sizovs</groupId>
       <artifactId>pipelinr</artifactId>
-      <version>0.8</version>
+      <version>0.9</version>
     </dependency>
 
   </dependencies>

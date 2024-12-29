@@ -5,7 +5,7 @@ import java.util.UUID;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import com.eshoponcontainers.config.EntityManagerUtil;
+import com.eshoponcontainers.config.EntityManagerProvider;
 import com.eshoponcontainers.orderapi.application.integrationEvents.OrderingIntegrationEventService;
 import com.eshoponcontainers.orderapi.services.TransactionContext;
 
@@ -21,14 +21,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class TransactionBehavior implements Command.Middleware {
 
-    private final EntityManager entityManager;
+    private final EntityManagerProvider entityManagerProvider;
     private final OrderingIntegrationEventService orderingIntegrationEventService;
 
     @Override
     public <R, C extends Command<R>> R invoke(C command, Next<R> next) {
         log.info("Entering transaction behavior for command: {}", command.getClass().getSimpleName());
         var className = command.getClass().getSimpleName();
-        // EntityManager entityManager = EntityManagerUtil.getEntityManager();
+        EntityManager entityManager = entityManagerProvider.getEntityManager();
         log.info("EntityManager hashcode: {} in TransactionBehavior", entityManager.hashCode());
         EntityTransaction transaction = entityManager.getTransaction();
         R response = null;
@@ -60,12 +60,7 @@ public class TransactionBehavior implements Command.Middleware {
                 log.info("----- rollback transaction {} for {} ",transactionId, className);
             }
             //cleanup entity manager
-            // if(entityManager != null && entityManager.isOpen()) {
-                // entityManager.close();
-                // EntityManagerUtil.closeEntityManager();
-            // }
-                
-
+            entityManagerProvider.closeEntityManager();
         }
         return response;
     }
