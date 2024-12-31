@@ -23,6 +23,9 @@ inputs:
   registry_namespace:
     description: 'namespace for the docker registry'
     required: true
+  git_token:
+    description: 'Github token'
+    required: true
 
 runs:
   using: "composite"
@@ -41,7 +44,7 @@ runs:
           {
             "id": "github",
             "username": "${{ github.actor }}",
-            "password": "${{ secrets.GIT_TOKEN }}"
+            "password": "${{ inputs.git_token }}"
           }
         ]
       repositories: |
