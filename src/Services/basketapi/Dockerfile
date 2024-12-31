@@ -17,6 +17,8 @@ WORKDIR /src
 COPY ./Services/basketapi/pom.xml /src/Services/basketapi/pom.xml
 # ENV MAVEN_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
 
+COPY ~/.m2/settings.xml ~/.m2/settings.xml
+
 COPY . .
 
 # RUN mvn dependency:go-offline
