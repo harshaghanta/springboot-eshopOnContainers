@@ -7,11 +7,14 @@ EXPOSE 8080
 FROM  maven:3.8.4-openjdk-17-slim AS build
 WORKDIR /src
 
+# Set Maven options
+# ENV MAVEN_OPTS="-Drepo.url=https://maven.pkg.github.com/your-github-username/your-repo -Drepo.username=${GITHUB_ACTOR} -Drepo.password=${GITHUB_TOKEN}"
+
 #COPY ALL POM FILES OF DEPENDENT PROJECTS
 # COPY ./BuildingBlocks/EventBus/eventbus/pom.xml /src/BuildingBlocks/EventBus/eventbus/pom.xml
 # COPY ./BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml /src/BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml
 # COPY ./BuildingBlocks/EventBus/integration-eventlog/pom.xml /src/BuildingBlocks/EventBus/integration-eventlog/pom.xml
-COPY ./Services/catalogapi/pom.xml /src/Services/catalogapi/pom.xml
+COPY ./Services/basketapi/pom.xml /src/Services/basketapi/pom.xml
 # ENV MAVEN_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
 
 COPY . .
