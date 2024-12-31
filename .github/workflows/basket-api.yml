@@ -6,7 +6,6 @@ on:
       - main
 
     paths:
-    - src/BuildingBlocks/**
     - src/Services/basketapi/**
     - .github/workflows/basket-api.yml
 
