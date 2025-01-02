@@ -54,6 +54,9 @@ runs:
             "url": "https://maven.pkg.github.com/${{ github.actor }}/mvnrepository"
           }
         ]  
+  - name: Copy Settings.xml to Src
+    shell: bash
+    run: sudo cp ~/.m2/settings.xml ./src/settings.xml
   - name: Login to registry
     uses: docker/login-action@v2
     with:
