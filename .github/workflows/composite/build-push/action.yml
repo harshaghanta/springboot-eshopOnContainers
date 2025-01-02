@@ -62,7 +62,7 @@ runs:
     shell: bash
     run: cat ./src/settings.xml
   
-    - name: Login to registry
+  - name: Login to registry
     uses: docker/login-action@v2
     with:
       registry: ${{ inputs.registry_host }}
