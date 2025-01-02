@@ -8,6 +8,7 @@ on:
     paths:
     - src/Services/basketapi/**
     - .github/workflows/basket-api.yml
+    - .github/workflows/composite/build-push/**
 
 env:
   SERVICE: basket-api

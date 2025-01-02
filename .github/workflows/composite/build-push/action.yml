@@ -57,7 +57,12 @@ runs:
   - name: Copy Settings.xml to Src
     shell: bash
     run: sudo cp ~/.m2/settings.xml ./src/settings.xml
-  - name: Login to registry
+  
+  - name: Print Settings.xml Content
+    shell: bash
+    run: cat ./src/settings.xml
+  
+    - name: Login to registry
     uses: docker/login-action@v2
     with:
       registry: ${{ inputs.registry_host }}
