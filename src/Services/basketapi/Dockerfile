@@ -17,9 +17,9 @@ WORKDIR /src
 COPY ./Services/basketapi/pom.xml /src/Services/basketapi/pom.xml
 # ENV MAVEN_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
 
-COPY /home/runner/.m2/settings.xml ./settings.xml
+# COPY /home/runner/.m2/settings.xml ./settings.xml
 
-COPY /home/runner/.m2/settings.xml ~/.m2/settings.xml
+# COPY /home/runner/.m2/settings.xml ~/.m2/settings.xml
 
 COPY . .
 
@@ -34,7 +34,7 @@ COPY . .
 # RUN mvn -f /src/BuildingBlocks/EventBus/integration-eventlog/pom.xml install -Dmaven.test.skip=true
 
 # RUN mvn -f /src/Services/basketapi/pom.xml dependency:go-offline
-RUN mvn -f /src/Services/basketapi/pom.xml package -Dmaven.test.skip=true
+RUN mvn -f /src/Services/basketapi/pom.xml -s /src/settings.xml package -Dmaven.test.skip=true 
 
 FROM base AS final
 WORKDIR /app
