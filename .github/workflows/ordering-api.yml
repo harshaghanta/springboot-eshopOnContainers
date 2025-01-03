@@ -6,7 +6,6 @@ on:
       - main
 
     paths:
-    - src/BuildingBlocks/**
     - src/Services/Ordering/orderapi/**
     - src/Services/Ordering/ordering-domain/**
     - src/Services/Ordering/ordering-infrastructure/**

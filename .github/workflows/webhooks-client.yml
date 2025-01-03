@@ -6,7 +6,6 @@ on:
       - main
 
     paths:
-      - src/BuildingBlocks/**
       - src/Services/Webhooks/webhooks-client/**
       - .github/workflows/webhooks-client.yml
 

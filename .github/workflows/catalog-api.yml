@@ -6,7 +6,6 @@ on:
       - main
 
     paths:
-    - src/BuildingBlocks/**
     - src/Services/catalogapi/**
     - .github/workflows/catalog-api.yml
 

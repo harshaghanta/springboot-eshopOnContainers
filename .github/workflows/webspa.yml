@@ -6,7 +6,6 @@ on:
       - main
 
     paths:
-    - src/BuildingBlocks/**
     - src/Web/WebSPA/**    
     - .github/workflows/webspa.yml
 
