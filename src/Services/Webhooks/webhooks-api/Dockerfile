@@ -8,26 +8,26 @@ FROM  maven:3.8.4-openjdk-17-slim AS build
 WORKDIR /src
 
 #COPY ALL POM FILES OF DEPENDENT PROJECTS
-COPY ./BuildingBlocks/EventBus/eventbus/pom.xml /src/BuildingBlocks/EventBus/eventbus/pom.xml
-COPY ./BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml /src/BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml
-COPY ./BuildingBlocks/EventBus/integration-eventlog/pom.xml /src/BuildingBlocks/EventBus/integration-eventlog/pom.xml
+# COPY ./BuildingBlocks/EventBus/eventbus/pom.xml /src/BuildingBlocks/EventBus/eventbus/pom.xml
+# COPY ./BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml /src/BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml
+# COPY ./BuildingBlocks/EventBus/integration-eventlog/pom.xml /src/BuildingBlocks/EventBus/integration-eventlog/pom.xml
 COPY ./Services/Webhooks/webhooks-api/pom.xml /src/Services/Webhooks/webhooks-api/pom.xml
 # ENV MAVEN_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
 
 COPY . .
 
 # RUN mvn dependency:go-offline
-RUN mvn -f /src/BuildingBlocks/EventBus/eventbus/pom.xml dependency:go-offline
-RUN mvn -f /src/BuildingBlocks/EventBus/eventbus/pom.xml install -Dmaven.test.skip=true
+# RUN mvn -f /src/BuildingBlocks/EventBus/eventbus/pom.xml dependency:go-offline
+# RUN mvn -f /src/BuildingBlocks/EventBus/eventbus/pom.xml install -Dmaven.test.skip=true
 
-RUN mvn -f /src/BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml dependency:go-offline
-RUN mvn -f /src/BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml install -Dmaven.test.skip=true
+# RUN mvn -f /src/BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml dependency:go-offline
+# RUN mvn -f /src/BuildingBlocks/EventBus/eventbus-rabbitmq/pom.xml install -Dmaven.test.skip=true
 
-RUN mvn -f /src/BuildingBlocks/EventBus/integration-eventlog/pom.xml dependency:go-offline
-RUN mvn -f /src/BuildingBlocks/EventBus/integration-eventlog/pom.xml install -Dmaven.test.skip=true
+# RUN mvn -f /src/BuildingBlocks/EventBus/integration-eventlog/pom.xml dependency:go-offline
+# RUN mvn -f /src/BuildingBlocks/EventBus/integration-eventlog/pom.xml install -Dmaven.test.skip=true
 
-RUN mvn -f /src/Services/Webhooks/webhooks-api/pom.xml dependency:go-offline
-RUN mvn -f /src/Services/Webhooks/webhooks-api/pom.xml package -Dmaven.test.skip=true
+# RUN mvn -f /src/Services/Webhooks/webhooks-api/pom.xml dependency:go-offline
+RUN mvn -f /src/Services/Webhooks/webhooks-api/pom.xml -s /src/settings.xml package -Dmaven.test.skip=true
 
 # WORKDIR /src/BuildingBlocks/EventBus/eventbus
 # RUN mvn clean install -Dmaven.test.skip=true

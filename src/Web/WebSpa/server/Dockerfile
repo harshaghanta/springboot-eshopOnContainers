@@ -26,11 +26,11 @@ COPY . .
 
 
 # RUN mvn dependency:go-offline
-RUN mvn -f /src/Web/WebSpa/server/pom.xml dependency:go-offline
+# RUN mvn -f /src/Web/WebSpa/server/pom.xml dependency:go-offline
 # Copy angular build output to main/resources/public
 COPY --from=node-build /src/Web/WebSpa/Client/dist/webspa /src/Web/WebSpa/server/src/main/resources/public
 
-RUN mvn -f /src/Web/WebSpa/server/pom.xml package -Dmaven.test.skip=true
+RUN mvn -f /src/Web/WebSpa/server/pom.xml -s /src/settings.xml package -Dmaven.test.skip=true
 
 # WORKDIR /src/BuildingBlocks/EventBus/eventbus
 # RUN mvn clean install -Dmaven.test.skip=true
