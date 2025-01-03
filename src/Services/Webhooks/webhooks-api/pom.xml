@@ -6,7 +6,6 @@
 		<groupId>com.eshoponcontainers</groupId>
 		<artifactId>base-pom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.eshoponcontainers</groupId>
 	<artifactId>webhooks-api</artifactId>
