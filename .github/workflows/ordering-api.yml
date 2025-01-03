@@ -34,5 +34,5 @@ jobs:
         registry_username: ${{ secrets.DOCKER_USERNAME }}
         registry_password: ${{ secrets.DOCKER_PASSWORD }}
         registry_namespace: ${{ secrets.DOCKER_NAMESPACE }}
-
+        git_token: ${{ secrets.GIT_TOKEN }}
    
