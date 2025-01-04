@@ -57,7 +57,6 @@
 		<dependency>
 			<groupId>io.opentelemetry.javaagent</groupId>
 			<artifactId>opentelemetry-javaagent</artifactId>
-			<version>2.10.0</version>
 		</dependency>
 		
 	</dependencies>
