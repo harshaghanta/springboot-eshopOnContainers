@@ -20,7 +20,7 @@ services:
       OTEL_EXPORTER_PROMETHEUS_HOST: "0.0.0.0"
       OTEL_EXPORTER_PROMETHEUS_PORT: "9464"
       OTEL_LOGS_EXPORTER: "otlp"
-      OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: "http://collector:4317"
+      OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: "http://collector:4318"
     depends_on:
       db:
         condition: service_healthy
@@ -359,7 +359,8 @@ services:
     container_name: collector
     image: otel/opentelemetry-collector-contrib:0.110.0
     ports:
-      - 4317
+      - 4317:4317
+      - 4318:4318
     volumes:
       - ./Monitoring/Collector/otel-collector.yml:/etc/otelcol-contrib/config.yaml
     networks:
