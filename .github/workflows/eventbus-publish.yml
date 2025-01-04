@@ -41,6 +41,9 @@ jobs:
             }
           ]
 
+    - name: Publish Parent-POM
+      run: mvn -B deploy -f src/BuildingBlocks/parent-pom/pom.xml
+    
     - name: Run Eventbus Unit Tests
       run: mvn -B test -f src/BuildingBlocks/EventBus/eventbus/pom.xml
 
