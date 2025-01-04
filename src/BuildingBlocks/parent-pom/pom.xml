@@ -27,5 +27,15 @@
 		</repository>
 	</distributionManagement>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.opentelemetry.javaagent</groupId>
+				<artifactId>opentelemetry-javaagent</artifactId>
+				<version>1.24.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 
 </project>
