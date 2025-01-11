@@ -47,6 +47,10 @@ scrape_configs:
     scheme: http
     static_configs:
       - targets:
-          - basket-api:8080
+          - testspringboot:8080
+        labels:
+          application: testspringboot
+      - targets:
+          - basket-api:8080/basket-api
         labels:
           application: basket-api
