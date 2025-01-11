@@ -41,3 +41,12 @@ scrape_configs:
           - payment-api:9464
         labels:
           application: payment-api
+  - job_name: 'otel_prometheus_exporter'
+    honor_timestamps: true
+    metrics_path: /actuator/prometheus
+    scheme: http
+    static_configs:
+      - targets:
+          - basket-api:8080
+        labels:
+          application: basket-api

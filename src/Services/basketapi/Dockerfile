@@ -39,6 +39,9 @@ RUN mvn -f /src/Services/basketapi/pom.xml -s /src/settings.xml package -Dmaven.
 FROM base AS final
 WORKDIR /app
 COPY --from=build /src/Services/basketapi/target/basket-api.jar ./basket-api.jar
-COPY --from=build /src/Services/basketapi/target/opentelemetry-javaagent.jar ./opentelemetry-javaagent.jar
 
-ENTRYPOINT [ "java", "-javaagent:./opentelemetry-javaagent.jar", "-Dspring.profiles.active=dev", "-jar", "basket-api.jar" ]
+# Below step is needed incase we want to use opentelemetry agent for instrumentation
+# COPY --from=build /src/Services/basketapi/target/opentelemetry-javaagent.jar ./opentelemetry-javaagent.jar
+
+# Add  "-javaagent:./opentelemetry-javaagent.jar" to the ENTRYPOINT command to enable opentelemetry agent
+ENTRYPOINT [ "java", "-Dspring.profiles.active=dev", "-jar", "basket-api.jar" ]

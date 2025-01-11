@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: basket-api
   profiles:
     active:
     - dev
@@ -9,6 +11,16 @@ logging:
 
 #enable management endpoints
 management:
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server: 
+            requests: true
+  tracing:
+    sampling:
+      probability: 1.0
+        
   endpoints:
     web:
       exposure:
@@ -16,11 +28,12 @@ management:
   endpoint:
     health:
       show-details: always
-    info:
-      enabled: true
-  health:
-    livenessstate:
-      enabled: true
-    readinessstate:
-      enabled: true
 
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+  zipkin:
+    tracing:
+      endpoint: http://tempo:9411/api/v2/spans
