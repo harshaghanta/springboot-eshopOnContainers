@@ -14,9 +14,9 @@ distributor:
     #     grpc:                          # for a production deployment you should only enable the receivers you need!
     #     thrift_binary:
     #     thrift_compact:
-    # zipkin:
-    #   protocols:
-    #     http:
+    zipkin:
+      # protocols:
+      #   http:
 
 
 
