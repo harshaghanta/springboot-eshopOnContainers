@@ -20,5 +20,8 @@ services:
   ordering-backgroundtasks:
     environment:
       SERVER_SERVLET_CONTEXT_PATH: "/ordering-backgroundtasks"
+  webhooks-api:
+    environment:
+      SERVER_SERVLET_CONTEXT_PATH: "/webhooks-api"
 
   

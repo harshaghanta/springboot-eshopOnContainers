@@ -200,15 +200,15 @@ services:
     image: ${REGISTRY:-springeshop}/webhooksapi:latest
     env_file:
     - .env
-    environment:
-      OTEL_TRACES_EXPORTER: "jaeger"
-      OTEL_SERVICE_NAME: "webhooks-api"
-      OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"
-      OTEL_METRICS_EXPORTER: "prometheus"
-      OTEL_EXPORTER_PROMETHEUS_HOST: "0.0.0.0"
-      OTEL_EXPORTER_PROMETHEUS_PORT: "9464"
-      OTEL_LOGS_EXPORTER: "otlp"
-      OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: "http://collector:4317"
+    # environment:
+    #   OTEL_TRACES_EXPORTER: "jaeger"
+    #   OTEL_SERVICE_NAME: "webhooks-api"
+    #   OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"
+    #   OTEL_METRICS_EXPORTER: "prometheus"
+    #   OTEL_EXPORTER_PROMETHEUS_HOST: "0.0.0.0"
+    #   OTEL_EXPORTER_PROMETHEUS_PORT: "9464"
+    #   OTEL_LOGS_EXPORTER: "otlp"
+    #   OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: "http://collector:4317"
     depends_on:
       db:
         condition: service_healthy

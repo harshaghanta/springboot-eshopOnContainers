@@ -29,6 +29,7 @@ public class SecurityConfig {
 		http
 				.authorizeHttpRequests((authorize) -> authorize
 						.requestMatchers(HttpMethod.OPTIONS).permitAll()
+						.requestMatchers("/actuator/**").permitAll()
 						.anyRequest().authenticated())
 				.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.oauth2ResourceServer((oauth2) -> oauth2
