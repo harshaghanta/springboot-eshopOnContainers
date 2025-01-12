@@ -47,7 +47,6 @@ RUN mvn -f /src/Web/WebSpa/server/pom.xml -s /src/settings.xml package -Dmaven.t
 FROM base AS final
 WORKDIR /app
 COPY --from=build /src/Web/WebSpa/server/target/webspaserver-api.jar ./webspaserver-api.jar
-COPY --from=build /src/Web/WebSpa/server/target/opentelemetry-javaagent.jar ./opentelemetry-javaagent.jar
 
 # CMD tail -f /dev/null
 
@@ -55,7 +54,7 @@ COPY --from=build /src/Web/WebSpa/server/target/opentelemetry-javaagent.jar ./op
 # ENTRYPOINT ["sh", "-c", "sleep 60 && java -jar catalog-api.jar"]
 # ENTRYPOINT sleep 60 && java -jar catalog-api.jar
 # Sleep not working . Giving error during startup 
-ENTRYPOINT ["java", "-javaagent:./opentelemetry-javaagent.jar", "-jar", "webspaserver-api.jar"]
+ENTRYPOINT ["java", "-jar", "webspaserver-api.jar"]
 
 
 
