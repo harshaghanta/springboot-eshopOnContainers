@@ -23,5 +23,8 @@ services:
   webhooks-api:
     environment:
       SERVER_SERVLET_CONTEXT_PATH: "/webhooks-api"
+  webhooks-client:
+    environment:
+      SERVER_SERVLET_CONTEXT_PATH: "/webhooks-client"
 
   

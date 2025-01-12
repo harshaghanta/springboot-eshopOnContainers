@@ -36,6 +36,7 @@ public class SecurityConfig {
 						c -> c.requestMatchers("/checkpost").permitAll()
 								.requestMatchers("/check").permitAll()
 								.requestMatchers("/webhook-received").permitAll()
+								.requestMatchers("/actuator/**").permitAll()
 								.requestMatchers("/").permitAll()
 								.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 								.anyRequest().authenticated())
