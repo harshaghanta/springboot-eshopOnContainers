@@ -102,15 +102,15 @@ scrape_configs:
         labels:
           application: webhooks-api
 
-  - job_name: 'webhooks-api_prometheus_exporter'
+  - job_name: 'webhooks-client_prometheus_exporter'
     honor_timestamps: true
-    metrics_path: /webhooks-api/actuator/prometheus
+    metrics_path: /webhooks-client/actuator/prometheus
     scheme: http
     static_configs:
       - targets:
-          - webhooks-api:8080
+          - webhooks-client:8080
         labels:
-          application: webhooks-api
+          application: webhooks-client
 
 
   - job_name: 'payment-api_prometheus_exporter'
