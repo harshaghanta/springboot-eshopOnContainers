@@ -40,6 +40,6 @@ RUN mvn -f /src/Services/Ordering/ordering-backgroundtasks/pom.xml -s /src/setti
 FROM base AS final
 WORKDIR /app
 COPY --from=build /src/Services/Ordering/ordering-backgroundtasks/target/ordering-backgroundtasks.jar ./ordering-backgroundtasks.jar
-COPY --from=build /src/Services/Ordering/ordering-backgroundtasks/target/opentelemetry-javaagent.jar ./opentelemetry-javaagent.jar
 
-ENTRYPOINT ["java", "-javaagent:./opentelemetry-javaagent.jar", "-Dspring.profiles.active=dev", "-jar", "ordering-backgroundtasks.jar"]
+
+ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "ordering-backgroundtasks.jar"]

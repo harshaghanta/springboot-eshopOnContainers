@@ -1,1 +1,35 @@
-spring.profiles.active: dev
+spring:
+  application:
+    name: ordering-backgroundtasks
+  profiles:
+    active:
+    - dev
+
+#enable management endpoints
+management:
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server: 
+            requests: true
+  tracing:
+    sampling:
+      probability: 1.0
+        
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+  zipkin:
+    tracing:
+      endpoint: http://tempo:9411/api/v2/spans

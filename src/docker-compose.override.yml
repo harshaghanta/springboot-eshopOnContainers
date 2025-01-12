@@ -17,5 +17,8 @@ services:
   basketdata:
     ports:
     - "6379:6379"
+  ordering-backgroundtasks:
+    environment:
+      SERVER_SERVLET_CONTEXT_PATH: "/ordering-backgroundtasks"
 
   
