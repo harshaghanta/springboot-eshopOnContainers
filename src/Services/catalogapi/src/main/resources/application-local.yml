@@ -16,21 +16,6 @@ spring:
     # username: ${datasource.username}
     # password: ${datasource.password}
     # driverClassName: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
-  
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
-    env:
-      post:
-        enabled: true
-      exposure:
-        include: "*"
-
 
 picBaseUrl: "http://host.docker.internal:5202/catalog-api/api/v1/catalog/items/[0]/pic/"
 
@@ -42,7 +27,7 @@ eventbus:
   subscriptionClientName: "Catalog"
 
 #springdoc.swagger-ui.path: /swagger-ui-custom.html
-server.port: 9090 
+server.port: 9098 
 # server.servlet.context-path: /catalog-api
 logging:
   level:
