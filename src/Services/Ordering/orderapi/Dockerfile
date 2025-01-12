@@ -41,7 +41,7 @@ RUN mvn -f /src/Services/Ordering/orderapi/pom.xml -s /src/settings.xml package 
 FROM base AS final
 WORKDIR /app
 COPY --from=build /src/Services/Ordering/orderapi/target/order-api.jar ./order-api.jar
-COPY --from=build /src/Services/Ordering/orderapi/target/opentelemetry-javaagent.jar ./opentelemetry-javaagent.jar
+# COPY --from=build /src/Services/Ordering/orderapi/target/opentelemetry-javaagent.jar ./opentelemetry-javaagent.jar
 
 
-ENTRYPOINT ["java", "-javaagent:./opentelemetry-javaagent.jar", "-Dspring.profiles.active=dev", "-jar", "order-api.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "order-api.jar"]

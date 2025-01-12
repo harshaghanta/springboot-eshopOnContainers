@@ -1,11 +1,43 @@
-spring.profiles.active: dev
-springdoc.swagger-ui.path: /swagger-ui-custom.html
+spring:
+  application:
+    name: ordering-api
+  profiles:
+    active:
+    - dev
 
 logging:
   level:
     org.springframework.security.oauth2.jwt: DEBUG
     org.hibernate.type: TRACE
 
+  #enable management endpoints
+management:
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server: 
+            requests: true
+  tracing:
+    sampling:
+      probability: 1.0
+        
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+  zipkin:
+    tracing:
+      endpoint: http://tempo:9411/api/v2/spans
 
 spring.datasource.hikari:
   maximum-pool-size: 10
