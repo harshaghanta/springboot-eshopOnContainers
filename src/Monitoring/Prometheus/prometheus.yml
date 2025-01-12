@@ -41,16 +41,94 @@ scrape_configs:
           - payment-api:9464
         labels:
           application: payment-api
-  - job_name: 'otel_prometheus_exporter'
+
+  - job_name: 'basketapi_prometheus_exporter'
     honor_timestamps: true
-    metrics_path: /actuator/prometheus
+    metrics_path: /basket-api/actuator/prometheus
     scheme: http
     static_configs:
       - targets:
-          - testspringboot:8080
-        labels:
-          application: testspringboot
-      - targets:
-          - basket-api:8080/basket-api
+          - basket-api:8080
         labels:
           application: basket-api
+
+  - job_name: 'catalogapi_prometheus_exporter'
+    honor_timestamps: true
+    metrics_path: /catalog-api/actuator/prometheus
+    scheme: http
+    static_configs:
+      - targets:
+          - catalog-api:8080
+        labels:
+          application: catalog-api
+
+  - job_name: 'orderingapi_prometheus_exporter'
+    honor_timestamps: true
+    metrics_path: /ordering-api/actuator/prometheus
+    scheme: http
+    static_configs:
+      - targets:
+          - ordering-api:8080
+        labels:
+          application: ordering-api
+
+  - job_name: 'orderingbackground_prometheus_exporter'
+    honor_timestamps: true
+    metrics_path: /ordering-backgroundtasks/actuator/prometheus
+    scheme: http
+    static_configs:
+      - targets:
+          - ordering-backgroundtasks:8080
+        labels:
+          application: ordering-backgroundtasks
+
+  - job_name: 'webspa_prometheus_exporter'
+    honor_timestamps: true
+    metrics_path: /webspa/actuator/prometheus
+    scheme: http
+    static_configs:
+      - targets:
+          - webspa:8080
+        labels:
+          application: webspa
+
+  - job_name: 'webhooks-api_prometheus_exporter'
+    honor_timestamps: true
+    metrics_path: /webhooks-api/actuator/prometheus
+    scheme: http
+    static_configs:
+      - targets:
+          - webhooks-api:8080
+        labels:
+          application: webhooks-api
+
+  - job_name: 'webhooks-api_prometheus_exporter'
+    honor_timestamps: true
+    metrics_path: /webhooks-api/actuator/prometheus
+    scheme: http
+    static_configs:
+      - targets:
+          - webhooks-api:8080
+        labels:
+          application: webhooks-api
+
+
+  - job_name: 'payment-api_prometheus_exporter'
+    honor_timestamps: true
+    metrics_path: /payment-api/actuator/prometheus
+    scheme: http
+    static_configs:
+      - targets:
+          - payment-api:8080
+        labels:
+          application: payment-api
+
+  # - job_name: 'testspringboot_prometheus_exporter'
+  #   honor_timestamps: true
+  #   metrics_path: /actuator/prometheus
+  #   scheme: http
+  #   static_configs:
+  #     - targets:
+  #         - testspringboot:8080
+  #       labels:
+  #         application: testspringboot
