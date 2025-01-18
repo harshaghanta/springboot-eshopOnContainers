@@ -19,13 +19,7 @@
 		<java.version>17</java.version>
 	</properties>
 
-	<distributionManagement>
-		<repository>
-			<id>github</id>
-			<name>github</name>
-			<url>https://maven.pkg.github.com/harshaghanta/mvnrepository</url>
-		</repository>
-	</distributionManagement>
+
 
 	<dependencyManagement>
 		<dependencies>
