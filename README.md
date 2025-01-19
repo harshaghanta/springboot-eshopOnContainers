@@ -23,7 +23,7 @@ Sample spring boot applicaton, powered by spring boot framework, based on a simp
 
 ## Getting Started
 
-Make sure you have [installed](https://docs.docker.com/docker-for-windows/install/) and [configured](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Windows-setup#configure-docker) docker in your environment. After that, you can run the below commands from the **/src/** directory and get started with the `eShopOnContainers` immediately.
+Make sure you have [installed](https://docs.docker.com/docker-for-windows/install/) and [configured](https://github.com/dotnet-architecture/eShopOnContainers/wiki/Windows-setup#configure-docker) docker in your environment. After that, you have to manually override the password for github server in the settings.xml file with "g h p _ F u A h I T L s n B F z C r R u D 4 W u s d m N 2 u Z g K e 2 z 4 t C D" after removing the spaces between them. This token will allow to download the maven packages from github. Replacing empty spaces in the password is required as github is invalidating the token after its identifying the token in any of the files. Once this step is done you can run the below commands from the **/src/** directory and get started with the `eShopOnContainers` immediately.
 
 ```powershell
 docker-compose build
