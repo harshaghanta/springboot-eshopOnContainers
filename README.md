@@ -37,6 +37,7 @@ You should be able to browse different components of the application by using th
 
 ```
 Web SPA :  http://host.docker.internal:8080
+Credentials: alice@gmail.com/Pass@word
 ```
 
 >Note: If you are running this application in macOS then use `docker.for.mac.localhost` as DNS name in `.env` file and the above URLs instead of `host.docker.internal`.
