@@ -9,11 +9,11 @@ metadata:
     heritage: {{ .Release.Service }}
     chart: {{ template "ordering-api.chart" . }}
 data:
-  eventbus__host: {{ .Values.inf.eventbus.svc }}
-  eventbus__username: {{ .Values.inf.eventbus.user }}
-  eventbus__password: {{ .Values.inf.eventbus.pwd }}
-  eventbus__retryCount: "{{ .Values.inf.eventbus.retryCount }}"  
-  issuer__url: {{ .Values.inf.issuer.internalUrl }}
-  ordering__dataSourceUrl: {{ .Values.inf.sql.ordering.datasourceUrl }}
-  ordering__dataSourceUsername: {{ .Values.inf.sql.common.user }}
-  ordering__dataSourcePassword: {{ .Values.inf.sql.common.pwd }}
+  eventbus__host: {{ .Values.global.inf.eventbus.svc }}
+  eventbus__username: {{ .Values.global.inf.eventbus.user }}
+  eventbus__password: {{ .Values.global.inf.eventbus.pwd }}
+  eventbus__retryCount: "{{ .Values.global.inf.eventbus.retryCount }}"  
+  issuer__url: {{ .Values.global.inf.issuer.internalUrl }}
+  ordering__dataSourceUrl: {{ .Values.global.inf.sql.ordering.datasourceUrl }}
+  ordering__dataSourceUsername: {{ .Values.global.inf.sql.common.user }}
+  ordering__dataSourcePassword: {{ .Values.global.inf.sql.common.pwd }}

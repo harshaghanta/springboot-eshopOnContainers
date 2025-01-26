@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.app.svc.catalog }}
+  name: {{ .Values.global.app.svc.catalog }}
   labels:
     app: {{ template "catalog-api.name" . }}
     chart: {{ template "catalog-api.chart" .}}

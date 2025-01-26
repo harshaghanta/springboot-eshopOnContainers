@@ -5,6 +5,9 @@ image:
   pullPolicy: IfNotPresent
   tag: "latest"
 
+ingress:
+  enabled: true
+
 service:
   type: ClusterIP
   port: 8081

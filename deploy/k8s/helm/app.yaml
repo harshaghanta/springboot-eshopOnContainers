@@ -1,24 +1,26 @@
-app:
-  name: springboot-eshop
-  ingress:
-    entries:
-      basket: basket-api                                  # ingress entry for basket api
-      catalog: catalog-api                                # ingress entry for catalog api   
-      ordering: ordering-api                              # ingress entry for ordering api
-      keycloak: keycloak                                  # ingress entry for keycloak
-      spa: ""                                             # ingress entry for web spa
-      webshoppingapigw: webshoppingapigw                  # ingress entry for webshoppingapigw
-      payment: payment-api                                # ingress entry for payment api
-      webhooks: webhooks-api                              # ingress entry for webhooks api
-      webhooksweb: webhooks-web                           # ingress entry for webhooks client demo app
-  svc:
-    basket: basket-api                                    # service name for basket api
-    catalog: catalog-api                                  # service name for catalog api
-    ordering: ordering-api                                # service name for ordering api
-    orderingbackgroundtasks: ordering-backgroundtasks     # service name for orderingbackgroundtasks
-    keycloak: keycloak                                     # service name for keycloak
-    spa: webspa                                           # service name for web spa
-    webshoppingapigw: webshoppingapigw                    # service name for webshoppingapigw
-    payment: payment-api                                  # service name for payment api
-    webhooks: webhooks-api                                # service name for webhooks api
-    webhooksweb: webhooks-client                          # service name for webhooks client
+global:
+  app:
+    name: eshopapp
+    allowedOrigins: http://localhost:6080 # This should be set to the URL of the web spa
+    ingress:
+      entries:
+        basket: basket-api                                  # ingress entry for basket api
+        catalog: catalog-api                                # ingress entry for catalog api   
+        ordering: ordering-api                              # ingress entry for ordering api
+        keycloak: keycloak                                  # ingress entry for keycloak
+        spa: ""                                             # ingress entry for web spa
+        webshoppingapigw: webshoppingapigw                  # ingress entry for webshoppingapigw
+        payment: payment-api                                # ingress entry for payment api
+        webhooks: webhooks-api                              # ingress entry for webhooks api
+        webhooksweb: webhooks-web                           # ingress entry for webhooks client demo app
+    svc:
+      basket: basket-api                                    # service name for basket api
+      catalog: catalog-api                                  # service name for catalog api
+      ordering: ordering-api                                # service name for ordering api
+      orderingbackgroundtasks: ordering-backgroundtasks     # service name for orderingbackgroundtasks
+      keycloak: keycloak                                     # service name for keycloak
+      spa: webspa                                           # service name for web spa
+      webshoppingapigw: webshoppingapigw                    # service name for webshoppingapigw
+      payment: payment-api                                  # service name for payment api
+      webhooks: webhooks-api                                # service name for webhooks api
+      webhooksweb: webhooks-client                          # service name for webhooks client

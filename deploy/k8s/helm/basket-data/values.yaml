@@ -1,5 +1,8 @@
 replicaCount: 1
 
+ingress:
+  enabled: true
+
 image:
   repository: redis
   pullPolicy: IfNotPresent

@@ -6,6 +6,9 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
+ingress:
+  enabled: true
+
 service:
   type: ClusterIP
   port: 8085

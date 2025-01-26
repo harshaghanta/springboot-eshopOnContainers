@@ -1,9 +1,12 @@
 replicaCount: 1
 
 image:
-  repository: eshop/db
+  repository: harshaghanta/db
   pullPolicy: Never
   tag: "latest"
+
+ingress:
+  enabled: true
 
 service:
   type: ClusterIP

@@ -2,14 +2,14 @@
 {{- $name := first .}}
 {{- $ctx := last .}}
 {{- if eq $name "" -}}
-{{- $ctx.Values.inf.k8s.dns -}}
+{{- $ctx.Values.global.inf.k8s.dns -}}
 {{- else -}}
-{{- printf "%s/%s" $ctx.Values.inf.k8s.dns $name -}}                {{/*Value is just <dns>/<name> */}}
+{{- printf "%s/%s" $ctx.Values.global.inf.k8s.dns $name -}}                {{/*Value is just <dns>/<name> */}}
 {{- end -}}
 {{- end -}}
 
 {{- define "protocol" -}}
-{{- if .Values.inf.tls.enabled -}}
+{{- if .Values.global.inf.tls.enabled -}}
 {{- printf "%s" "https" -}}
 {{- else -}}
 {{- printf "%s" "http" -}}

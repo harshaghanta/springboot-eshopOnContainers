@@ -1,6 +1,6 @@
 {{- $name:= include "catalog-api.fullname" . -}}
 {{- $sqlsrv:= include "sql-name" . -}}
-{{- $webshoppingapigw:= include "url-of" (list .Values.app.ingress.entries.webshoppingapigw .) -}}
+{{- $webshoppingapigw:= include "url-of" (list .Values.global.app.ingress.entries.webshoppingapigw .) -}}
 {{- $protocol:= include "protocol" . -}}
 kind: ConfigMap
 apiVersion: v1
@@ -13,10 +13,11 @@ metadata:
     heritage: {{ .Release.Service }}
 data:
   catalog__picBaseUrl: {{ $protocol }}://{{ $webshoppingapigw }}/c/api/v1/catalog/items/[0]/pic
-  catalog__dataSourceUrl: {{ .Values.inf.sql.catalog.datasourceUrl }}
-  catalog__dataSourceUsername: {{ .Values.inf.sql.common.user }}
-  catalog__dataSourcePassword: {{ .Values.inf.sql.common.pwd }}
-  eventbus__host: {{ .Values.inf.eventbus.svc }}
-  eventbus__username: {{ .Values.inf.eventbus.user }}
-  eventbus__password: {{ .Values.inf.eventbus.pwd }}
-  eventbus__retryCount: "{{ .Values.inf.eventbus.retryCount }}"
+  catalog__dataSourceUrl: {{ .Values.global.inf.sql.catalog.datasourceUrl }}
+  catalog__dataSourceUsername: {{ .Values.global.inf.sql.common.user }}
+  catalog__dataSourcePassword: {{ .Values.global.inf.sql.common.pwd }}
+  eventbus__host: {{ .Values.global.inf.eventbus.svc }}
+  eventbus__username: {{ .Values.global.inf.eventbus.user }}
+  eventbus__password: {{ .Values.global.inf.eventbus.pwd }}
+  eventbus__retryCount: "{{ .Values.global.inf.eventbus.retryCount }}"
+  allowed__origins: {{ .Values.global.app.allowedOrigins }}

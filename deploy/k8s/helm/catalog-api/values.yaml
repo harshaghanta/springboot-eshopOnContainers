@@ -2,10 +2,12 @@ replicaCount: 1
 clusterName: eshop-aks
 
 image:
-  repository: eshop/catalogapi
+  repository: harshaghanta/catalogapi
   pullPolicy: IfNotPresent  
   tag: "latest"
 
+ingress:
+  enabled: true
 
 service:
   type: ClusterIP
@@ -39,6 +41,8 @@ env:
       key: eventbus__password
     - name: "eventbus.retryCount"
       key: eventbus__retryCount
+    - name: "webspa.allowedCorsOrigin"
+      key: allowed__origins
 
   values:
     - name: SERVER_SERVLET_CONTEXT_PATH

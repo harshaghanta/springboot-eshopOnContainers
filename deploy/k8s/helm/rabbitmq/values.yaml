@@ -5,6 +5,9 @@ image:
   pullPolicy: IfNotPresent  
   tag: "3-management-alpine"
 
+ingress:
+  enabled: true
+
 service:
   type: ClusterIP
   internalPort: 5672
