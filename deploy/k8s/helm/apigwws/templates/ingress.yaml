@@ -19,7 +19,7 @@ spec:
       http:
         paths:
           - path: /webshoppingapigw(/|$)(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service: 
                 name: "{{ $serviceName }}"

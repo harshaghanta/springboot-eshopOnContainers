@@ -17,3 +17,4 @@ data:
   ordering__dataSourceUrl: {{ .Values.global.inf.sql.ordering.datasourceUrl }}
   ordering__dataSourceUsername: {{ .Values.global.inf.sql.common.user }}
   ordering__dataSourcePassword: {{ .Values.global.inf.sql.common.pwd }}
+  allowed__origins: "{{ .Values.global.app.allowedOrigins }}"

@@ -1,6 +1,7 @@
 apigwws:
   replicaCount: 1
   pathBase: /webshoppingapigw
+  fullnameOverride: webshoppingapigw
 
   ingress:
     enabled: true
@@ -45,6 +46,7 @@ apigwws:
 basket-api:  
   replicaCount: 1
   pathBase: /basket-api
+  fullnameOverride: basket-api
 
   ingress:
     enabled: true
@@ -86,6 +88,8 @@ basket-api:
         key: basketdata__host
       - name: "issuer.url"
         key: issuer__url
+      - name: "webspa.allowedCorsOrigin"
+        key: allowed__origins
     
     values:
       - name: SERVER_SERVLET_CONTEXT_PATH
@@ -107,7 +111,7 @@ basket-api:
 
 basket-data:
   replicaCount: 1
-
+  fullnameOverride: basket-data
   ingress:
     enabled: true
 
@@ -131,6 +135,7 @@ basket-data:
 catalog-api:
   replicaCount: 1
   clusterName: eshop-aks
+  fullnameOverride: catalog-api
 
   image:
     repository: harshaghanta/catalogapi
@@ -191,6 +196,7 @@ catalog-api:
 
 keycloak:
   replicaCount: 1
+  fullnameOverride: keycloak
 
   image:
     repository: quay.io/keycloak/keycloak
@@ -253,6 +259,7 @@ keycloak:
 ordering-api:
   replicaCount: 1
   pathBase: /ordering-api
+  fullnameOverride: ordering-api
 
   image:
     repository: harshaghanta/orderingapi
@@ -281,6 +288,8 @@ ordering-api:
       key: ordering__dataSourcePassword
     - name: "issuer.url"
       key: issuer__url
+    - name: "webspa.allowedCorsOrigin"
+      key: allowed__origins
 
     values:
       - name: SERVER_SERVLET_CONTEXT_PATH
@@ -309,6 +318,7 @@ ordering-api:
 
 ordering-backgroundtasks:
   replicaCount: 1
+  fullnameOverride: ordering-backgroundtasks
 
   image:
     repository: harshaghanta/orderingbackgroundtasks
@@ -365,6 +375,7 @@ ordering-backgroundtasks:
 
 payment-api:
   replicaCount: 1
+  fullnameOverride: payment-api
 
   image:
     repository: harshaghanta/paymentapi
@@ -409,6 +420,7 @@ payment-api:
 
 rabbitmq:
   replicaCount: 1
+  fullnameOverride: rabbitmq
 
   image:
     repository: rabbitmq
@@ -436,6 +448,7 @@ rabbitmq:
 
 sql-data:
   replicaCount: 1
+  fullnameOverride: sql-data
 
   image:
     repository: harshaghanta/db
@@ -458,6 +471,7 @@ sql-data:
 
 webspa:
   replicaCount: 1
+  fullnameOverride: webspa
 
   image:
     repository: harshaghanta/webspa

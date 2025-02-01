@@ -41,6 +41,8 @@ env:
       key: basketdata__host
     - name: "issuer.url"
       key: issuer__url
+    - name: "webspa.allowedCorsOrigin"
+      key: allowed__origins
   
   values:
     - name: SERVER_SERVLET_CONTEXT_PATH

@@ -1,7 +1,7 @@
 global:
   app:
     name: eshopapp
-    allowedOrigins: http://localhost:6080 # This should be set to the URL of the web spa
+    allowedOrigins: http://localhost # This should be set to the URL of the web spa
     ingress:
       entries:
         basket: basket-api                                  # ingress entry for basket api
@@ -24,3 +24,6 @@ global:
       payment: payment-api                                  # service name for payment api
       webhooks: webhooks-api                                # service name for webhooks api
       webhooksweb: webhooks-client                          # service name for webhooks client
+      rabbitmq: rabbitmq                                    # service name for rabbitmq
+      sqldata: sql-data                                     # service name for sql data
+      

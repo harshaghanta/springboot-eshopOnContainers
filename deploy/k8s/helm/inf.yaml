@@ -11,22 +11,23 @@ global:
         pid: Developer
         TrustServerCertificate: true
       catalog:
-        datasourceUrl: "jdbc:sqlserver://eshop-release-sql-data:9433;databaseName=CatalogDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
+        datasourceUrl: "jdbc:sqlserver://sql-data:9433;databaseName=CatalogDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
         db: CatalogDb
       ordering:
         db: OrderDb
-        datasourceUrl: "jdbc:sqlserver://eshop-release-sql-data:9433;databaseName=OrderDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
+        datasourceUrl: "jdbc:sqlserver://sql-data:9433;databaseName=OrderDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
     mongo:
       host: 
     redis:
       basket:
+        host: redis://basket-data:6379
         svc: basket-data
         constr: basket-data
       keystore:
         svc: keystore-data
         constr: keystore-data
     eventbus:
-      svc: eshop-release-rabbitmq
+      svc: rabbitmq
       user: guest
       pwd: guest
       retryCount: "5"
