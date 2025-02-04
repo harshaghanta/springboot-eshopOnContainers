@@ -48,6 +48,17 @@ Credentials: alice@gmail.com/Pass@word
 
 >Note: If you are running this application in macOS then use `docker.for.mac.localhost` as DNS name in `.env` file and the above URLs instead of `host.docker.internal`.
 
+# Basic Scenario
+
+The basic scenario can be run locally using docker-compose, and also deployed to a local Kubernetes cluster. Refer to these Wiki pages to Get Started:
+
+- [Local Kubernetes](https://github.com/harshaghanta/springboot-eshopOnContainers/wiki/Deploy-to-Local-Kubernetes)
+
+
+
+
+
+
 >
 > ### DISCLAIMER
 >
