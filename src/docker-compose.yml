@@ -358,6 +358,15 @@ services:
     networks:
     - simpbridgenetwork
 
+  promtail:
+    image: grafana/promtail:2.2.1
+    volumes:
+      - ./Monitoring/Promtail/promtail-config.yml:/etc/promtail/promtail-config.yml
+      - applog_volume:/app_logs/
+    command: -config.file=/etc/promtail/promtail-config.yml
+    networks:
+    - simpbridgenetwork
+
   collector:
     container_name: collector
     image: otel/opentelemetry-collector-contrib:0.110.0
