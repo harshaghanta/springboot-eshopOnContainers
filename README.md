@@ -6,6 +6,8 @@
 
 Sample spring boot applicaton, powered by spring boot framework, based on a simplified microservices architecture and Docker containers.
 
+If you’re using this demo, please ★Star this repository to show your interest!
+
 ## SPA Application (Angular)
 
 ![](img/eshop-spa-app-home.png)
