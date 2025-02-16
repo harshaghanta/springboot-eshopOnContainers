@@ -57,7 +57,9 @@ The basic scenario can be run locally using docker-compose, and also deployed to
 - [Local Kubernetes](https://github.com/harshaghanta/springboot-eshopOnContainers/wiki/Deploy-to-Local-Kubernetes)
 
 
+# Architecture Overview
 
+![image](https://github.com/user-attachments/assets/dfd9f8c2-b490-477e-b3b0-6a72b3ff5fe9)
 
 
 
