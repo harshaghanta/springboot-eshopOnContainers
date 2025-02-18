@@ -1,7 +1,3 @@
-<a href="https://dot.net/architecture">
-   <img src="https://github.com/dotnet-architecture/eShopOnContainers/raw/dev/img/eshop_logo.png" alt="eShop logo" title="eShopOnContainers" align="right" height="60" />
-</a>
-
 # Springboot Microservices Sample Reference Application
 
 Sample spring boot applicaton, powered by spring boot framework, based on a simplified microservices architecture and Docker containers.
@@ -61,6 +57,28 @@ The basic scenario can be run locally using docker-compose, and also deployed to
 
 ![image](https://github.com/user-attachments/assets/dfd9f8c2-b490-477e-b3b0-6a72b3ff5fe9)
 
+# Observability
+If you are following docker compose setup, the setup will automically provision containers for monitoring your services. All of the observability aspects like logs, traces and metrics can be directly viewed from Grafana
+
+## Grafana
+
+You should be able to access grafana at the following [link](http://host.docker.internal:3000). Default credentials are admin/admin
+
+### Application logs
+
+After navigating to grafana, select the explore option from the left menu. 
+From the datasources dropdown, select Loki
+From the label filters, select the label as application and from the value label select the microservice.
+select the time range, and click on Run query.
+![image](https://github.com/user-attachments/assets/c32fae95-c260-44e7-b78e-25c752208af8)
+
+### Accessing metrics
+
+After login to grafana, select Dashboards option from the Left menu.
+You should see, an existing dashboard with the name JVM (Micrometer) Click on the dashboard to open it.
+From the dashboard options in the top, select the application and instance to get the metrics of that service.
+
+![image](https://github.com/user-attachments/assets/a69fc676-507b-4576-a542-de8f74d6b7d4)
 
 
 >
