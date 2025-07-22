@@ -1,17 +1,33 @@
 replicaCount: 1
 clusterName: eshop-aks
 
+allowedOrigins: ""
+
 image:
   repository: harshaghanta/catalogapi
-  pullPolicy: IfNotPresent  
+  pullPolicy: Always  
   tag: "latest"
 
+sql:
+  common:
+    user: "sa"
+    pwd: "P@ssw0rd"
+  datasource:
+    url: "jdbc:sqlserver://sql-data:9433;databaseName=CatalogDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
+
+eventbus:
+  svc:
+  user:
+  pwd:
+  retryCount: "5"
+
 ingress:
-  enabled: true
+  webshoppingapigw: webshoppingapigw
 
 service:
   type: ClusterIP
   port: 8081
+  name: catalog-api
 
 resources: {}
 

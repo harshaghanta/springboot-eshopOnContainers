@@ -8,6 +8,7 @@ image:
 sql:
   common:
     pid: "Developer"
+    user: "sa"
     pwd: "P@ssw0rd"
 
 ingress:
