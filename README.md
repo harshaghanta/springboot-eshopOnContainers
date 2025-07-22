@@ -1,10 +1,8 @@
-<a href="https://dot.net/architecture">
-   <img src="https://github.com/dotnet-architecture/eShopOnContainers/raw/dev/img/eshop_logo.png" alt="eShop logo" title="eShopOnContainers" align="right" height="60" />
-</a>
-
 # Springboot Microservices Sample Reference Application
 
 Sample spring boot applicaton, powered by spring boot framework, based on a simplified microservices architecture and Docker containers.
+
+If you’re using this demo, please ★Star this repository to show your interest!
 
 ## SPA Application (Angular)
 
@@ -29,7 +27,7 @@ Make sure you have [installed](https://docs.docker.com/docker-for-windows/instal
 127.0.0.1	host.docker.internal
 ```
 
-After that, you have to manually override the password for github server in the settings.xml file with "g h p _ F u A h I T L s n B F z C r R u D 4 W u s d m N 2 u Z g K e 2 z 4 t C D" after removing the spaces between them. This token will allow to download the maven packages from github. Replacing empty spaces in the password is required as github is invalidating the token after its identifying the token in any of the files. 
+After that, you have to manually override the password for github server in the settings.xml file with "g h p _ w H V D k G O V n 7 g 2 N M X V x t x n j m V P Z v V l 2 D 0 T 4 j n w" after removing the spaces between them. This token will allow to download the maven packages from github. Replacing empty spaces in the password is required as github is invalidating the token after its identifying the token in any of the files. 
 ![image](https://github.com/user-attachments/assets/52b5b2bf-554e-4741-bec1-9c510126aa10)
 
 Once this step is done you can run the below commands from the **/src/** directory and get started with the `eShopOnContainers` immediately.
@@ -55,8 +53,32 @@ The basic scenario can be run locally using docker-compose, and also deployed to
 - [Local Kubernetes](https://github.com/harshaghanta/springboot-eshopOnContainers/wiki/Deploy-to-Local-Kubernetes)
 
 
+# Architecture Overview
 
+![image](https://github.com/user-attachments/assets/dfd9f8c2-b490-477e-b3b0-6a72b3ff5fe9)
 
+# Observability
+If you are following docker compose setup, the setup will automically provision containers for monitoring your services. All of the observability aspects like logs, traces and metrics can be directly viewed from Grafana
+
+## Grafana
+
+You should be able to access grafana at the following [link](http://host.docker.internal:3000). Default credentials are admin/admin
+
+### Application logs
+
+After navigating to grafana, select the explore option from the left menu. 
+From the datasources dropdown, select Loki
+From the label filters, select the label as application and from the value label select the microservice.
+select the time range, and click on Run query.
+![image](https://github.com/user-attachments/assets/c32fae95-c260-44e7-b78e-25c752208af8)
+
+### Accessing metrics
+
+After login to grafana, select Dashboards option from the Left menu.
+You should see, an existing dashboard with the name JVM (Micrometer) Click on the dashboard to open it.
+From the dashboard options in the top, select the application and instance to get the metrics of that service.
+
+![image](https://github.com/user-attachments/assets/a69fc676-507b-4576-a542-de8f74d6b7d4)
 
 
 >
