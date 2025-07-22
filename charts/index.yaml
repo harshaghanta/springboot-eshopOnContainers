@@ -3,38 +3,18 @@ entries:
   catalog-api:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-07-22T22:13:22.1083501+05:30"
+    created: "2025-07-22T22:23:42.7085501+05:30"
     description: A Helm chart for Kubernetes
-    digest: a09a9ce5664dca604935bab0cf93875b0cd41eedfafceb1f00d42d0e8b3a61bf
+    digest: ba294fc0af2eba86ebff10e30cdb30ea39cbacadd5278729eb395cf683f8f232
     name: catalog-api
     type: application
     urls:
-    - catalog-api-0.1.4.tgz
-    version: 0.1.4
-  - apiVersion: v2
-    appVersion: 1.16.0
-    created: "2025-07-22T22:13:22.1078311+05:30"
-    description: A Helm chart for Kubernetes
-    digest: 8ae45f01ad2a0d11025735396aa71d3bf28c7851adeb365489f8fac4ad54b86c
-    name: catalog-api
-    type: application
-    urls:
-    - catalog-api-0.1.3.tgz
-    version: 0.1.3
-  - apiVersion: v2
-    appVersion: 1.16.0
-    created: "2025-07-22T22:13:22.1067781+05:30"
-    description: A Helm chart for Kubernetes
-    digest: bb2755c368c287575d4d0bebb292c340d4bf8073f4bff40e2a80b7de00e2569c
-    name: catalog-api
-    type: application
-    urls:
-    - catalog-api-0.1.2.tgz
-    version: 0.1.2
+    - catalog-api-0.1.5.tgz
+    version: 0.1.5
   sql-data:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-07-22T22:13:22.1093868+05:30"
+    created: "2025-07-22T22:23:42.7095983+05:30"
     description: A Helm chart for Kubernetes
     digest: af49b9ea370b96f473e15b24d6df3a4bfc823e393560643ddea19b65bd9bf646
     name: sql-data
@@ -44,7 +24,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-07-22T22:13:22.1088704+05:30"
+    created: "2025-07-22T22:23:42.709082+05:30"
     description: A Helm chart for Kubernetes
     digest: 35bac409cf78cf0a40882e9ea2860fa54d1ce6baa36c462a01ca164ee6b8adef
     name: sql-data
@@ -52,4 +32,4 @@ entries:
     urls:
     - sql-data-0.1.0.tgz
     version: 0.1.0
-generated: "2025-07-22T22:13:22.1061688+05:30"
+generated: "2025-07-22T22:23:42.7074916+05:30"
