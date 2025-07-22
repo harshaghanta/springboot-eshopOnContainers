@@ -1,5 +1,4 @@
 {{- $name:= include "catalog-api.fullname" . -}}
-{{- $sqlsrv:= include "sql-name" . -}}
 {{- $webshoppingapigw:= include "url-of" (list .Values.ingress.webshoppingapigw .) -}}
 {{- $protocol:= include "protocol" . -}}
 kind: ConfigMap

@@ -8,6 +8,15 @@ image:
   pullPolicy: Always  
   tag: "latest"
 
+regisry:
+  server: ""
+
+tls:
+  enabled: false
+
+k8s:
+  dns: "localhost"
+
 sql:
   common:
     user: "sa"
