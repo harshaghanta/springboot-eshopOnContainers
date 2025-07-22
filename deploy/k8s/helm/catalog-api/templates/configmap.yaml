@@ -19,4 +19,4 @@ data:
   eventbus__username: {{ .Values.eventbus.user }}
   eventbus__password: {{ .Values.eventbus.pwd }}
   eventbus__retryCount: "{{ .Values.eventbus.retryCount }}"
-  allowed__origins: {{ .Values.allowedOrigins }}
+  allowed__origins: "{{ .Values.allowedOrigins }}"
