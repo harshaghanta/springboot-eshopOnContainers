@@ -5,6 +5,11 @@ image:
   pullPolicy: Never
   tag: "latest"
 
+sql:
+  common:
+    pid: "Developer"
+    pwd: "P@ssw0rd"
+
 ingress:
   enabled: true
 
