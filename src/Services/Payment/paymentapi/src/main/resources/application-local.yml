@@ -1,9 +1,0 @@
-eventbus:
-  host: "host.docker.internal"
-  username:
-  password:
-  retryCount: 5
-  subscriptionClientName: "Payment"
-
-server:
-  port: 9099

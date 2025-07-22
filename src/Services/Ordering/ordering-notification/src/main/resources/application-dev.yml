@@ -1,6 +1,0 @@
-eventbus:
-  host: ${eventbus.host}
-  username: ${eventbus.username}
-  password: ${eventbus.password}
-  retryCount: ${eventbus.retryCount}
-  subscriptionClientName: "Ordering"
