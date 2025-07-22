@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: harshaghanta/db
-  pullPolicy: Never
+  pullPolicy: Always
   tag: "latest"
 
 sql:
@@ -15,8 +15,8 @@ ingress:
 
 service:
   type: ClusterIP
-  internalPort: 1433
-  externalPort: 9433
+  port: 1433
+
   name: sql-service
   
 resources: {}

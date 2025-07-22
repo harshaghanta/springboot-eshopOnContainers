@@ -10,7 +10,7 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-  - port: {{ .Values.service.externalPort }}
+  - port: {{ .Values.service.port }}
     targetPort: sql
     protocol: TCP
     name: {{ .Values.service.name }}
