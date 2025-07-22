@@ -16,9 +16,9 @@ sql:
     url: "jdbc:sqlserver://sql-data:9433;databaseName=CatalogDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
 
 eventbus:
-  svc:
-  user:
-  pwd:
+  svc: rabbitmq
+  user: "guest"
+  pwd: "guest"
   retryCount: "5"
 
 ingress:
