@@ -8,7 +8,7 @@ image:
   pullPolicy: Always  
   tag: "latest"
 
-regisry:
+registry:
   server: ""
 
 tls:
