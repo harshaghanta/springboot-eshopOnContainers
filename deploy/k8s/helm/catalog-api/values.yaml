@@ -22,7 +22,7 @@ sql:
     user: "sa"
     pwd: "P@ssw0rd"
   datasource:
-    url: "jdbc:sqlserver://sql-data:9433;databaseName=CatalogDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
+    url: "jdbc:sqlserver://sql-data:1433;databaseName=CatalogDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
 
 eventbus:
   svc: rabbitmq
