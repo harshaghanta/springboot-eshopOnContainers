@@ -36,6 +36,16 @@ entries:
   catalog-api:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-07-23T16:39:38.186921767Z"
+    description: A Helm chart for Kubernetes
+    digest: aecf3dd3529162b5cb95228ab8f4343678755a970fd91a95f3a2c6672a312385
+    name: catalog-api
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/catalog-api-0.1.7/catalog-api-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-07-23T15:27:34.491481193Z"
     description: A Helm chart for Kubernetes
     digest: e40b4909818a1e81545174c5877f4021243ad1159d6630c300673ddc5bc17e66
@@ -121,4 +131,4 @@ entries:
     urls:
     - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/webspa-0.1.0/webspa-0.1.0.tgz
     version: 0.1.0
-generated: "2025-07-23T15:27:35.504513195Z"
+generated: "2025-07-23T16:39:38.186932377Z"
