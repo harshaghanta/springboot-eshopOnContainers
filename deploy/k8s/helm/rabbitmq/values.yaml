@@ -10,8 +10,7 @@ ingress:
 
 service:
   type: ClusterIP
-  internalPort: 5672
-  externalPort: 5672
+  port: 5672
 
 resources:
   # requests:

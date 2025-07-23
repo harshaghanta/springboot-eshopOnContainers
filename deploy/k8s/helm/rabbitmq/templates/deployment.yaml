@@ -24,7 +24,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: rabbitmqport
-              containerPort: {{ .Values.service.internalPort }}
+              containerPort: 5672
               protocol: TCP
           {{- with .Values.resources }}          
           resources:
