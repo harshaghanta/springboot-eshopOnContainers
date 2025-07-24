@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: springeshop/webspa
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: "latest"
 
 ingress:

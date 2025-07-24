@@ -1,6 +1,6 @@
 {{- $protocol := include "protocol" . -}}
-{{- $webshoppingapigw := include "url-of" (list .Values.global.app.ingress.entries.webshoppingapigw .) -}}
-{{- $keycloak:= include "url-of" (list .Values.global.app.ingress.entries.keycloak .) -}}
+{{- $webshoppingapigw := include "url-of" (list .Values.ingress.webshoppingapigw .) -}}
+{{- $keycloak:= include "url-of" (list .Values.ingress.keycloak .) -}}
 kind: ConfigMap
 apiVersion: v1
 metadata:
