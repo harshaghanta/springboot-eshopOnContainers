@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: springeshop/webspa
+  repository: harshaghanta/webspa
   pullPolicy: Always
   tag: "latest"
 
