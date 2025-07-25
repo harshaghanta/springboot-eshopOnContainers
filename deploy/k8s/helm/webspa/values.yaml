@@ -8,6 +8,9 @@ image:
 ingress:
   enabled: true
 
+tls:
+  enabled: false
+
 service:
   type: ClusterIP
   port: 8081
