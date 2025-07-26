@@ -7,7 +7,7 @@
 # {{- end -}}
 
 {{- define "fqdn-image" -}}
-{{- if .Values.registry -}}
+{{- if .Values.registry.server -}}
 {{- printf "%s-%s" .Values.registry.server .Values.image.repository -}}
 {{- else -}}
 {{- .Values.image.repository -}}
