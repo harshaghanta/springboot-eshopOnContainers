@@ -42,8 +42,6 @@ spec:
             - name: logpath
               mountPath: "/var/log/envoy/"
           env:
-            # - name: PATH_BASE
-            #   value: "{{ include "pathBase" . }}"
             {{- if .Values.env.values -}}
             {{- range .Values.env.values }}
             - name: {{ .name }}
