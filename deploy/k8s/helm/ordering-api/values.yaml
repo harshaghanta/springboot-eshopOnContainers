@@ -2,16 +2,38 @@ replicaCount: 1
 pathBase: /ordering-api
 
 image:
-  repository: springeshop/orderingapi
-  pullPolicy: IfNotPresent  
+  repository: harshaghanta/orderingapi
+  pullPolicy: Always  
   tag: "latest"
+
+allowedOrigins: ""
 
 ingress:
   enabled: true
+  tls: false
+
+sql:
+  common:
+    user: "sa"
+    pwd: "P@ssw0rd"
+  datasource:
+    url: "jdbc:sqlserver://sql-data:1433;databaseName=OrderDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
+
+
+eventbus:
+  svc: rabbitmq
+  user: "guest"
+  pwd: "guest"
+  retryCount: "5"
+
 
 service:
   type: ClusterIP
   port: 8086
+  name: orderingapi
+
+issuer:
+  url: "http://keycloak:8080"
 
 env:
   configmap:
