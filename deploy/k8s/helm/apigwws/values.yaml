@@ -17,6 +17,7 @@ service:
   type: ClusterIP
   port: 8082
   adminPort: 8083
+  name: webshoppingapigw
 
 resources: {}
 
