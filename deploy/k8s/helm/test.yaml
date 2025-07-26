@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  labels:
+    app: apigwws
+    chart: webspa-0.1.0
+    heritage: Helm
+    release: eshop-release
+  name: ingress-eshop-release-apigwws
+  namespace: eshopns
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - backend:
+          service:
+            name: eshop-release-apigwws
+            port:
+              number: 8082
+        path: /webshoppingapigw(/|$)(.*)
+        pathType: ImplementationSpecific
+status:
+  loadBalancer:
+    ingress:
+    - hostname: localhost
