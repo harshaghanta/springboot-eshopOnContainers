@@ -13,9 +13,9 @@ management:
         http:
           server: 
             requests: true
-  tracing:
-    sampling:
-      probability: 1.0
+  # tracing:
+  #   sampling:
+  #     probability: 1.0
         
   endpoints:
     web:
@@ -30,6 +30,6 @@ management:
       export:
         enabled: true
 
-  zipkin:
-    tracing:
-      endpoint: http://tempo:9411/api/v2/spans
+  # zipkin:
+  #   tracing:
+  #     endpoint: http://tempo:9411/api/v2/spans
