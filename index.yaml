@@ -99,6 +99,16 @@ entries:
   ordering-backgroundtasks:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-07-26T08:21:23.545873336Z"
+    description: A Helm chart for Kubernetes
+    digest: 9006a1b7caee7a7d18b3107d7ee1996c239f44e98144ff0f4325b92806a75d2e
+    name: ordering-backgroundtasks
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/ordering-backgroundtasks-0.1.3/ordering-backgroundtasks-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-07-26T08:15:22.604599497Z"
     description: A Helm chart for Kubernetes
     digest: 505535e6cc806452ca095a8ffedb0ea21d479ab634f373e0034263f162ebbf17
@@ -211,4 +221,4 @@ entries:
     urls:
     - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/webspa-0.1.0/webspa-0.1.0.tgz
     version: 0.1.0
-generated: "2025-07-26T08:15:22.604625375Z"
+generated: "2025-07-26T08:21:23.545902741Z"
