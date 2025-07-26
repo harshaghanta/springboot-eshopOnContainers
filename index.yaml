@@ -3,6 +3,16 @@ entries:
   apigwws:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-07-26T17:46:33.985194775Z"
+    description: A Helm chart for Kubernetes
+    digest: c9bd744f0a30d7a347effacd98ea69283de7d1e20cbe3ed5500ac7ecaf620710
+    name: apigwws
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/apigwws-0.1.6/apigwws-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-07-26T15:42:55.616555794Z"
     description: A Helm chart for Kubernetes
     digest: 28eabe7cd043ab05595f6f9ef143b31244f4016f105fad70f2f1c3571c75d68d
@@ -261,4 +271,4 @@ entries:
     urls:
     - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/webspa-0.1.0/webspa-0.1.0.tgz
     version: 0.1.0
-generated: "2025-07-26T15:42:55.616602561Z"
+generated: "2025-07-26T17:46:33.985250459Z"
