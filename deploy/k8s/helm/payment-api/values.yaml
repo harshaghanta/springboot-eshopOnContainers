@@ -1,17 +1,24 @@
 replicaCount: 1
 
 image:
-  repository: springeshop/paymentapi
-  pullPolicy: IfNotPresent
+  repository: harshaghanta/paymentapi
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
 ingress:
   enabled: true
+  tls: false
 
 service:
   type: ClusterIP
   port: 8087
+
+eventbus:
+  svc: rabbitmq
+  user: "guest"
+  pwd: "guest"
+  retryCount: "5"
 
 env:
   configmap:

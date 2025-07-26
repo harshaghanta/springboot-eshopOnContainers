@@ -5,7 +5,7 @@ apiVersion: v1
 metadata:
   name: {{ $cfgname }}  
 data:
-  eventbus__host: {{ .Values.global.inf.eventbus.svc }}
-  eventbus__username: {{ .Values.global.inf.eventbus.user }}
-  eventbus__password: {{ .Values.global.inf.eventbus.pwd }}
-  eventbus__retryCount: "{{ .Values.global.inf.eventbus.retryCount }}"
+  eventbus__host: {{ .Values.eventbus.svc }}
+  eventbus__username: {{ .Values.eventbus.user }}
+  eventbus__password: {{ .Values.eventbus.pwd }}
+  eventbus__retryCount: "{{ .Values.eventbus.retryCount }}"
