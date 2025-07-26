@@ -11,6 +11,14 @@ eventbus:
   pwd: "guest"
   retryCount: "5"
 
+sql:
+  common:
+    user: "sa"
+    pwd: "P@ssw0rd"
+  datasource:
+    url: "jdbc:sqlserver://sql-data:1433;databaseName=OrderDB;integratedSecurity=false;encrypt=false;trustServerCertificate=true;"
+
+
 env:
   configmap:
   - name: "eventbus.host"
