@@ -10,11 +10,11 @@ metadata:
     release: {{ .Release.Name}}
     heritage: {{ .Release.Service }}
 data:
-  eventbus__host: {{ .Values.global.inf.eventbus.svc }}
-  eventbus__username: {{ .Values.global.inf.eventbus.user }}
-  eventbus__password: {{ .Values.global.inf.eventbus.pwd }}
-  eventbus__retryCount: "{{ .Values.global.inf.eventbus.retryCount }}"
-  ordering__dataSourceUrl: {{ .Values.global.inf.sql.ordering.datasourceUrl }}
-  ordering__dataSourceUsername: {{ .Values.global.inf.sql.common.user }}
-  ordering__dataSourcePassword: {{ .Values.global.inf.sql.common.pwd }}
+  eventbus__host: {{ .Values.eventbus.svc }}
+  eventbus__username: {{ .Values.eventbus.user }}
+  eventbus__password: {{ .Values.eventbus.pwd }}
+  eventbus__retryCount: "{{ .Values.eventbus.retryCount }}"
+  ordering__dataSourceUrl: {{ .Values.sql.datasource.url }}
+  ordering__dataSourceUsername: {{ .Values.sql.common.user }}
+  ordering__dataSourcePassword: {{ .Values.sql.common.pwd }}
   

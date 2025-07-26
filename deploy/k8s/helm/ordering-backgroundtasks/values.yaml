@@ -1,12 +1,15 @@
 replicaCount: 1
 
 image:
-  repository: springeshop/orderingbackgroundtasks
-  pullPolicy: IfNotPresent
+  repository: harshaghanta/orderingbackgroundtasks
+  pullPolicy: Always
   tag: "latest"
 
-ingress:
-  enabled: true
+eventbus:
+  svc: rabbitmq
+  user: "guest"
+  pwd: "guest"
+  retryCount: "5"
 
 env:
   configmap:
