@@ -12,7 +12,7 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: {{ .Values.maxSurge | quote }}
+      maxSurge: {{ default 1 .Values.maxSurge  }}
   selector:
     matchLabels:
       app: {{ template "catalog-api.name" . }}
