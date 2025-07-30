@@ -9,6 +9,10 @@ metadata:
     chart: {{  template "catalog-api.chart" . }}
     release: {{ .Release.Name }}
 spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: {{ .Values.maxSurge | quote }}
   selector:
     matchLabels:
       app: {{ template "catalog-api.name" . }}

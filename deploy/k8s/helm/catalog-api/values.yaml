@@ -1,4 +1,5 @@
-replicaCount: 1
+replicaCount: 2
+maxSurge: 1
 clusterName: eshop-aks
 
 allowedOrigins: ""
