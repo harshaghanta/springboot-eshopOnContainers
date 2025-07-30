@@ -20,6 +20,17 @@ spec:
         app: {{ template "catalog-api.name" . }}
         release: {{ .Release.Name }}
     spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: category
+                    operator: In
+                    values:
+                      - product
+
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ template "fqdn-image" .}}:{{ .Values.image.tag }}"
