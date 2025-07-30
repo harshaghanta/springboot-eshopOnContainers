@@ -30,6 +30,8 @@ nodes:
   - role: worker
     labels:
       category: product
+      appType: job
   - role: worker
     labels:
       category: product
+      appType: service
