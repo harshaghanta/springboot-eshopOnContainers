@@ -41,7 +41,7 @@
     "@popperjs/core": "2.0.0",
     "acorn": "^6.4.1",
     "acorn-dynamic-import": "4.0.0",
-    "bootstrap": "4.4.1",
+    "bootstrap": "5.0.0",
     "core-js": "^3.14.0",
     "file-loader": "2.0.0",
     "font-awesome": "4.7.0",
@@ -56,7 +56,7 @@
     "ssri": ">=8.0.1",
     "tslib": "^2.0.0",
     "typedoc": "0.22.11",
-    "webpack-dev-server": "4.7.4",
+    "webpack-dev-server": "5.2.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
