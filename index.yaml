@@ -251,6 +251,16 @@ entries:
   rabbitmq:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-08-24T17:42:57.378540401Z"
+    description: A Helm chart for Kubernetes
+    digest: ab428b5966f229510e1231b2d80c5c3338c3cd890f398c1261fed6b689320534
+    name: rabbitmq
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/rabbitmq-0.1.1/rabbitmq-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-07-23T15:27:35.179734575Z"
     description: A Helm chart for Kubernetes
     digest: 1e0d48620f457ca2b887e701a28cb8480eb6e97d789b5dfc71e4ddee242ed8c3
@@ -321,4 +331,4 @@ entries:
     urls:
     - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/webspa-0.1.0/webspa-0.1.0.tgz
     version: 0.1.0
-generated: "2025-08-24T17:20:16.465483251Z"
+generated: "2025-08-24T17:42:57.378609201Z"
