@@ -2,7 +2,7 @@ replicaCount: 1
 pathBase: /basket-api
 
 image:
-  repository: springeshop/basketapi
+  repository: harshaghanta/basketapi
   pullPolicy: IfNotPresent  
   tag: "latest"
 
