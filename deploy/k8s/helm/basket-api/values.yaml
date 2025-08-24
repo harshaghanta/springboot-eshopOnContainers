@@ -14,6 +14,22 @@ service:
   port: "8084"
   name: basket-api
 
+eventbus:
+  svc: rabbitmq
+  user: "guest"
+  pwd: "guest"
+  retryCount: "5"
+
+issuer:
+  svc: keycloak
+  port: 9999
+  internalUrl: http://keycloak:8080
+
+allowedOrigins: ""
+
+basketdata:
+  svc: basket-data
+
 resources: {}
 
 nodeSelector: {}

@@ -8,14 +8,14 @@ metadata:
     heritage: {{ .Release.Service }}
     chart: {{ template "basket-api.chart" .}}
 data:
-  eventbus__host: {{ .Values.global.inf.eventbus.svc }}
-  eventbus__username: {{ .Values.global.inf.eventbus.user }}
-  eventbus__password: {{ .Values.global.inf.eventbus.pwd }}
-  eventbus__retryCount: "{{ .Values.global.inf.eventbus.retryCount }}"
-  issuer__host: "{{ .Values.global.inf.issuer.svc }}"
-  issuer__port: "{{ .Values.global.inf.issuer.port }}"
-  basketdata__host: "{{ .Values.global.inf.redis.basket.host }}"
-  issuer__url: "{{ .Values.global.inf.issuer.internalUrl }}"
-  allowed__origins: "{{ .Values.global.app.allowedOrigins }}"
+  eventbus__host: {{ .Values.eventbus.svc }}
+  eventbus__username: {{ .Values.eventbus.user }}
+  eventbus__password: {{ .Values.eventbus.pwd }}
+  eventbus__retryCount: "{{ .Values.eventbus.retryCount }}"
+  issuer__host: "{{ .Values.issuer.svc }}"
+  issuer__port: "{{ .Values.issuer.port }}"
+  basketdata__host: "{{ .Values.basketdata.svc }}"
+  issuer__url: "{{ .Values.issuer.internalUrl }}"
+  allowed__origins: "{{ .Values.allowedOrigins }}"
 
   
