@@ -12,7 +12,7 @@ ingress:
 service:
   type: ClusterIP
   port: "8084"
-
+  name: basket-api
 
 resources: {}
 
