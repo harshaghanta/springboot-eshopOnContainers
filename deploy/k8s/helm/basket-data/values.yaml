@@ -11,6 +11,7 @@ image:
 service:
   type: ClusterIP
   port: 6379
+  name: basket-data
 
 resources: {}
 
