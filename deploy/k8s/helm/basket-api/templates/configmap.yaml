@@ -14,9 +14,7 @@ data:
   eventbus__retryCount: "{{ .Values.eventbus.retryCount }}"
   issuer__host: "{{ .Values.issuer.svc }}"
   issuer__port: "{{ .Values.issuer.port }}"
-  basketdata__host: "{{ .Values.basketdata.svc }}"
+  basketdata__host: "{{ .Values.basketdata.uri }}"
   issuer__url: "{{ .Values.issuer.internalUrl }}"
   allowed__origins: "{{ .Values.allowedOrigins }}"
-  sampleenvvariable: {{ .Values.sampleenvvariable }}
-
   

@@ -26,10 +26,10 @@ issuer:
   internalUrl: http://keycloak:8080
 
 allowedOrigins: ""
-sampleenvvariable: sampleenvvalue
+
 
 basketdata:
-  svc: basket-data
+  uri: redis://basket-data:6379
 
 resources: {}
 
@@ -60,8 +60,7 @@ env:
       key: issuer__url
     - name: "webspa.allowedCorsOrigin"
       key: allowed__origins
-    - name: sampleenvvariable
-      key: "sampleenvvariable"
+    
   
   values:
     - name: SERVER_SERVLET_CONTEXT_PATH
