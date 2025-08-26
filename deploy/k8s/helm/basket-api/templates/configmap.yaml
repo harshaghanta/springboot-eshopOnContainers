@@ -17,5 +17,6 @@ data:
   basketdata__host: "{{ .Values.basketdata.svc }}"
   issuer__url: "{{ .Values.issuer.internalUrl }}"
   allowed__origins: "{{ .Values.allowedOrigins }}"
+  sampleenvvariable: {{ .Values.sampleenvvariable }}
 
   
