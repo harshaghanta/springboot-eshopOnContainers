@@ -49,6 +49,7 @@ public class JedisConfig {
 
     @Bean
     public JedisPool jedisPool(JedisPoolConfig poolConfig) {
+        log.info("Creating JedisPool bean for host: {}", host);
         return new JedisPool(poolConfig, host);
     }
 
