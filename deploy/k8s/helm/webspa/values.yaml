@@ -20,6 +20,9 @@ k8s:
 service:
   type: ClusterIP
   port: 8081
+  name: webspa
+  apigwname: webshoppingapigw
+  apigwport: 8082  
 
 
 resources: {}
