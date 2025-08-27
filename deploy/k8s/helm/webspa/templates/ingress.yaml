@@ -15,7 +15,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:    
-    - host: localhost
+    - host: {{ .Values.domainName }}
       http:
         paths:
         - path: /

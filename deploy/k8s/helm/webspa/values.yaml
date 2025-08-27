@@ -1,4 +1,5 @@
 replicaCount: 1
+domainName: eshop.ghantas.com
 
 image:
   repository: harshaghanta/webspa
