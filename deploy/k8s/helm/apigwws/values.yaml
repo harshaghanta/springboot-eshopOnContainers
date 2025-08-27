@@ -1,6 +1,8 @@
 replicaCount: 1
 pathBase: /webshoppingapigw
 
+domainName: eshop.ghantas.com
+
 image:
   repository: envoyproxy/envoy
   pullPolicy: Always
