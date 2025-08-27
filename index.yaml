@@ -343,6 +343,16 @@ entries:
   webspa:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-08-27T17:55:46.3599681Z"
+    description: A Helm chart for Kubernetes
+    digest: 759c48a730192035939e1a2826124233b8d458606513f61f4e35ab5740bf8274
+    name: webspa
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/webspa-0.1.9/webspa-0.1.9.tgz
+    version: 0.1.9
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-08-27T17:37:33.642752245Z"
     description: A Helm chart for Kubernetes
     digest: 743853bc0eeb287cf0191ca8616da23c3550402504e431567e5b673b56d0da1b
@@ -431,4 +441,4 @@ entries:
     urls:
     - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/webspa-0.1.0/webspa-0.1.0.tgz
     version: 0.1.0
-generated: "2025-08-27T17:37:33.642849767Z"
+generated: "2025-08-27T17:55:46.360061485Z"
