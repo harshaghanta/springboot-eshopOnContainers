@@ -1,0 +1,35 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: virtualservice
+spec:
+  hosts:
+  - eshop.ghantas.com
+  gateways:
+  - eshop-gateway
+  http:
+  - name: catalog-service-short-routing
+    match:
+    - uri:
+        regex: /webshoppingapigw/c/(.*)
+    rewrite:
+      uriRegexRewrite:
+        match: "/webshoppingapigw/c/(.*)"
+        rewrite: /catalog-api/\1
+    route:
+    - destination:
+        host: catalog-api.eshop.svc.cluster.local
+        subset: catalog-service-subset
+  - name: catalog-service-long-routing
+    match:
+    - uri:
+        regex: /webshoppingapigw/catalog-api/(.*)
+    rewrite:
+      uriRegexRewrite:
+        match: "/webshoppingapigw/catalog-api/(.*)"
+        rewrite: /catalog-api/\1
+    route:
+    - destination:
+        host: catalog-api.eshop.svc.cluster.local
+        subset: catalog-service-subset
+        
