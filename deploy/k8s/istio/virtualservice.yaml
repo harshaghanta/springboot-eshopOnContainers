@@ -32,4 +32,13 @@ spec:
     - destination:
         host: catalog-api.eshop.svc.cluster.local
         subset: catalog-service-subset
+
+  - name: webspa-routing
+    match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: webspa.eshop.svc.cluster.local
+        subset: webspa-service-subset
         

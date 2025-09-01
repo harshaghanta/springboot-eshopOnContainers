@@ -1,0 +1,11 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: webspa-destinationrule
+spec:
+  host: webspa.eshop.svc.cluster.local
+  subsets:
+  - name: webspa-service-subset
+    labels:
+      app: webspa
+      release: webspa

@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
-  name: destinationrule
+  name: catalog-api-destinationrule
 spec:
   host: catalog-api.eshop.svc.cluster.local
   subsets:
