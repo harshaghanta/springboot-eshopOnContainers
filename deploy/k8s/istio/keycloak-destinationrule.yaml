@@ -1,0 +1,11 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: keycloak-destinationrule
+spec:
+  host: keycloak.eshop.svc.cluster.local
+  subsets:
+  - name: keycloak-service-subset
+    labels:
+      app: keycloak
+      release: keycloak

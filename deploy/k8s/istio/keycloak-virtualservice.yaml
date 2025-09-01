@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: keycloak-virtualservice
+spec:
+  hosts:
+  - auth.ghantas.com
+  gateways:
+  - keycloak-gateway
+  http:
+  - name: keycloak-routing
+    match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: keycloak.eshop.svc.cluster.local
+        subset: keycloak-service-subset
+        
