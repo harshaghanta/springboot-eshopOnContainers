@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.global.inf.issuer.svc }}
+  name: {{ .Values.service.name }}
   labels:
     app: {{ template "keycloak.name" . }}
     chart: {{ template "keycloak.chart" . }}

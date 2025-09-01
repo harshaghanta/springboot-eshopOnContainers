@@ -12,6 +12,7 @@ ingress:
 service:
   type: ClusterIP
   port: 8085
+  name: keycloak
 
 env:
   values:
@@ -24,7 +25,7 @@ env:
     - name: KC_HEALTH_ENABLED
       value: true
     - name: KEYCLOAK_FRONTEND_URL
-      value: http://localhost/keycloak
+      value: auth.ghantas.com
     - name: KC_HTTP_RELATIVE_PATH
       value: /keycloak
     - name: KEYCLOAK_LOGLEVEL
