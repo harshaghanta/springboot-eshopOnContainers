@@ -217,6 +217,16 @@ entries:
   keycloak:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-09-01T17:45:06.405800993Z"
+    description: A Helm chart for Kubernetes
+    digest: 9c372437fc96cd8d4d9655768b2baf35369905b4fb194f1ee047129f9b8b89d1
+    name: keycloak
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/keycloak-0.1.2/keycloak-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-09-01T17:36:05.214818606Z"
     description: A Helm chart for Kubernetes
     digest: c3732b0c412580578734b215fa5593bb98cbc6120fd21aeeefc52f50f438b14d
@@ -461,4 +471,4 @@ entries:
     urls:
     - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/webspa-0.1.0/webspa-0.1.0.tgz
     version: 0.1.0
-generated: "2025-09-01T17:36:05.214913293Z"
+generated: "2025-09-01T17:45:06.405891362Z"
