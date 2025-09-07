@@ -1,0 +1,18 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: eshop-cluster
+servers: 2         # 2 master nodes
+agents: 4          # 4 worker nodes
+options:
+  k3s:
+    extraArgs:
+      - arg: "--disable=traefik"
+        nodeFilters:
+          - server:*
+      - arg: "--disable=servicelb"
+        nodeFilters:
+          - server:*
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: true
