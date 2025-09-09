@@ -10,4 +10,4 @@ metadata:
     chart: {{ template "keycloak.chart" . }}
 data:
   eshoponcontainers-realm.json: |-
-  {{ tpl( .Files.Get "files/eshoponcontainers-realm.json.tpl") . | indent 4 }}
+  {{ tpl(.Files.Get "files/eshoponcontainers-realm.json.tpl") . | indent 4 }}
