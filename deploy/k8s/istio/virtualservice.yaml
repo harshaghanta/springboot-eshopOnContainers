@@ -41,4 +41,55 @@ spec:
     - destination:
         host: webspa.eshop.svc.cluster.local
         subset: webspa-service-subset
+  - name: basket-service-short-routing
+    match:
+    - uri:
+        regex: /webshoppingapigw/b/(.*)
+    rewrite:
+      uriRegexRewrite:
+        match: "/webshoppingapigw/b/(.*)"
+        rewrite: /basket-api/\1
+    route:
+    - destination:
+        host: basket-api.eshop.svc.cluster.local
+        subset: basket-service-subset
+  - name: basket-service-long-routing
+    match:
+    - uri:
+        regex: /webshoppingapigw/basket-api/(.*)
+    rewrite:
+      uriRegexRewrite:
+        match: "/webshoppingapigw/basket-api/(.*)"
+        rewrite: /basket-api/\1
+    route:
+    - destination:
+        host: basket-api.eshop.svc.cluster.local
+        subset: basket-service-subset
+
+  - name: ordering-service-short-routing
+    match:
+    - uri:
+        regex: /webshoppingapigw/o/(.*)
+    rewrite:
+      uriRegexRewrite:
+        match: "/webshoppingapigw/o/(.*)"
+        rewrite: /ordering-api/\1
+    route:
+    - destination:
+        host: ordering-api.eshop.svc.cluster.local
+        subset: ordering-service-subset
+  - name: ordering-service-long-routing
+    match:
+    - uri:
+        regex: /webshoppingapigw/ordering-api/(.*)
+    rewrite:
+      uriRegexRewrite:
+        match: "/webshoppingapigw/ordering-api/(.*)"
+        rewrite: /ordering-api/\1
+    route:
+    - destination:
+        host: ordering-api.eshop.svc.cluster.local
+        subset: ordering-service-subset
+
+
         

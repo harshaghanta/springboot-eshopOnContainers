@@ -1,0 +1,11 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: ordering-api-destinationrule
+spec:
+  host: orderingapi.eshop.svc.cluster.local
+  subsets:
+  - name: ordering-service-subset
+    labels:
+      app: ordering-api
+      release: ordering-api
