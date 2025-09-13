@@ -76,14 +76,14 @@ env:
       value: "/catalog-api"
   probes:
     liveness:
-      path: /liveness
+      path: /catalog-api/actuator/health/liveness
       initialDelaySeconds: 10
       periodSeconds: 15
-      port: 80
+      port: 8080
     readiness:
-      path: /hc
+      path: /catalog-api/actuator/health/readiness
       timeoutSeconds: 5
       intialDelaySeconds: 90
       periodSeconds: 60
-      port: 80
+      port: 8080
   
