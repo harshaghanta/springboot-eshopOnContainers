@@ -3,7 +3,7 @@ kind: DestinationRule
 metadata:
   name: ordering-api-destinationrule
 spec:
-  host: orderingapi.eshop.svc.cluster.local
+  host: ordering-api.eshop.svc.cluster.local
   subsets:
   - name: ordering-service-subset
     labels:
