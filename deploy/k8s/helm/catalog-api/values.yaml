@@ -3,6 +3,7 @@ maxSurge: 1
 clusterName: eshop-aks
 
 allowedOrigins: ""
+picBaseUrl: "https://harshaghanta.github.io/springboot-eshopOnContainers/resources/catalog/images/[0]"
 
 image:
   repository: harshaghanta/catalogapi
