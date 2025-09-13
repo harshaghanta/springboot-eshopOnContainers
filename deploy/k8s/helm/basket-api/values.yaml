@@ -23,7 +23,7 @@ eventbus:
 issuer:
   svc: keycloak
   port: 9999
-  internalIssuerUrl: http://keycloak:8080/realms/eshoponcontainers
+  internalIssuerUrl: http://keycloak:8085/realms/eshoponcontainers
 
 allowedOrigins: ""
 
