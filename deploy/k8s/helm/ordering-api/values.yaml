@@ -30,10 +30,10 @@ eventbus:
 service:
   type: ClusterIP
   port: 8086
-  name: orderingapi
+  name: ordering-api
 
 issuer:
-  url: "http://keycloak:8080"
+  internalIssuerUrl: "http://keycloak:8085/realms/eshoponcontainers"
 
 env:
   configmap:

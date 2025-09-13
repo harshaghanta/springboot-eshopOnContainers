@@ -13,7 +13,7 @@ data:
   eventbus__username: {{ .Values.eventbus.user }}
   eventbus__password: {{ .Values.eventbus.pwd }}
   eventbus__retryCount: "{{ .Values.eventbus.retryCount }}"
-  issuer__url: {{ .Values.issuer.url }}
+  issuer__url: {{ .Values.issuer.internalIssuerUrl }}
   ordering__dataSourceUrl: {{ .Values.sql.datasource.url }}
   ordering__dataSourceUsername: {{ .Values.sql.common.user }}
   ordering__dataSourcePassword: {{ .Values.sql.common.pwd }}
