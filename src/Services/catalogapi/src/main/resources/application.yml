@@ -40,3 +40,4 @@ management:
   #     endpoint: http://tempo:9411/api/v2/spans
 
 allowedCorsOrigin: "*"
+picBaseUrl: "https://harshaghanta.github.io/springboot-eshopOnContainers/resources/catalog/images/[0]"

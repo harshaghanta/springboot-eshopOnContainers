@@ -20,7 +20,7 @@ spring:
       naming.implicit-strategy: "org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl"
 
 allowedCorsOrigin: ${webspa.allowedCorsOrigin}
-picBaseUrl: ${catalog.picBaseUrl}
+
 eventbus:
   host: ${eventbus.host}
   username: ${eventbus.username}

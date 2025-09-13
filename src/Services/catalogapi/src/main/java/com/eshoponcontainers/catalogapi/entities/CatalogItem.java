@@ -82,6 +82,10 @@ public class CatalogItem {
         return this.catalogType == null ? null : this.catalogType.getId();
     }
 
+    public String getPictureFileName() {
+        return this.pictureFileName;
+    }
+
     // public void setCatalogTypeId(int value) {
     //     catalogTypeId = value;
     // }

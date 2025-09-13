@@ -259,7 +259,7 @@ public class CatalogController {
     }
 
     private CatalogItem changeUrlPlaceHolder(CatalogItem catalogItem) {
-        catalogItem.setPictureUri(picBaseUrl.replace("[0]", catalogItem.getId().toString()));
+        catalogItem.setPictureUri(picBaseUrl.replace("[0]", catalogItem.getPictureFileName()));
         return catalogItem;
     }
 
