@@ -77,13 +77,14 @@ env:
   probes:
     liveness:
       path: /catalog-api/actuator/health/liveness
-      initialDelaySeconds: 10
+      initialDelaySeconds: 30
+      timeoutSeconds: 5
       periodSeconds: 15
       port: 8080
     readiness:
       path: /catalog-api/actuator/health/readiness
       timeoutSeconds: 5
-      intialDelaySeconds: 90
-      periodSeconds: 60
+      initialDelaySeconds: 90
+      periodSeconds: 15
       port: 8080
   
