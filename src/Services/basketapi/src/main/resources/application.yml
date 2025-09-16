@@ -16,8 +16,9 @@ management:
       percentiles-histogram:
         http:
           server: 
-            requests: true
+            requests: true  
   tracing:
+    enabled: false
     sampling:
       probability: 1.0
         

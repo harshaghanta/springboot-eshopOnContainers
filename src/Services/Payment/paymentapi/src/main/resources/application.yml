@@ -1,4 +1,20 @@
+spring:
+  application:
+    name: payment-api
 spring.profiles.active: dev
+
+#enable management endpoints
+management:
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server: 
+            requests: true
+  tracing:
+    enabled: false
+    sampling:
+      probability: 1.0
 
 server:
   tomcat:

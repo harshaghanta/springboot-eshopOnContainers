@@ -18,9 +18,10 @@ management:
         http:
           server: 
             requests: true
-  # tracing:
-  #   sampling:
-  #     probability: 1.0
+  tracing:
+    enabled: false
+    sampling:
+      probability: 1.0
         
   endpoints:
     web:
