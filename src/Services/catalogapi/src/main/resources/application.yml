@@ -18,6 +18,8 @@ management:
         http:
           server: 
             requests: true
+  tracing:
+    enabled: false
   # tracing:
   #   sampling:
   #     probability: 1.0
