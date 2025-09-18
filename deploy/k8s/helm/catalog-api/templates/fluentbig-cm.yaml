@@ -1,0 +1,36 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: fluentbit-cm
+data:
+  fluent-bit.conf: |
+     [SERVICE]
+        Flush        15
+        Log_Level    info
+        Parsers_File parsers.conf
+
+    [INPUT]
+        Name        tail
+        Path        /app/logs/*.log
+        Tag         springboot.*
+        DB          /var/log/flb_kube.db
+        Parser      springboot
+        Refresh_Interval 5
+
+    [OUTPUT]
+        Name  es
+        Match springboot.*
+        Host  elasticsearch.logging.svc.cluster.local
+        Port  9200
+        Index springboot-logs
+        Type  _doc
+        Logstash_Format On
+
+  parsers.conf: |
+    [PARSER]
+        Name        springboot
+        Format      regex
+        Regex       ^(?<time>[^ ]+) +(?<level>\w+) +(?<pid>\d+) +--- +\[(?<thread>[^\]]+)\] +(?<logger>[^ ]+) *: (?<message>.*)$
+        Time_Key    time
+        Time_Format %Y-%m-%dT%H:%M:%S.%LZ
+

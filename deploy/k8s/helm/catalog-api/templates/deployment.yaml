@@ -100,3 +100,16 @@ spec:
           tolerations:
           {{ toYaml . | nindent 12 }}
           {{- end -}}
+        - name: fluentbit-sidecar
+          image: fluent/fluent-bit:latest
+          volumeMounts:
+            - name: log-volume
+              mountPath: /app/logs
+            - name: fluentbit-config
+              mountPath: /fluent-bit/etc/
+      volumes:
+        - name: log-volume
+          emptyDir: {}
+        - name: fluentbit-config
+          configMap:
+            name: fluentbit-config
