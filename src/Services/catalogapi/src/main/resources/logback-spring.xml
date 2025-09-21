@@ -11,7 +11,8 @@
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <!-- Default Spring Boot console log pattern -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t] --- [%15.15logger{39}] : %m%n</pattern>
         </encoder>
     </appender>
 
