@@ -47,6 +47,11 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ template "fqdn-image" .}}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: log-volume
+              mountPath: /app/logs
+            - name: fluentbit-config
+              mountPath: /fluent-bit/etc/
           env:            
             - name: k8sname
               value: {{ .Values.clusterName }}
@@ -102,6 +107,8 @@ spec:
           {{- end }}
         - name: fluentbit-sidecar
           image: fluent/fluent-bit:latest
+          securityContext:
+            privileged: true
           volumeMounts:
             - name: log-volume
               mountPath: /app/logs
