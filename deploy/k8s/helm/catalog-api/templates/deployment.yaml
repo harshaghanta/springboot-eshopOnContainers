@@ -99,7 +99,7 @@ spec:
           {{- with .Values.tolerations }}
           tolerations:
           {{ toYaml . | nindent 12 }}
-          {{- end -}}
+          {{- end }}
         - name: fluentbit-sidecar
           image: fluent/fluent-bit:latest
           volumeMounts:
@@ -112,4 +112,4 @@ spec:
           emptyDir: {}
         - name: fluentbit-config
           configMap:
-            name: fluentbit-config
+            name: fluentbit-cm

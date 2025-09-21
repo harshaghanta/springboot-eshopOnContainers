@@ -4,7 +4,7 @@ metadata:
   name: fluentbit-cm
 data:
   fluent-bit.conf: |
-     [SERVICE]
+    [SERVICE]
         Flush        15
         Log_Level    info
         Parsers_File parsers.conf
