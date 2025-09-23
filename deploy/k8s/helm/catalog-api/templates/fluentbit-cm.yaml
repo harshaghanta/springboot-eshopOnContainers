@@ -20,10 +20,14 @@ data:
     [OUTPUT]
         Name  es
         Match springboot.*
-        Host  elasticsearch.logging.svc.cluster.local
+        Host  elasticsearch-master.logging.svc.cluster.local
         Port  9200
+        HTTP_User elasticsearch
+        HTTP_Passwd rmSfigbLCX8kHLD2
+        Retry_Limit False
+        tls On
+        tls.verify Off
         Index springboot-logs
-        Type  _doc
         Logstash_Format On
 
   parsers.conf: |
