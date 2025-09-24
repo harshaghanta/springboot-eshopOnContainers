@@ -22,13 +22,14 @@ data:
         Match springboot.*
         Host  elasticsearch-master.logging.svc.cluster.local
         Port  9200
-        HTTP_User elasticsearch
+        HTTP_User elastic
         HTTP_Passwd rmSfigbLCX8kHLD2
         Retry_Limit False
         tls On
         tls.verify Off
-        Index springboot-logs
-        Logstash_Format On
+        Index catalog-api-logs
+        Logstash_Format Off
+        Suppress_Type_Name On
 
   parsers.conf: |
     [PARSER]

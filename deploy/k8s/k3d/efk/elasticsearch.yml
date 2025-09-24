@@ -1,8 +1,0 @@
-protocol: http
-
-esConfig:
-  elasticsearch.yml: |
-    xpack.security.enabled: false
-    xpack.security.http.ssl.enabled: false
-    network.host: 0.0.0.0
-    http.port: 9200
