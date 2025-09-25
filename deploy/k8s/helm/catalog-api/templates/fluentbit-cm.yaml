@@ -17,6 +17,12 @@ data:
         Parser      springboot
         Refresh_Interval 5
 
+    [FILTER]
+        Name parser
+        Match springboot.*
+        Key_Name log
+        Parser springboot_json
+
     [OUTPUT]
         Name  es
         Match springboot.*
