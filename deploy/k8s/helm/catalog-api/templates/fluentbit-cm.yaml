@@ -33,9 +33,8 @@ data:
 
   parsers.conf: |
     [PARSER]
-        Name        springboot
-        Format      regex
-        Regex       ^(?<time>[^ ]+) +(?<level>\w+) +(?<pid>\d+) +--- +\[(?<thread>[^\]]+)\] +(?<logger>[^ ]+) *: (?<message>.*)$
-        Time_Key    time
-        Time_Format %Y-%m-%dT%H:%M:%S.%LZ
+        Name        springboot_json
+        Format      json
+        Time_Key    timestamp
+        Time_Format %Y-%m-%dT%H:%M:%S.%L%z
 
