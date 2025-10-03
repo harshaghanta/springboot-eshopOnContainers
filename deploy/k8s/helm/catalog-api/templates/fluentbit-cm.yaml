@@ -1,3 +1,4 @@
+{{- if .Values.fluentbit.enabled }}
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -11,7 +12,7 @@ data:
 
     [INPUT]
         Name        tail
-        Path        /app/logs/*.log
+        Path        {{ .Values.fluentbit.logPath }}/*.log
         Tag         springboot.*
         DB          /var/log/flb_kube.db
         Parser      springboot
@@ -26,14 +27,14 @@ data:
     [OUTPUT]
         Name  es
         Match springboot.*
-        Host  elasticsearch-master.logging.svc.cluster.local
-        Port  9200
-        HTTP_User elastic
-        HTTP_Passwd rmSfigbLCX8kHLD2
+        Host  {{ .Values.fluentbit.elasticsearch.host }}
+        Port  {{ .Values.fluentbit.elasticsearch.port }}
+        HTTP_User {{ .Values.fluentbit.elasticsearch.user }}
+        HTTP_Passwd {{ .Values.fluentbit.elasticsearch.password }}
         Retry_Limit False
         tls On
         tls.verify Off
-        Index catalog-api-logs
+        Index {{ .Values.fluentbit.indexName }}
         Logstash_Format Off
         Suppress_Type_Name On
 
@@ -44,3 +45,4 @@ data:
         Time_Key    timestamp
         Time_Format %Y-%m-%dT%H:%M:%S.%L%z
 
+{{- end }}

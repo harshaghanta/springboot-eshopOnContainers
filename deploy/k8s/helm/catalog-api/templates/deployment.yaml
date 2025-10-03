@@ -50,8 +50,6 @@ spec:
           volumeMounts:
             - name: log-volume
               mountPath: /app/logs
-            - name: fluentbit-config
-              mountPath: /fluent-bit/etc/
           env:            
             - name: k8sname
               value: {{ .Values.clusterName }}
@@ -105,18 +103,23 @@ spec:
           tolerations:
           {{ toYaml . | nindent 12 }}
           {{- end }}
+          {{- if .Values.fluentbit.enabled }}
         - name: fluentbit-sidecar
-          image: fluent/fluent-bit:latest
+          image: {{ .Values.fluentbit.image.repository }}:{{ .Values.fluentbit.image.tag }}
+          imagePullPolicy: {{ .Values.fluentbit.image.pullPolicy }}
           securityContext:
-            privileged: true
+            privileged: true          
           volumeMounts:
             - name: log-volume
-              mountPath: /app/logs/
+              mountPath: /app/logs/          
             - name: fluentbit-config
               mountPath: /fluent-bit/etc/
+          {{- end }}
       volumes:
         - name: log-volume
           emptyDir: {}
+        {{- if .Values.fluentbit.enabled }}
         - name: fluentbit-config
           configMap:
             name: fluentbit-cm
+        {{- end }}
