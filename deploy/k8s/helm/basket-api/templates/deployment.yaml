@@ -46,6 +46,7 @@ spec:
           - name: http
             containerPort: 8080
             protocol: TCP
+        {{- if .Values.fluentbit.enabled }}  
         - name: fluentbit-sidecar
           image: {{ .Values.fluentbit.image.repository }}:{{ .Values.fluentbit.image.tag }}
           imagePullPolicy: {{ .Values.fluentbit.image.pullPolicy }}
