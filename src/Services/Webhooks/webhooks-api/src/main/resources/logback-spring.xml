@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/base.xml" />
+    <!-- Removed default Spring Boot logback base to avoid pattern override -->
     <springProperty scope="context" name="appName" source="spring.application.name" />
 
     <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -10,13 +10,30 @@
             <fileNamePattern>logs/${appName}.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <fieldName>timestamp</fieldName>
+                    <pattern>yyyy-MM-dd'T'HH:mm:ss.SSSZ</pattern>
+                </timestamp>
+                <pattern>
+                    <pattern>{"level": "%level", "logger": "%logger", "thread": "%thread", "message": "%message", "context": "%mdc"}</pattern>
+                </pattern>
+                <arguments/>
+                <stackTrace/>
+            </providers>
+        </encoder>
+    </appender>
+
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-
     <root level="INFO">
         <appender-ref ref="ROLLING" />
+        <appender-ref ref="CONSOLE" />
     </root>
 </configuration>
