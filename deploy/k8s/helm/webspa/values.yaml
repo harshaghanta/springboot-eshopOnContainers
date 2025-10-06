@@ -7,6 +7,20 @@ image:
   pullPolicy: Always
   tag: "latest"
 
+fluentbit:
+  enabled: false
+  indexName: webspa-logs
+  logPath: /app/logs
+  image:
+    repository: fluent/fluent-bit
+    tag: 1.8.3
+    pullPolicy: IfNotPresent
+  elasticsearch:
+    host: "elasticsearch-master.logging.svc.cluster.local"
+    port: 9200
+    user: "elastic"
+    password: "elastic"
+
 ingress:
   webshoppingapigw: webshoppingapigw
 

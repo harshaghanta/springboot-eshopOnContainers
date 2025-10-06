@@ -1,0 +1,48 @@
+{{- if .Values.fluentbit.enabled }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: fluentbit-cm-webspa
+data:
+  fluent-bit.conf: |
+    [SERVICE]
+        Flush        15
+        Log_Level    info
+        Parsers_File parsers.conf
+
+    [INPUT]
+        Name        tail
+        Path        {{ .Values.fluentbit.logPath }}/*.log
+        Tag         springboot.*
+        DB          /var/log/flb_kube.db
+        Parser      springboot
+        Refresh_Interval 5
+
+    [FILTER]
+        Name parser
+        Match springboot.*
+        Key_Name log
+        Parser springboot_json
+
+    [OUTPUT]
+        Name  es
+        Match springboot.*
+        Host  {{ .Values.fluentbit.elasticsearch.host }}
+        Port  {{ .Values.fluentbit.elasticsearch.port }}
+        HTTP_User {{ .Values.fluentbit.elasticsearch.user }}
+        HTTP_Passwd {{ .Values.fluentbit.elasticsearch.password }}
+        Retry_Limit False
+        tls On
+        tls.verify Off
+        Index {{ .Values.fluentbit.indexName }}
+        Logstash_Format Off
+        Suppress_Type_Name On
+
+  parsers.conf: |
+    [PARSER]
+        Name        springboot_json
+        Format      json
+        Time_Key    timestamp
+        Time_Format %Y-%m-%dT%H:%M:%S.%L%z
+
+{{- end }}
