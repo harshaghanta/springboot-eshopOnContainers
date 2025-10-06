@@ -3,7 +3,7 @@ pathBase: /ordering-api
 
 image:
   repository: harshaghanta/orderingapi
-  pullPolicy: Always  
+  pullPolicy: Always
   tag: "latest"
 
 fluentbit:
