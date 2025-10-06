@@ -25,6 +25,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag}}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: log-volume
+              mountPath: /app/logs
           env:
           {{- if .Values.env.configmap }}
           {{- range .Values.env.configmap }}
@@ -56,10 +59,26 @@ spec:
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.volumes }}
+        {{- if .Values.fluentbit.enabled }}
+        - name: fluentbit-sidecar
+          image: {{ .Values.fluentbit.image.repository }}:{{ .Values.fluentbit.image.tag }}
+          imagePullPolicy: {{ .Values.fluentbit.image.pullPolicy }}
+          securityContext:
+            privileged: true          
+          volumeMounts:
+            - name: log-volume
+              mountPath: /app/logs/          
+            - name: fluentbit-config
+              mountPath: /fluent-bit/etc/
+          {{- end }}
       volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        - name: log-volume
+          emptyDir: {}
+        {{- if .Values.fluentbit.enabled }}
+        - name: fluentbit-config
+          configMap:
+            name: fluentbit-cm-basketapi
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
