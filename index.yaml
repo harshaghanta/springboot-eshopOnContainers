@@ -560,6 +560,16 @@ entries:
   payment-api:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-10-06T17:47:07.844433211Z"
+    description: A Helm chart for Kubernetes
+    digest: 6e9bd2fc16819f49f1bec3e59c72a081dcb3bba7d5e8369265540de6b81533ae
+    name: payment-api
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/payment-api-0.1.2/payment-api-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-07-26T07:54:06.342438714Z"
     description: A Helm chart for Kubernetes
     digest: e838d650c00b891e7099cffa42f0b40bd8a93912ae8ca207df8e16787782f2dc
@@ -721,4 +731,4 @@ entries:
     urls:
     - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/webspa-0.1.0/webspa-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-06T17:14:59.531055331Z"
+generated: "2025-10-06T17:47:07.844562332Z"
