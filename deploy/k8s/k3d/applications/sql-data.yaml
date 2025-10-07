@@ -1,0 +1,15 @@
+metadata:
+  name: sql-data
+  namespace: argocd
+spec:
+  destination:
+    namespace: eshop
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: sql-data
+    repoURL: https://harshaghanta.github.io/springboot-eshopOnContainers/
+    targetRevision: 0.1.1
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

@@ -27,6 +27,8 @@ kubectl apply -f ../istio -n eshop
 argocd login localhost:9080 --username admin --password 9fBNu9FGDCRxl6OY --insecure
 
 # Export argocd applications
+# argocd app get sql-data -o yaml | yq 'del(.status, .metadata.uid, .metadata.resourceVersion, .metadata.generation, .metadata.creationTimestamp, .metadata.managedFields, .metadata.selfLink)' > applications/sql-data.yaml
+# argocd app get rabbitmq -o yaml | yq 'del(.status, .metadata.uid, .metadata.resourceVersion, .metadata.generation, .metadata.creationTimestamp, .metadata.managedFields, .metadata.selfLink)' > applications/rabbitmq.yaml
 # argocd app get basket-data -o yaml | yq 'del(.status, .metadata.uid, .metadata.resourceVersion, .metadata.generation, .metadata.creationTimestamp, .metadata.managedFields, .metadata.selfLink)' > applications/basket-data.yaml
 # argocd app get basket-api -o yaml | yq 'del(.status, .metadata.uid, .metadata.resourceVersion, .metadata.generation, .metadata.creationTimestamp, .metadata.managedFields, .metadata.selfLink)' > applications/basket-api.yaml
 # argocd app get payment-api -o yaml | yq 'del(.status, .metadata.uid, .metadata.resourceVersion, .metadata.generation, .metadata.creationTimestamp, .metadata.managedFields, .metadata.selfLink)' > applications/payment-api.yaml
@@ -34,6 +36,12 @@ argocd login localhost:9080 --username admin --password 9fBNu9FGDCRxl6OY --insec
 # argocd app get ordering-backgroundtasks -o yaml | yq 'del(.status, .metadata.uid, .metadata.resourceVersion, .metadata.generation, .metadata.creationTimestamp, .metadata.managedFields, .metadata.selfLink)' > applications/ordering-backgroundtasks.yaml
 # argocd app get keycloak -o yaml | yq 'del(.status, .metadata.uid, .metadata.resourceVersion, .metadata.generation, .metadata.creationTimestamp, .metadata.managedFields, .metadata.selfLink)' > applications/keycloak.yaml
 # argocd app get webspa -o yaml | yq 'del(.status, .metadata.uid, .metadata.resourceVersion, .metadata.generation, .metadata.creationTimestamp, .metadata.managedFields, .metadata.selfLink)' > applications/webspa.yaml
+
+argocd app create -f applications/sql-data.yaml
+argocd app sync sql-data
+
+argocd app create -f applications/rabbitmq.yaml
+argocd app sync rabbitmq
 
 # Create Application for Catalog API
 argocd app create -f applications/catalog-api.yaml
