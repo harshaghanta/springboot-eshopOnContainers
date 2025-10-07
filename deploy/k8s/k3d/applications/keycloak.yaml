@@ -1,0 +1,15 @@
+metadata:
+  name: keycloak
+  namespace: argocd
+spec:
+  destination:
+    namespace: eshop
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: keycloak
+    repoURL: https://harshaghanta.github.io/springboot-eshopOnContainers/
+    targetRevision: 0.1.8
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,19 @@
+metadata:
+  name: payment-api
+  namespace: argocd
+spec:
+  destination:
+    namespace: eshop
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: payment-api
+    helm:
+      parameters:
+        - name: fluentbit.enabled
+          value: "true"
+    repoURL: https://harshaghanta.github.io/springboot-eshopOnContainers/
+    targetRevision: 0.1.2
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,15 @@
+metadata:
+  name: basket-data
+  namespace: argocd
+spec:
+  destination:
+    namespace: eshop
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: basket-data
+    repoURL: https://harshaghanta.github.io/springboot-eshopOnContainers/
+    targetRevision: 0.1.2
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

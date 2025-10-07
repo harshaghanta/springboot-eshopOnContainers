@@ -1,0 +1,16 @@
+metadata:
+  name: webspa
+  namespace: argocd
+spec:
+  destination:
+    namespace: eshop
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: webspa
+    helm:
+      parameters:
+        - name: fluentbit.enabled
+          value: "true"
+    repoURL: https://harshaghanta.github.io/springboot-eshopOnContainers/
+    targetRevision: 0.2.1
