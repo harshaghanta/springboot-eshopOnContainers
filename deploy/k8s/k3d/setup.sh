@@ -1,6 +1,12 @@
 #!/bin/bash
 
-k3d cluster create --config cluster.yaml 
+#Prequisites:
+# 1. Install k3d - https://k3d.io/#installation
+# 2. Install kubectl - https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+# 3. Install istioctl - https://istio.io/latest/docs/setup/getting-started/#download
+# 4. Install argocd CLI - https://argocd.docs.kubernetes.io/cli_installation/
+
+k3d cluster create --config cluster.yaml
 
 kubectl label node k3d-eshop-cluster-agent-0 category=product
 kubectl label node k3d-eshop-cluster-agent-0 appType=service
@@ -15,6 +21,10 @@ kubectl apply -f ./loadbalancer
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
+# Port forward argocd-server service to localhost:9080
+kubectl -n argocd port-forward svc/argocd-server 9080:80 &
+PORT_FORWARD_PID=$!
+
 # Install Istio Service Mesh
 istioctl install --set profile=demo --skip-confirmation
 
@@ -24,7 +34,9 @@ kubectl label ns eshop istio-injection=enabled
 
 kubectl apply -f ../istio -n eshop
 
-argocd login localhost:9080 --username admin --password 9fBNu9FGDCRxl6OY --insecure
+ARGOCD_PASSWORD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+
+argocd login localhost:9080 --username admin --password $ARGOCD_PASSWORD --insecure
 
 # Export argocd applications
 # argocd app get sql-data -o yaml | yq 'del(.status, .metadata.uid, .metadata.resourceVersion, .metadata.generation, .metadata.creationTimestamp, .metadata.managedFields, .metadata.selfLink)' > applications/sql-data.yaml
