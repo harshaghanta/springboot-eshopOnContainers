@@ -47,7 +47,7 @@ service:
   name: ordering-api
 
 issuer:
-  internalIssuerUrl: "http://keycloak:8085/realms/eshoponcontainers"
+  internalIssuerUrl: "http://keycloak:8085/keycloak/realms/eshoponcontainers"
 
 env:
   configmap:
