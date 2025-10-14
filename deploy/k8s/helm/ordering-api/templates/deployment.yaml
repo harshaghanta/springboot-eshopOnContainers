@@ -77,7 +77,7 @@ spec:
         {{- if .Values.fluentbit.enabled }}
         - name: fluentbit-config
           configMap:
-            name: fluentbit-cm-basketapi
+            name: fluentbit-cm-orderingapi
         {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
