@@ -74,6 +74,16 @@ entries:
   basket-api:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-10-14T16:05:52.993220946Z"
+    description: A Helm chart for Kubernetes
+    digest: ba98e9d8c076e1f388c7dd344ceb2afbdf08906f23587213265617ac3a70660e
+    name: basket-api
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/basket-api-0.1.11/basket-api-0.1.11.tgz
+    version: 0.1.11
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-10-04T13:31:41.511006723Z"
     description: A Helm chart for Kubernetes
     digest: 49965f6844082a2d13a3e82925b8aed51179e651cd55d8c61aafce421ea77729
@@ -781,4 +791,4 @@ entries:
     urls:
     - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/webspa-0.1.0/webspa-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-14T15:30:37.059227151Z"
+generated: "2025-10-14T16:05:52.99341038Z"
