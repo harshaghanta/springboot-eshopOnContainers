@@ -468,6 +468,16 @@ entries:
   ordering-api:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-10-14T13:40:50.912494816Z"
+    description: A Helm chart for Kubernetes
+    digest: 3b1158e92f316b42edf5edea4a272d52f95dc2657b589d02f62fe26e1952504b
+    name: ordering-api
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/ordering-api-0.1.5/ordering-api-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-10-06T16:15:57.229313577Z"
     description: A Helm chart for Kubernetes
     digest: 35d641f76596ab5d9a4ce849057b9fdc7ec0e8adf0eb46a0a3ef6992e99c5668
@@ -741,4 +751,4 @@ entries:
     urls:
     - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/webspa-0.1.0/webspa-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-06T18:02:18.491009187Z"
+generated: "2025-10-14T13:40:50.912656567Z"
