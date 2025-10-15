@@ -89,18 +89,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- end }}          
-          {{- with .Values.nodeSelector }}
-          nodeSelector:
-          {{ toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.affinity }}
-          affinity:
-          {{ toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.tolerations }}
-          tolerations:
-          {{ toYaml . | nindent 12 }}
-          {{- end }}
+          
           {{- if .Values.fluentbit.enabled }}
         - name: fluentbit-sidecar
           image: {{ .Values.fluentbit.image.repository }}:{{ .Values.fluentbit.image.tag }}
@@ -113,6 +102,18 @@ spec:
             - name: fluentbit-config
               mountPath: /fluent-bit/etc/
           {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+      {{ toYaml . | nindent 12 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+      {{ toYaml . | nindent 12 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+      {{ toYaml . | nindent 12 }}
+      {{- end }}
       volumes:
         - name: log-volume
           emptyDir: {}
