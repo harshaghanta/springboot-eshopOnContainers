@@ -39,9 +39,15 @@ spec:
                   - key: appType
                     operator: In
                     values:
-                      - service
-                    
-
+                      - service                    
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}      
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ template "fqdn-image" .}}:{{ .Values.image.tag }}"
@@ -101,19 +107,7 @@ spec:
               mountPath: /app/logs/          
             - name: fluentbit-config
               mountPath: /fluent-bit/etc/
-          {{- end }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-      {{ toYaml . | nindent 12 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-      {{ toYaml . | nindent 12 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-      {{ toYaml . | nindent 12 }}
-      {{- end }}
+          {{- end }}      
       volumes:
         - name: log-volume
           emptyDir: {}
