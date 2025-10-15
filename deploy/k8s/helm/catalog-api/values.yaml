@@ -1,5 +1,8 @@
-replicaCount: 2
+minReplicas: 2
+maxReplicas: 5
+averageCPUUtilizationPercent: 5
 maxSurge: 1
+
 clusterName: eshop-aks
 
 allowedOrigins: ""
@@ -55,7 +58,10 @@ service:
   port: 8081
   name: catalog-api
 
-resources: {}
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
 
 nodeSelector: {}
 

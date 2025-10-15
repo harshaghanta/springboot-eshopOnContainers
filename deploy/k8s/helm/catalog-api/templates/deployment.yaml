@@ -16,8 +16,7 @@ spec:
   selector:
     matchLabels:
       app: {{ template "catalog-api.name" . }}
-      release: {{ .Release.Name}}
-  replicas: {{ .Values.replicaCount}}
+      release: {{ .Release.Name}}  
   template:
     metadata:
       labels:
