@@ -84,12 +84,11 @@ spec:
             initialDelaySeconds: {{ .Values.env.probes.readiness.initialDelaySeconds }}
             periodSeconds: {{ .Values.env.probes.readiness.periodSeconds }}
             timeoutSeconds: {{ .Values.env.probes.readiness.timeoutSeconds }}          
-          {{- with .Values.resources }}
-          {{- if ne (toYaml .) "{}\n" }}
+          
+          {{- if .Values.resources }}
           resources:
-            {{- toYaml . | indent 12 }}
-          {{- end }}
-          {{- end }}
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- end }}          
           {{- with .Values.nodeSelector }}
           nodeSelector:
           {{ toYaml . | nindent 12 }}
