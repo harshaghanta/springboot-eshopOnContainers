@@ -1,6 +1,6 @@
 minReplicas: 2
 maxReplicas: 5
-averageCPUUtilizationPercent: 5
+averageCPUUtilizationPercent: 10
 maxSurge: 1
 
 clusterName: eshop-aks
