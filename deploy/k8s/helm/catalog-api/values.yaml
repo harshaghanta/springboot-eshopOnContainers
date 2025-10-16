@@ -17,6 +17,10 @@ fluentbit:
   enabled: false
   indexName: catalog-api-logs
   logPath: /app/logs
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
   image:
     repository: fluent/fluent-bit
     tag: 1.8.3
@@ -26,6 +30,7 @@ fluentbit:
     port: 9200
     user: "elastic"
     password: "elastic"
+  
 
 
 registry:

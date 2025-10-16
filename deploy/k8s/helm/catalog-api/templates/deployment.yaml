@@ -101,7 +101,11 @@ spec:
           image: {{ .Values.fluentbit.image.repository }}:{{ .Values.fluentbit.image.tag }}
           imagePullPolicy: {{ .Values.fluentbit.image.pullPolicy }}
           securityContext:
-            privileged: true          
+            privileged: true
+          {{- if .Values.fluentbit.resources }}
+          resources:
+            {{- toYaml .Values.fluentbit.resources | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: log-volume
               mountPath: /app/logs/          
