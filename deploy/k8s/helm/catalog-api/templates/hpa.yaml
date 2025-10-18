@@ -10,9 +10,10 @@ spec:
   minReplicas: {{ .Values.minReplicas }}
   maxReplicas: {{ .Values.maxReplicas }}
   metrics:
-  - type: Resource
-    resource:
+  - type: ContainerResource
+    containerResource:
       name: cpu
+      container: {{ .Chart.Name }}
       target:
         type: Utilization
         averageUtilization: {{ .Values.averageCPUUtilizationPercent }}

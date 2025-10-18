@@ -1,6 +1,6 @@
 minReplicas: 2
 maxReplicas: 5
-averageCPUUtilizationPercent: 10
+averageCPUUtilizationPercent: 70
 maxSurge: 1
 
 clusterName: eshop-aks
@@ -17,10 +17,10 @@ fluentbit:
   enabled: false
   indexName: catalog-api-logs
   logPath: /app/logs
-  resources:
-    requests:
-      cpu: 25m
-      memory: 64Mi
+  # resources:
+  #   requests:
+  #     cpu: 25m
+  #     memory: 64Mi
   image:
     repository: fluent/fluent-bit
     tag: 1.8.3
@@ -110,6 +110,6 @@ env:
     readiness:
       path: /catalog-api/actuator/health/readiness
       timeoutSeconds: 5
-      initialDelaySeconds: 90
+      initialDelaySeconds: 15
       periodSeconds: 15
       port: 8080
