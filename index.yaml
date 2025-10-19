@@ -732,6 +732,16 @@ entries:
   sql-data:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-10-19T12:42:51.499512894Z"
+    description: A Helm chart for Kubernetes
+    digest: df9fd6daade3da65ea211ac044b499dd5ac7d0c06b171eb763c7e86b86ab9895
+    name: sql-data
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/sql-data-0.1.2/sql-data-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-07-23T15:27:35.318212997Z"
     description: A Helm chart for Kubernetes
     digest: b264e53519784ee199d3fb91e30202fabab330f8c555ebb9c641655155fbfcdc
@@ -881,4 +891,4 @@ entries:
     urls:
     - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/webspa-0.1.0/webspa-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-18T15:19:20.812066996Z"
+generated: "2025-10-19T12:42:51.499701929Z"
