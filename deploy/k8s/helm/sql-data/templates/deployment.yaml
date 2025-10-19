@@ -18,7 +18,9 @@ spec:
       labels:
         app: {{ template "sql-data.name" . }}
         release: {{ .Release.Name }}
-    spec:      
+    spec:
+      priorityClassName: high-priority
+      preemptionPolicy: PreemptLowerPriority
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}"
