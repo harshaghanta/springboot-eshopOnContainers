@@ -3,6 +3,11 @@ maxReplicas: 5
 averageCPUUtilizationPercent: 70
 maxSurge: 1
 
+logPersistence:
+  claimName: catalog-api-logs-pvc
+  size: 512Mi
+  storageClassName: fast-storage
+
 clusterName: eshop-aks
 
 allowedOrigins: ""
