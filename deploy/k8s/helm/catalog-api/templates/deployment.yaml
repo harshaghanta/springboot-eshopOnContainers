@@ -46,7 +46,8 @@ spec:
             podAffinityTerm:
               labelSelector:
                 matchLabels:
-                  app: {{ template "catalog-api.fullname" . }}
+                  app: {{ template "catalog-api.name" . }}
+                  release: {{ .Release.Name }}
               topologyKey: kubernetes.io/hostname
       {{- with .Values.nodeSelector }}
       nodeSelector:
