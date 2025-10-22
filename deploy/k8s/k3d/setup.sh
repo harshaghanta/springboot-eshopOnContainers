@@ -10,6 +10,8 @@ k3d cluster create --config cluster.yaml
 
 kubectl label node k3d-eshop-cluster-agent-0 category=product
 kubectl label node k3d-eshop-cluster-agent-0 appType=service
+kubectl label node k3d-eshop-cluster-agent-1 category=product
+kubectl label node k3d-eshop-cluster-agent-1 appType=service
 
 
 # Install MetalLb Load Balancer
