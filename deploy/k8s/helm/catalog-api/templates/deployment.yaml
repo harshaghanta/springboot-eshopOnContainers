@@ -41,14 +41,12 @@ spec:
                     values:
                       - service
         podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchLabels:
-                  app: {{ template "catalog-api.name" . }}
-                  release: {{ .Release.Name }}
-              topologyKey: kubernetes.io/hostname
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: {{ template "catalog-api.name" . }}
+                release: {{ .Release.Name }}
+            topologyKey: kubernetes.io/hostname
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
