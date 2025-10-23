@@ -41,8 +41,10 @@ spec:
                     values:
                       - service
         podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
               matchLabels:
                 app: {{ template "catalog-api.name" . }}
                 release: {{ .Release.Name }}
