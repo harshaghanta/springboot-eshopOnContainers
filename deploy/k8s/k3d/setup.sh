@@ -19,8 +19,6 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.15.2/confi
 
 kubectl apply -f ./loadbalancer
 
-kubectl apply -f ./fast-storageclass.yaml
-
 # Install ArgoCd 
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml

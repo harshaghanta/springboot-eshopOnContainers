@@ -122,8 +122,7 @@ spec:
           {{- end }}
       volumes:
         - name: log-volume
-          persistentVolumeClaim:
-            claimName: {{ .Values.logPersistence.claimName }}
+          emptyDir: {}
         {{- if .Values.fluentbit.enabled }}
         - name: fluentbit-config
           configMap:
