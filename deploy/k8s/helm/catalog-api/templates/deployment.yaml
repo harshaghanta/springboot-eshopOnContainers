@@ -45,10 +45,10 @@ spec:
           - weight: 100
             podAffinityTerm:
               labelSelector:
-              matchLabels:
-                app: {{ template "catalog-api.name" . }}
-                release: {{ .Release.Name }}
-            topologyKey: kubernetes.io/hostname
+                matchLabels:
+                  app: {{ template "catalog-api.name" . }}
+                  release: {{ .Release.Name }}
+              topologyKey: kubernetes.io/hostname
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
