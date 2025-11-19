@@ -27,8 +27,9 @@ Make sure you have [installed](https://docs.docker.com/docker-for-windows/instal
 127.0.0.1	host.docker.internal
 ```
 
-After that, you have to manually override the password for github server in the settings.xml file with "g h p _ w H V D k G O V n 7 g 2 N M X V x t x n j m V P Z v V l 2 D 0 T 4 j n w" after removing the spaces between them. This token will allow to download the maven packages from github. Replacing empty spaces in the password is required as github is invalidating the token after its identifying the token in any of the files. 
-![image](https://github.com/user-attachments/assets/52b5b2bf-554e-4741-bec1-9c510126aa10)
+After that, you have to manually override the password for github server in the settings.xml file with "g h p _ m 1 H v L B 2 p V i N A s q i c q G U a y b 8 X k 4 8 a 4 D 1 c V W b U" after removing the spaces between them. This token will allow to download the maven packages from github. Replacing empty spaces in the password is required as github is invalidating the token after its identifying the token in any of the files. 
+<img width="770" height="120" alt="image" src="https://github.com/user-attachments/assets/061f8a0c-be59-45a4-82af-7cfd943cb49b" />
+
 
 Once this step is done you can run the below commands from the **/src/** directory and get started with the `eShopOnContainers` immediately.
 
