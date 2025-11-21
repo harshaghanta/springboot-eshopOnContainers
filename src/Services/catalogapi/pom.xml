@@ -15,7 +15,7 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
-		<springdoc.version>2.6.0</springdoc.version>
+		<springdoc.version>2.8.0</springdoc.version>
 	</properties>
 
 	<dependencies>
