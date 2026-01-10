@@ -7,7 +7,11 @@ services:
     image: ${REGISTRY:-springeshop}/catalogapi:latest
     env_file:
     - .env
-    # environment:
+    environment:
+      SECRETS_PATH: "/vault/secrets"
+      DB_HOST_NAME: db
+      DB_HOST_PORT: 1433
+      CATALOG_DB_NAME: CatalogDB
       # OTEL_TRACES_EXPORTER: "jaeger,zipkin,otlp"
       # OTEL_TRACES_EXPORTER: "otlp"
       # OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"
@@ -34,6 +38,8 @@ services:
     - 8081:8080
     volumes:
       - applog_volume:/app/logs
+      - ./Secrets/DB_USER_NAME:/vault/secrets/DB_USER_NAME
+      - ./Secrets/DB_PASSWORD:/vault/secrets/DB_PASSWORD
     networks:
     - simpbridgenetwork
   basket-api:
