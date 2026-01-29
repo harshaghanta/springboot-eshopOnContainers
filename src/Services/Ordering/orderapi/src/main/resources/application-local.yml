@@ -15,3 +15,4 @@ eventbus:
 springdoc.swagger-ui.path: /swagger-ui-custom.html
 server.port: 9090 
 oauthIssuerUrl: http://host.docker.internal:8095/realms/eshoponcontainers
+allowedCorsOrigin: http://localhost:4200

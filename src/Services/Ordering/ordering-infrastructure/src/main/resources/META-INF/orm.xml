@@ -26,9 +26,9 @@
         <table name="[ordering].[cardtypes]"></table>
 
         <attributes>
-            <id name="id">
+            <!-- <id name="id">
                 <generated-value strategy="IDENTITY"></generated-value>
-            </id>
+            </id> -->
             <basic name="name" />
         </attributes>
     </entity>
@@ -98,7 +98,7 @@
         </attributes>
     </entity>
 
-    <entity class="com.eshoponcontainers.aggregatesModel.orderAggregate.OrderItem" name="OrderItem">
+    <entity class="com.eshoponcontainers.aggregatesModel.orderAggregate.OrderItem" name="OrderItem" access="FIELD">
         <table name="[ordering].[orderItems]"></table>
         <attributes>
             <basic name="productId">
@@ -133,9 +133,9 @@
             </entity-listener>
         </entity-listeners> -->
         <attributes>
-            <id name="id">
+            <!-- <id name="id">
                 <generated-value strategy="IDENTITY"></generated-value>
-            </id>
+            </id> -->
             <basic name="orderDate">
                 <column name="OrderDate" />
                 <temporal>DATE</temporal>
@@ -153,12 +153,12 @@
                     <cascade-persist />
                 </cascade>
             </one-to-many>
-            <one-to-one name="buyer">
+            <!-- <one-to-one name="buyer">
                 <join-column name="BuyerId" />
-            </one-to-one>
-            <one-to-one name="paymentMethod">
+            </one-to-one> -->
+            <!-- <one-to-one name="paymentMethod">
                 <join-column name="PaymentMethodId" />
-            </one-to-one>
+            </one-to-one> -->
 
             <embedded name="address">
                 <attribute-override name="city">

@@ -10,7 +10,7 @@ import an.awesome.pipelinr.Notification;
 public abstract class Entity {
 
     private Integer requestedHashCode;
-    private Integer id;
+    protected Integer id;
 
     public Integer getId() {
         return id;

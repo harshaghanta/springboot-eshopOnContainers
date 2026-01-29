@@ -8,11 +8,11 @@ spring:
   #       backend: secret
   #       profile-separator: "/"
   #       application-name: catalog-api
-  datasource:    
-    url: ${catalog.datasource.url}
-    username: ${catalog.datasource.username}
-    password: ${catalog.datasource.password}
-    driverClassName: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+  # datasource:    
+  #   url: ${catalog.datasource.url}
+  #   username: ${catalog.datasource.username}
+  #   password: ${catalog.datasource.password}
+  #   driverClassName: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
   jpa:
     hibernate:
       ddl-auto: update
@@ -21,12 +21,12 @@ spring:
 
 allowedCorsOrigin: ${webspa.allowedCorsOrigin}
 
-eventbus:
-  host: ${eventbus.host}
-  username: ${eventbus.username}
-  password: ${eventbus.password}
-  retryCount: ${eventbus.retryCount}
-  subscriptionClientName: "Catalog"
+# eventbus:
+#   host: ${eventbus.host}
+#   username: ${eventbus.username}
+#   password: ${eventbus.password}
+#   retryCount: ${eventbus.retryCount}
+#   subscriptionClientName: "Catalog"
 
 springdoc.swagger-ui.path: /swagger-ui-custom.html
 

@@ -1,18 +1,18 @@
 package com.eshoponcontainers.orderapi;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.dao.PersistenceExceptionTranslationAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.Environment;
 
-import com.eshoponcontainers.orderapi.config.OrderingDBConfig;
+
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -22,8 +22,8 @@ import jakarta.persistence.Persistence;
 // @EnableJpaRepositories(basePackages = { "com.eshoponcontainers.repositories"
 // })
 // @EnableTransactionManagement
-@EnableAutoConfiguration(exclude = { PersistenceExceptionTranslationAutoConfiguration.class,
-		HibernateJpaAutoConfiguration.class, DataSourceAutoConfiguration.class })
+// @EnableAutoConfiguration(exclude = { PersistenceExceptionTranslationAutoConfiguration.class,
+// 		HibernateJpaAutoConfiguration.class, DataSourceAutoConfiguration.class })
 public class OrderapiApplication {
 
 	public static void main(String[] args) {
@@ -37,14 +37,24 @@ public class OrderapiApplication {
 	}
 
 	@Bean
-	public EntityManagerFactory entityManagerFactory(OrderingDBConfig orderingDBConfig) {
+	public EntityManagerFactory entityManagerFactory(Environment env) {
+
+        String secretsPath = env.getProperty("SECRETS_PATH", "/vault/secrets");
+        String username = readSecret(secretsPath + "/DB_USER_NAME");
+        String password = readSecret(secretsPath + "/DB_PASSWORD");
+
+		String hostName = env.getProperty("DB_HOST_NAME");
+        String hostPort = env.getProperty("DB_HOST_PORT");
+        String dbName = env.getProperty("ORDER_DB_NAME");
+		String datasourceUrl = "jdbc:sqlserver://" + hostName + ":" + hostPort + ";databaseName=" +
+            dbName + ";integratedSecurity=false;encrypt=false;trustServerCertificate=true;";
 
 		Map<String, String> persistenceMap = new HashMap<String, String>();
 
-		persistenceMap.put("javax.persistence.jdbc.url", orderingDBConfig.getUrl());
-		persistenceMap.put("javax.persistence.jdbc.user", orderingDBConfig.getUsername());
-		persistenceMap.put("javax.persistence.jdbc.password", orderingDBConfig.getPassword());
-		persistenceMap.put("javax.persistence.jdbc.driver", "com.microsoft.sqlserver.jdbc.SQLServerDriver");
+		persistenceMap.put("jakarta.persistence.jdbc.url", datasourceUrl);
+		persistenceMap.put("jakarta.persistence.jdbc.user", username);
+		persistenceMap.put("jakarta.persistence.jdbc.password", password);
+		persistenceMap.put("jakarta.persistence.jdbc.driver", "com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
 		EntityManagerFactory emFactory = Persistence.createEntityManagerFactory("ordering-persistence", persistenceMap);
 		return emFactory;
@@ -57,5 +67,14 @@ public class OrderapiApplication {
 	// 	transactionManager.setEntityManagerFactory(em.getEntityManagerFactory());
 	// 	return transactionManager;
 	// }
+
+	    private String readSecret(String filePath) {
+        try {
+            // .trim() is crucial because K8s secret files often have a trailing newline
+            return Files.readString(Paths.get(filePath)).trim();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not read database secret at " + filePath, e);
+        }
+    }
 
 }

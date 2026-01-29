@@ -6,17 +6,17 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.7</version>
+		<version>4.0.1</version>
 	</parent>
 	<groupId>com.eshoponcontainers</groupId>
 	<artifactId>parent-pom</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>parent-pom</name>
 	<description>Demo project for Spring Boot</description>
 	<packaging>pom</packaging>
 
 	<properties>
-		<java.version>17</java.version>
+		<java.version>25</java.version>
 	</properties>
 
 	<distributionManagement>
@@ -40,31 +40,31 @@
 
 	<dependencies>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-tracing-bridge-brave</artifactId>
-		</dependency>
+		</dependency> -->
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>net.ttddyy.observation</groupId>
 			<artifactId>datasource-micrometer-spring-boot</artifactId>
 			<version>1.0.6</version>
-		</dependency>
+		</dependency> -->
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>net.logstash.logback</groupId>
 			<artifactId>logstash-logback-encoder</artifactId>
 			<version>7.4</version>
-		</dependency>
-
+		</dependency> -->
+<!-- 
 		<dependency>
 			<groupId>io.zipkin.reporter2</groupId>
 			<artifactId>zipkin-reporter-brave</artifactId>
-		</dependency>
+		</dependency> -->
 
 		<!-- <dependency>
 			<groupId>com.github.loki4j</groupId>
@@ -72,7 +72,7 @@
 			<version>1.6.0</version>
 		</dependency> -->
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
 		</dependency>
@@ -80,7 +80,7 @@
 			<groupId>io.github.mweirauch</groupId>
 			<artifactId>micrometer-jvm-extras</artifactId>
 			<version>0.2.2</version>
-		</dependency>
+		</dependency> -->
 
 
 		<dependency>

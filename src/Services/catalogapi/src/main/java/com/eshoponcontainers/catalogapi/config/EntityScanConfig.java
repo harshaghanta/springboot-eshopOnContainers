@@ -6,8 +6,9 @@ import java.nio.file.Paths;
 
 import javax.sql.DataSource;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+
 import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;

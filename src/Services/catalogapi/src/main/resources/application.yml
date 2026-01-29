@@ -3,12 +3,22 @@ spring:
     name: catalog-api
   profiles:
     active:
-    - dev
+    - local
   jpa:
     hibernate:
       ddl-auto: update
       naming.physical-strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
       naming.implicit-strategy: "org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl"
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+    try-it-out-enabled: true
+
 
   #enable management endpoints
 management:

@@ -25,7 +25,8 @@ public class WebConfig implements WebMvcConfigurer {
         configurer.setPathMatcher(matcher);
         
         PathPatternParser patternParser = new PathPatternParser();
-        patternParser.setMatchOptionalTrailingSeparator(true); // Ignore trailing slashes
+        //TODO: HIGH : need to find a workaround/alternative to ignore trailing slashes
+        // patternParser.setMatchOptionalTrailingSeparator(true); // Ignore trailing slashes
         configurer.setPatternParser(patternParser);
     }
 }

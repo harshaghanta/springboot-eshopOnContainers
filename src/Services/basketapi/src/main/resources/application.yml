@@ -3,7 +3,7 @@ spring:
     name: basket-api
   profiles:
     active:
-    - dev
+    - local
 
 logging:
   level:

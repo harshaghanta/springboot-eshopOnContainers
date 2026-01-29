@@ -16,9 +16,10 @@ public class PipelinrConfiguration {
     Pipeline pipeline(ObjectProvider<Command.Handler> commandHandlers,
         ObjectProvider<Notification.Handler> notificationHandlers, ObjectProvider<Command.Middleware> middlewares) 
     {
-        return new Pipelinr().with(commandHandlers::stream)
-            .with(notificationHandlers::stream)
-            .with(middlewares::stream);
+        return new Pipelinr()
+            .with(() -> commandHandlers.stream().map(handler -> (Command.Handler<?, ?>) handler))
+            .with(() -> notificationHandlers.stream().map(handler -> (Notification.Handler<?>) handler))
+            .with(() -> middlewares.stream().map(middleware -> (Command.Middleware) middleware));
     }
 
 }

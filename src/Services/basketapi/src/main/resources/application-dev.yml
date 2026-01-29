@@ -1,7 +1,7 @@
-spring:
-  redis:
-    host: ${basketdata.host}
-    client-name: basketapi
+# spring:
+#   redis:
+#     host: ${basketdata.host}
+#     client-name: basketapi
 
 eventbus:
   host: ${eventbus.host}
