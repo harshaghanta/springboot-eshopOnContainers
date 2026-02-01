@@ -5,6 +5,8 @@ spring:
     active:
     - local
 
+springdoc.swagger-ui.path: /swagger-ui-custom.html
+
 logging:
   level:
     org.springframework.security.oauth2.jwt: DEBUG

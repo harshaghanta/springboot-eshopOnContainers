@@ -36,11 +36,11 @@ management:
   #     endpoint: http://tempo:9411/api/v2/spans
 
 config-data:
-  identityUrl: ${webspa.identityUrl}
-  basketUrl: ${webspa.basketUrl}
+  identityUrl: ${IDENTITY_URL}
+  basketUrl: ${BASKET_URL}
   marketingUrl: null
-  purchaseUrl: ${webspa.purchaseUrl}
-  signalrHubUrl: ${webspa.signalrHubUrl}
+  purchaseUrl: ${PURCHASE_URL}
+  signalrHubUrl: ${NOTIFICATION_HUB_URL}
   activateCampaignDetailFunction: "False"
   useCustomizationData: true
 

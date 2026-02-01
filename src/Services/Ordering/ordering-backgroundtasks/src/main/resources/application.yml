@@ -3,7 +3,7 @@ spring:
     name: ordering-backgroundtasks
   profiles:
     active:
-    - dev
+    - local
 
 #enable management endpoints
 management:

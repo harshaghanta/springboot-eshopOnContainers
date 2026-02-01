@@ -4,7 +4,11 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
+  <parent>
+    <groupId>com.eshoponcontainers</groupId>
+    <artifactId>parent-pom</artifactId>
+    <version>0.0.2-SNAPSHOT</version>
+  </parent>
   <groupId>com.eshoponcontainers</groupId>
   <artifactId>ordering-infrastructure</artifactId>
   <version>0.0.2-SNAPSHOT</version>
@@ -100,8 +104,6 @@
     </dependency>
 
   </dependencies>
-
-
 
 
 </project>

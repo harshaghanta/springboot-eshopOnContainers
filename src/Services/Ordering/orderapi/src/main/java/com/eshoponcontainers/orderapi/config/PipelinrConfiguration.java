@@ -13,13 +13,18 @@ import an.awesome.pipelinr.Pipelinr;
 public class PipelinrConfiguration {
 
     @Bean
-    Pipeline pipeline(ObjectProvider<Command.Handler> commandHandlers,
-        ObjectProvider<Notification.Handler> notificationHandlers, ObjectProvider<Command.Middleware> middlewares) 
-    {
+    Pipeline pipeline(
+        ObjectProvider<Command.Handler> commandHandlers,
+        ObjectProvider<Notification.Handler> notificationHandlers,
+        ObjectProvider<Command.Middleware> commandMiddlewares
+        // If you have Notification.Middleware, add: ObjectProvider<Notification.Middleware> notificationMiddlewares
+    ) {
         return new Pipelinr()
-            .with(() -> commandHandlers.stream().map(handler -> (Command.Handler<?, ?>) handler))
-            .with(() -> notificationHandlers.stream().map(handler -> (Notification.Handler<?>) handler))
-            .with(() -> middlewares.stream().map(middleware -> (Command.Middleware) middleware));
+            .with(() -> commandHandlers.stream())
+            .with(() -> notificationHandlers.stream())
+            .with(() -> commandMiddlewares.stream());
+            // If you have Notification.Middleware, add:
+            // .with(() -> notificationMiddlewares.stream());
     }
 
 }

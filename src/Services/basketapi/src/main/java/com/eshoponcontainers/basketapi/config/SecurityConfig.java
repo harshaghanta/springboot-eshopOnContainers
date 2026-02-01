@@ -1,8 +1,10 @@
 package com.eshoponcontainers.basketapi.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,11 +28,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SecurityConfig {
 
-	@Value("${oauthIssuerUrl}")
-	private String oauthIssuerUrl;
+	@Autowired
+	private Environment env;
 
-	@Value("${allowedCorsOrigin}")
-	private String allowedCorsOrigin;
+	// @Value("${oauthIssuerUrl}")
+	// private String oauthIssuerUrl;
+
+	// @Value("${allowedCorsOrigin}")
+	// private String allowedCorsOrigin;
 
 	@Bean
 	public ObjectMapper objectMapper() {
@@ -40,6 +45,7 @@ public class SecurityConfig {
     @Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
+			.cors(Customizer.withDefaults())
 			.authorizeHttpRequests((authorize) -> authorize				
 				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				.requestMatchers("/actuator/**").permitAll()
@@ -55,18 +61,25 @@ public class SecurityConfig {
 
 	 @Bean
     public CorsFilter corsFilter() {
+
+        String allowedCorsOrigin = env.getProperty("ALLOWED_ORIGINS");
+        String allowedHeaders = env.getProperty("ALLOWED_HEADERS", "*");
+        String allowedMethods = env.getProperty("ALLOWED_METHODS", "*");
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
+		
         config.addAllowedOrigin(allowedCorsOrigin);
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+        config.addAllowedHeader(allowedHeaders);
+        config.addAllowedMethod(allowedMethods);
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
 
     @Bean
 	public JwtDecoder jwtDecoder() {
+		String oauthIssuerUrl= env.getProperty("ISSUER_URL");
 		log.info("Printing oauthIssuerUrl: {}", oauthIssuerUrl);
 		// log.info("IssuerUrl:{}", oauthIssuerUrl);
 		// return JwtDecoders.fromIssuerLocation(oauthIssuerUrl);

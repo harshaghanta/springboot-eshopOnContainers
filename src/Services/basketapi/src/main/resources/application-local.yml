@@ -1,19 +1,5 @@
-# spring:
-#   redis:
-#     host: localhost
-#     client-name: basketapi
 
+# oauthIssuerUrl: http://localhost:8095/realms/eshoponcontainers
 
-# basketdata.host: redis://localhost:6379
-oauthIssuerUrl: http://localhost:8095/realms/eshoponcontainers
-allowedCorsOrigin: localhost:8080
-
-eventbus:
-  host: "localhost"
-  username:
-  password:
-  retryCount: 5
-  subscriptionClientName: "Basket"
 
 server.port: 9095
-

@@ -1,5 +1,3 @@
-picBaseUrl: "http://host.docker.internal:5202/catalog-api/api/v1/catalog/items/[0]/pic/"
-
 #springdoc.swagger-ui.path: /swagger-ui-custom.html
 server.port: 9098 
 # server.servlet.context-path: /catalog-api
