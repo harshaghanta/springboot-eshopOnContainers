@@ -21,8 +21,8 @@ public class PipelinrConfiguration {
     ) {
         return new Pipelinr()
             .with(() -> commandHandlers.stream())
-            .with(() -> notificationHandlers.stream())
-            .with(() -> commandMiddlewares.stream());
+            .with(() -> notificationHandlers.stream());
+            // .with(() -> commandMiddlewares.stream());
             // If you have Notification.Middleware, add:
             // .with(() -> notificationMiddlewares.stream());
     }

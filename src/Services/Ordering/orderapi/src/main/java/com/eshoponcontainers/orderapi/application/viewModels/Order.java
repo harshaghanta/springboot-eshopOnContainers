@@ -1,6 +1,6 @@
 package com.eshoponcontainers.orderapi.application.viewModels;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class Order {
 
     private Integer orderNumber;
-    private Instant date;
+    private LocalDate date;
     private String status;
     private String description;
     private String street;

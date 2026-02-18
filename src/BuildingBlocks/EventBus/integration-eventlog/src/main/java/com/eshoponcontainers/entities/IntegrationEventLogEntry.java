@@ -15,12 +15,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "IntegrationEventLog")
 @Getter
+@Setter
 public class IntegrationEventLogEntry {
     
+
     @Id
     @Column(name = "EventId", columnDefinition = "uniqueidentifier")
     private UUID eventId;
@@ -47,7 +50,7 @@ public class IntegrationEventLogEntry {
     private IntegrationEvent event;
 
     //Added this as a constructor to avoid the error during save of entity. Seems hibernate needs a default constructor, but does't care if its public:
-    private IntegrationEventLogEntry() {
+    public IntegrationEventLogEntry() {
 
     }
 
@@ -66,25 +69,32 @@ public class IntegrationEventLogEntry {
         transactionId = transId.toString();
     }
 
-    public Date getCreationTime() {
-        return creationTime;
-    }
+    // public Date getCreationTime() {
+    //     return creationTime;
+    // }
 
-    public EventStateEnum getState() {
-        return state;
-    }
+    // public UUID getEventId() {
+    //     return eventId;
+    // }
 
-    public Integer getTimesSent() {
-        return timesSent;
-    }
 
-    public void setTimesSent(Integer timesSent) {
-        this.timesSent = timesSent;
-    }
+    // public EventStateEnum getState() {
+    //     return state;
+    // }
 
-    public void setState(EventStateEnum state) {
-        this.state = state;
-    }
+    // public Integer getTimesSent() {
+    //     return timesSent;
+    // }
+
+    // public void setTimesSent(Integer timesSent) {
+    //     this.timesSent = timesSent;
+    // }
+
+    // public void setState(EventStateEnum state) {
+    //     this.state = state;
+    // }
+
+
 
     public void deserializeEventContent(Class<?> eventType) throws JsonMappingException, JsonProcessingException {
         //TODO: HIGH: CHECK THE POSSIBILITY OF INJECT OBJECTMAPPER

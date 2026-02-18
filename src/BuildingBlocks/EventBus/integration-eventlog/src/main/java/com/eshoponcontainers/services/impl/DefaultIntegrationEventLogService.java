@@ -48,8 +48,17 @@ public class DefaultIntegrationEventLogService implements IntegrationEventLogSer
     @PostConstruct
     public void loadEventTypes() {
 
+        log.info("Initializing eventTypes using Reflection");
+
         Reflections reflections = new Reflections("com.eshoponcontainers");
         eventTypes = reflections.getSubTypesOf(IntegrationEvent.class);
+
+        if(eventTypes == null || eventTypes.isEmpty())
+            log.warn("No event types found in the specified package.");
+
+        for (Class<? extends IntegrationEvent> eventType : eventTypes) {
+            log.info("EventType found: {}", eventType.getSimpleName());
+        }
 
     }
 

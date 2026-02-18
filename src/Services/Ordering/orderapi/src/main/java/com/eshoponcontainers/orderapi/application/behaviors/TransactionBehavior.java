@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Component
+// @Component
 @Order(200)
 @RequiredArgsConstructor
 public class TransactionBehavior implements Command.Middleware {

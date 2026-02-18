@@ -1,8 +1,9 @@
 package com.eshoponcontainers.orderapi.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,12 +22,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SecurityConfig {
 
-	@Value("${oauthIssuerUrl}")
-	private String oauthIssuerUrl;
+	@Autowired
+	private Environment env;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
+				.cors(Customizer.withDefaults())
 				.authorizeHttpRequests((authorize) -> authorize
 						.requestMatchers(HttpMethod.OPTIONS).permitAll()
 						.requestMatchers("/subscriptions").permitAll()
@@ -43,6 +45,7 @@ public class SecurityConfig {
 	public JwtDecoder jwtDecoder() {
 		// log.info("IssuerUrl:{}", oauthIssuerUrl);
 		// return JwtDecoders.fromIssuerLocation(oauthIssuerUrl);
+		String oauthIssuerUrl= env.getProperty("ISSUER_URL");
 		String jwkSetUri = oauthIssuerUrl + "/protocol/openid-connect/certs";
 
 		return NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();

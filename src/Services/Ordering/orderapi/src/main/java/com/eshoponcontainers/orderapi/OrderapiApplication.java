@@ -11,8 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
-
-
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -21,7 +22,7 @@ import jakarta.persistence.Persistence;
 @SpringBootApplication(scanBasePackages = "com.eshoponcontainers")
 // @EnableJpaRepositories(basePackages = { "com.eshoponcontainers.repositories"
 // })
-// @EnableTransactionManagement
+@EnableTransactionManagement
 // @EnableAutoConfiguration(exclude = { PersistenceExceptionTranslationAutoConfiguration.class,
 // 		HibernateJpaAutoConfiguration.class, DataSourceAutoConfiguration.class })
 public class OrderapiApplication {
@@ -60,13 +61,13 @@ public class OrderapiApplication {
 		return emFactory;
 	}
 
-	// @Bean
-	// @Primary
-	// public PlatformTransactionManager tm(EntityManager em) {
-	// 	final JpaTransactionManager transactionManager = new JpaTransactionManager();
-	// 	transactionManager.setEntityManagerFactory(em.getEntityManagerFactory());
-	// 	return transactionManager;
-	// }
+	@Bean
+	@Primary
+	public PlatformTransactionManager tm(EntityManager em) {
+		final JpaTransactionManager transactionManager = new JpaTransactionManager();
+		transactionManager.setEntityManagerFactory(em.getEntityManagerFactory());
+		return transactionManager;
+	}
 
 	    private String readSecret(String filePath) {
         try {

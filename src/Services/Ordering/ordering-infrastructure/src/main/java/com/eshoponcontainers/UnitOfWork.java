@@ -14,7 +14,7 @@ import an.awesome.pipelinr.Notification;
 import an.awesome.pipelinr.Pipeline;
 import lombok.extern.slf4j.Slf4j;
 
-@Component
+// @Component
 // @Scope("prototype")
  @Slf4j
 public class UnitOfWork implements IUnitOfWork {

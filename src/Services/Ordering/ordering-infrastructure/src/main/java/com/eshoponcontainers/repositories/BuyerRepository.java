@@ -19,17 +19,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BuyerRepository implements IBuyerRepository {    
     
-    private final IUnitOfWork unitOfWork;
-    private final EntityManagerProvider entityManagerProvider;
+    // private final IUnitOfWork unitOfWork;
+    // private final EntityManagerProvider entityManagerProvider;
+    private final EntityManager entityManager;
 
     @Override
     public IUnitOfWork getUnitOfWork() {
-        return unitOfWork;
+        return null;
+        // return unitOfWork;
     }
 
     @Override
     public Buyer add(Buyer buyer) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        // EntityManager entityManager = entityManagerProvider.getEntityManager();
         log.info("EntityManager hashcode: {} in BuyerRepository Add", entityManager.hashCode());       
         entityManager.persist(buyer);
         return buyer;
@@ -37,7 +39,7 @@ public class BuyerRepository implements IBuyerRepository {
 
     @Override
     public Buyer update(Buyer buyer) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        // EntityManager entityManager = entityManagerProvider.getEntityManager();
         log.info("EntityManager hashcode: {} in BuyerRepository update", entityManager.hashCode());       
         entityManager.merge(buyer);
         //TODO: HACK : to be removed. Find out why merge is not triggering the preupdate event on the Buyer entity
@@ -47,7 +49,7 @@ public class BuyerRepository implements IBuyerRepository {
 
     @Override
     public Buyer find(String buyerIdentityUUID) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        // EntityManager entityManager = entityManagerProvider.getEntityManager();
         log.info("EntityManager hashcode: {} in BuyerRepository find", entityManager.hashCode());       
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Buyer> criteriaQuery = criteriaBuilder.createQuery(Buyer.class);
@@ -63,7 +65,7 @@ public class BuyerRepository implements IBuyerRepository {
 
     @Override
     public Buyer findById(String id) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        // EntityManager entityManager = entityManagerProvider.getEntityManager();
         log.info("EntityManager hashcode: {} in BuyerRepository find", entityManager.hashCode());       
         Buyer buyer = entityManager.find(Buyer.class, id);
         return buyer;

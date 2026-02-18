@@ -196,7 +196,7 @@ public class RabbitMQEventBus implements EventBus {
                         consumerChannel.basicAck(envelope.getDeliveryTag(), false);
 
                     } catch (Exception e) {
-                        log.error("Error occured in handleDelivery: {}", e.getMessage());
+                        log.error("Error occured in handleDelivery: ", e);
                     }
 
                 }

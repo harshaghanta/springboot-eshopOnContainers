@@ -3,7 +3,10 @@ package com.eshoponcontainers.orderapi.application.integrationEvents.eventHandle
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import com.eshoponcontainers.context.DomainContext;
 import com.eshoponcontainers.eventbus.abstractions.IntegrationEventHandler;
 import com.eshoponcontainers.orderapi.application.commands.CreateOrderCommand;
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.UserCheckoutAcceptedIntegrationEvent;
@@ -20,12 +23,12 @@ public class UserCheckOutAcceptedIntegrationEventHandler
 
     private final Pipeline pipeline;
 
-    @Override
+    @Override    
     public Runnable handle(UserCheckoutAcceptedIntegrationEvent event) {
 
-        Runnable runnable = () -> {
-            log.info("----- UserCheckoutAcceptedIntegrationEvent Received: {}----", event);
-            
+        log.info("----- UserCheckoutAcceptedIntegrationEvent Received: {}----", event);
+
+
             if (event.getRequestId() != null) {
 
                 var command = new CreateOrderCommand(event.getBasket().getItems().stream().collect(Collectors.toList()),
@@ -44,8 +47,10 @@ public class UserCheckOutAcceptedIntegrationEventHandler
             } else {
                 log.warn("Invalid IntegrationEvent - RequestId is missing - {}", event);
             }
+        Runnable runnable = () -> {
+            
         };
-        
+
         return runnable;
     }
 

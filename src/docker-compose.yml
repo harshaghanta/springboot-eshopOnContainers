@@ -128,6 +128,8 @@ services:
       ORDER_DB_NAME: "OrderDB"
       EVENTBUS_HOST: "eventbus"
       EVENTBUS_SUBSCRIPTION_CLIENT_NAME: "Ordering"
+      ALLOWED_ORIGINS: "http://localhost:8080"
+      ISSUER_URL: "http://keycloak:8080/realms/eshoponcontainers"
     #   OTEL_TRACES_EXPORTER: "jaeger"
     #   OTEL_SERVICE_NAME: "ordering-api"
     #   OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"
