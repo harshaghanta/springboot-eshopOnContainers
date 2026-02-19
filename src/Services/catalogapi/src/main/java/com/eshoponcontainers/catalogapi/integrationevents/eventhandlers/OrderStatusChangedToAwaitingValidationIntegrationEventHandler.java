@@ -29,36 +29,33 @@ public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler
     private final CatalogItemRepository catalogItemRepository;
 
     @Override
-    public Runnable handle(OrderStatusChangedToAwaitingValidationIntegrationEvent event) {
-        Runnable runnable = () -> {
-            log.info("----- Handling integration event: {} at {} - ({})", event.getId(), "Catalog", event);
-            var confirmedOrderStockItems = new ArrayList<ConfirmedOrderStockItem>();
-            var catItems = new ArrayList<CatalogItem>();
+    public void handle(OrderStatusChangedToAwaitingValidationIntegrationEvent event) {
+        log.info("----- Handling integration event: {} at {} - ({})", event.getId(), "Catalog", event);
+        var confirmedOrderStockItems = new ArrayList<ConfirmedOrderStockItem>();
+        var catItems = new ArrayList<CatalogItem>();
 
-            for (OrderStockItem item : event.getOrderStockItems()) {
-                Optional<CatalogItem> optCatalogItem = catalogItemRepository.findById(item.getProductId());
-                if (optCatalogItem.isPresent()) {
+        for (OrderStockItem item : event.getOrderStockItems()) {
+            Optional<CatalogItem> optCatalogItem = catalogItemRepository.findById(item.getProductId());
+            if (optCatalogItem.isPresent()) {
 
-                    var catalogItem = optCatalogItem.get();
-                    catItems.add(catalogItem);
-                    boolean hasStock = catalogItem.getAvailableStock() >= item.getUnits();
-                    ConfirmedOrderStockItem confirmedOrderStockItem = new ConfirmedOrderStockItem(catalogItem.getId(),
-                            hasStock);
+                var catalogItem = optCatalogItem.get();
+                catItems.add(catalogItem);
+                boolean hasStock = catalogItem.getAvailableStock() >= item.getUnits();
+                ConfirmedOrderStockItem confirmedOrderStockItem = new ConfirmedOrderStockItem(catalogItem.getId(),
+                        hasStock);
 
-                    confirmedOrderStockItems.add(confirmedOrderStockItem);
-                }
+                confirmedOrderStockItems.add(confirmedOrderStockItem);
             }
+        }
 
-            IntegrationEvent integrationEvent = null;
-            if (confirmedOrderStockItems.stream().anyMatch(i -> !i.isHasStock())) {
-                integrationEvent = new OrderStockRejectedIntegrationEvent(event.getOrderId(), confirmedOrderStockItems);
-            } else
-                integrationEvent = new OrderStockConfirmedIntegrationEvent(event.getOrderId());
+        IntegrationEvent integrationEvent = null;
+        if (confirmedOrderStockItems.stream().anyMatch(i -> !i.isHasStock())) {
+            integrationEvent = new OrderStockRejectedIntegrationEvent(event.getOrderId(), confirmedOrderStockItems);
+        } else
+            integrationEvent = new OrderStockConfirmedIntegrationEvent(event.getOrderId());
 
-            catalogIntegrationService.saveEventAndCatalogChanges(integrationEvent, catItems);
-            catalogIntegrationService.publishThroughEventBus(integrationEvent);
-        };
+        catalogIntegrationService.saveEventAndCatalogChanges(integrationEvent, catItems);
+        catalogIntegrationService.publishThroughEventBus(integrationEvent);
 
-        return runnable;
     }
 }

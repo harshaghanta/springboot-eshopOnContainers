@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.eshoponcontainers.aggregatesModel.buyerAggregate.Buyer;
 import com.eshoponcontainers.aggregatesModel.buyerAggregate.IBuyerRepository;
 import com.eshoponcontainers.events.OrderStartedDomainEvent;
+import com.eshoponcontainers.orderapi.aop.MyTransactional;
 
 import an.awesome.pipelinr.Notification;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +16,14 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 @RequiredArgsConstructor
+
 public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler
         implements Notification.Handler<OrderStartedDomainEvent> {
 
     private final IBuyerRepository buyerRepository;
 
     @Override
+    @MyTransactional
     public void handle(OrderStartedDomainEvent event) {
 
         log.info("ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler invoked");
@@ -47,7 +50,7 @@ public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler
         else
             buyerRepository.add(buyer);
 
-        buyerRepository.getUnitOfWork().saveChanges();
+        // buyerRepository.getUnitOfWork().saveChanges();
     }
 
 }

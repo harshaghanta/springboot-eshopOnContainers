@@ -22,27 +22,23 @@ public class OrderStatusChangedToStockConfirmedIntegrationEventHandler
     private final ObjectMapper objectMapper;
 
     @Override
-    public Runnable handle(OrderStatusChangedToStockConfirmedIntegrationEvent event) {
+    public void handle(OrderStatusChangedToStockConfirmedIntegrationEvent event) {
 
-        Runnable runnable = () -> {
+        log.info("----- Handling integration event: {} at {} - {}", event.getId(), "Payment", event);
+        log.info("OrderStatusChangedToStockConfirmedIntegrationEvent received: OrderNumber:{}", event.getOrderId());
+        var paymentEvent = new OrderPaymentSucceededIntegrationEvent(event.getOrderId());
+        log.info("PaymentEvent created: for OrderNumber:{}", paymentEvent.getOrderId());
+        // TODO: HIGH: CHECK HOW TO IMPLEMENT THE SAME LOG LINE AS IN THE ORIGINAL CODE
+        log.info("----- Publishing integration event: {} from {} - {}", paymentEvent.getId(), "Payment",
+                paymentEvent);
+        try {
+            log.info("Printing the paymentEvent: {}", objectMapper.writeValueAsString(paymentEvent));
+        } catch (JsonProcessingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        eventBus.publish(paymentEvent);
 
-            log.info("----- Handling integration event: {} at {} - {}", event.getId(), "Payment", event);
-            log.info("OrderStatusChangedToStockConfirmedIntegrationEvent received: OrderNumber:{}", event.getOrderId());
-            var paymentEvent = new OrderPaymentSucceededIntegrationEvent(event.getOrderId());
-            log.info("PaymentEvent created: for OrderNumber:{}",  paymentEvent.getOrderId());
-            // TODO: HIGH: CHECK HOW TO IMPLEMENT THE SAME LOG LINE AS IN THE ORIGINAL CODE
-            log.info("----- Publishing integration event: {} from {} - {}", paymentEvent.getId(), "Payment",
-                    paymentEvent);
-            try {
-                log.info("Printing the paymentEvent: {}", objectMapper.writeValueAsString(paymentEvent));
-            } catch (JsonProcessingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            eventBus.publish(paymentEvent);
-        };
-        
-        return runnable;
     }
 
 }

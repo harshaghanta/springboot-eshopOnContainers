@@ -23,11 +23,11 @@ public class BuyerRepository implements IBuyerRepository {
     // private final EntityManagerProvider entityManagerProvider;
     private final EntityManager entityManager;
 
-    @Override
-    public IUnitOfWork getUnitOfWork() {
-        return null;
-        // return unitOfWork;
-    }
+    // @Override
+    // public IUnitOfWork getUnitOfWork() {
+    //     return null;
+    //     // return unitOfWork;
+    // }
 
     @Override
     public Buyer add(Buyer buyer) {

@@ -26,8 +26,11 @@ public class InMemoryEventBusSubscriptionManager implements EventBusSubscription
 
         doAddSubscription(eventHandlerType, eventName, false);
 
-        if (!eventTypes.contains(eventType))
+        if (!eventTypes.contains(eventType)) {
+            System.out.println("Adding event type {} to eventTypes list" + eventType.getName());
             eventTypes.add(eventType);
+        }
+            
 
     }
 

@@ -8,6 +8,7 @@ import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.OrderStatus;
 import com.eshoponcontainers.events.OrderStatusChangedToStockConfirmedDomainEvent;
+import com.eshoponcontainers.orderapi.aop.MyTransactional;
 import com.eshoponcontainers.orderapi.application.integrationEvents.OrderingIntegrationEventService;
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStatusChangedToStockConfirmedIntegrationEvent;
 import com.eshoponcontainers.repositories.BuyerRepository;
@@ -26,6 +27,7 @@ public class OrderStatusChangedToStockConfirmedDomainEventHandler implements Not
     private final OrderingIntegrationEventService orderingIntegrationEventService;
 
     @Override
+    @MyTransactional
     public void handle(OrderStatusChangedToStockConfirmedDomainEvent event) {
         log.info("Order with Id: {} has been successfully updated to status {} ({})", event.getOrderId(), OrderStatus.StockConfirmed.name(), OrderStatus.StockConfirmed.getId());
         Order order = orderRepository.get(event.getOrderId());

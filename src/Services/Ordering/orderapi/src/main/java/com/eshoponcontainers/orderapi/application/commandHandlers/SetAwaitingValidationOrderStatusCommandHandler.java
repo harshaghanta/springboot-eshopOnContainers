@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
+import com.eshoponcontainers.orderapi.aop.MyTransactional;
 import com.eshoponcontainers.orderapi.application.commands.SetAwaitingValidationOrderStatusCommand;
 
 import an.awesome.pipelinr.Command;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
+@MyTransactional
 public class SetAwaitingValidationOrderStatusCommandHandler implements Command.Handler<SetAwaitingValidationOrderStatusCommand, Boolean> {
 
     private final IOrderRepository orderRepository;
@@ -21,7 +23,8 @@ public class SetAwaitingValidationOrderStatusCommandHandler implements Command.H
             return false;
         
         order.setAwaitingValidationStatus();
-        return orderRepository.getUnitOfWork().saveChanges();
+        // return orderRepository.getUnitOfWork().saveChanges();
+        return true;
     }
 
 }

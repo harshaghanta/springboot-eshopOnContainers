@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
+import com.eshoponcontainers.orderapi.aop.MyTransactional;
 import com.eshoponcontainers.orderapi.application.commands.SetStockRejectedOrderStatusCommand;
 
 import an.awesome.pipelinr.Command;
@@ -17,6 +18,7 @@ public class SetStockRejectedOrderStatusCommandHandler
     private final IOrderRepository orderRepository;
 
     @Override
+    @MyTransactional
     public Boolean handle(SetStockRejectedOrderStatusCommand command) {
         // Simulate a work time for validating the payment
         // try {
@@ -30,7 +32,8 @@ public class SetStockRejectedOrderStatusCommandHandler
             return false;
 
         order.SetCancelledStatusWhenStockIsRejected(command.getOrderStockItems());
-        return orderRepository.getUnitOfWork().saveChanges();
+        return true;
+        // return orderRepository.getUnitOfWork().saveChanges();
     }
 
 }

@@ -23,22 +23,19 @@ public class OrderStatusChangedToPaidIntegrationEventHandler
     private final CatalogItemRepository catalogItemRepository;
 
     @Override
-    public Runnable handle(OrderStatusChangedToPaidIntegrationEvent event) {
-        Runnable runnable = () -> {
-            log.info("----- Handling integration event: {} at {} - ({})", event.getId(), "Catalog", event);
-            var catItems = new ArrayList<CatalogItem>();
+    public void handle(OrderStatusChangedToPaidIntegrationEvent event) {
 
-            for (OrderStockItem item : event.getOrderStockItems()) {
-                Optional<CatalogItem> optCatalogItem = catalogItemRepository.findById(item.getProductId());
-                if (optCatalogItem.isPresent()) {
-                    catItems.add(optCatalogItem.get());
-                    optCatalogItem.get().removeStock(item.getUnits());
-                }
+        log.info("----- Handling integration event: {} at {} - ({})", event.getId(), "Catalog", event);
+        var catItems = new ArrayList<CatalogItem>();
+
+        for (OrderStockItem item : event.getOrderStockItems()) {
+            Optional<CatalogItem> optCatalogItem = catalogItemRepository.findById(item.getProductId());
+            if (optCatalogItem.isPresent()) {
+                catItems.add(optCatalogItem.get());
+                optCatalogItem.get().removeStock(item.getUnits());
             }
-            catalogItemRepository.saveAll(catItems);
-        };
-        
-        return runnable;
-    }
+        }
+        catalogItemRepository.saveAll(catItems);
 
+    }
 }

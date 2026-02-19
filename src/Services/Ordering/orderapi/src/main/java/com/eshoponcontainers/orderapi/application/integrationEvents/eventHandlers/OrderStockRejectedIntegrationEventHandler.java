@@ -21,7 +21,7 @@ public class OrderStockRejectedIntegrationEventHandler implements IntegrationEve
     private final Pipeline pipeline;
 
     @Override
-    public Runnable handle(OrderStockRejectedIntegrationEvent event) {
+    public void handle(OrderStockRejectedIntegrationEvent event) {
         log.info("----- Handling integration event: {} at {} - {}", event.getId(), "Ordering", event );
         
         var orderStockRejectedItems = event.getOrderStockItems().stream()
@@ -32,7 +32,7 @@ public class OrderStockRejectedIntegrationEventHandler implements IntegrationEve
         var command = new SetStockRejectedOrderStatusCommand(event.getOrderId(), orderStockRejectedItems);
         log.info("----- Sending command: {} - {}: {} {}",
             command.getClass().getSimpleName(), "OrderNumber", command.getOrderNumber(), command);
-        return () -> pipeline.send(command);
+        pipeline.send(command);
     }
 
 }

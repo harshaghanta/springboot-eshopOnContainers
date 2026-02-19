@@ -19,12 +19,12 @@ public class GracePeriodConfirmedIntegrationEventHandler
     private final Pipeline pipeline;
 
     @Override
-    public Runnable handle(GracePeriodConfirmedIntegrationEvent event) {
+    public void handle(GracePeriodConfirmedIntegrationEvent event) {
         log.info("----- Handling integration event: {} at {} - {}", event.getId(), "Ordering", event);
         var command = new SetAwaitingValidationOrderStatusCommand(event.getOrderId());
         log.info("----- Sending command: {} - {}: {} {}",
                 command.getClass().getSimpleName(), "OrderNumber", command.getOrderNumber(), command);
-        return () -> pipeline.send(command);
+        pipeline.send(command);
     }
 
 }

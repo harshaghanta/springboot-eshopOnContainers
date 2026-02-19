@@ -6,6 +6,7 @@ import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.OrderStatus;
 import com.eshoponcontainers.events.OrderCancelledDomainEvent;
+import com.eshoponcontainers.orderapi.aop.MyTransactional;
 import com.eshoponcontainers.orderapi.application.integrationEvents.IOrderingIntegrationEventService;
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStatusChangedToCancelledIntegrationEvent;
 import com.eshoponcontainers.repositories.BuyerRepository;
@@ -24,6 +25,7 @@ public class OrderCancelledDomainEventHandler implements Notification.Handler<Or
     private final IOrderRepository orderRepository;
 
     @Override
+    @MyTransactional
     public void handle(OrderCancelledDomainEvent event) {
         log.trace("Order with Id:{} has been successfully updated to status {}", event.getOrder().getId(), OrderStatus.Cancelled.name());
         

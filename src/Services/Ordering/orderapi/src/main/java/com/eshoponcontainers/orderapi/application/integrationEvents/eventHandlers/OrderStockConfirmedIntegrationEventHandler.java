@@ -17,12 +17,12 @@ public class OrderStockConfirmedIntegrationEventHandler implements IntegrationEv
 
     private final Pipeline pipeline;
     @Override
-    public Runnable handle(OrderStockConfirmedIntegrationEvent event) {
+    public void handle(OrderStockConfirmedIntegrationEvent event) {
         log.info("----- Handling integration event: {} at {} - {}", event.getId(), "Ordering", event );
         var command = new SetStockConfirmedOrderStatusCommand(event.getOrderId());
         log.info("----- Sending command: {} - {}: {} {}",
             command.getClass().getSimpleName(), "OrderNumber", command.getOrderNumber(), command);
-        return () -> pipeline.send(command);
+        pipeline.send(command);
     }
 
 }

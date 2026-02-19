@@ -4,8 +4,6 @@ import org.springframework.stereotype.Component;
 
 import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
-import com.eshoponcontainers.config.EntityManagerProvider;
-import com.eshoponcontainers.seedWork.IUnitOfWork;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +19,12 @@ public class OrderRepository implements IOrderRepository  {
     // private final EntityManagerProvider entityManagerProvider;
     private final EntityManager entityManager;
 
-    @Override
-    public IUnitOfWork getUnitOfWork() {
+    // @Override
+    // public IUnitOfWork getUnitOfWork() {
 
-        // return unitOfWork;
-        return null;
-    }
+    //     // return unitOfWork;
+    //     return null;
+    // }
     
     @Override
     public Order add(Order order) {

@@ -9,6 +9,7 @@ import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.OrderStatus;
 import com.eshoponcontainers.events.OrderStatusChangedToAwaitingValidationDomainEvent;
+import com.eshoponcontainers.orderapi.aop.MyTransactional;
 import com.eshoponcontainers.orderapi.application.integrationEvents.OrderingIntegrationEventService;
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStatusChangedToAwaitingValidationIntegrationEvent;
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStockItem;
@@ -29,6 +30,7 @@ public class OrderStatusChangedToAwaitingValidationDomainEventHandler
     private final OrderingIntegrationEventService orderingIntegrationEventService;
 
     @Override
+    @MyTransactional
     public void handle(OrderStatusChangedToAwaitingValidationDomainEvent event) {
         log.info("Order with Id:{} has been successfully updated to status {}", event.getOrderId(),
                 OrderStatus.AwaitingValidation.name());

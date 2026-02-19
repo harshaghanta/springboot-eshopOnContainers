@@ -20,12 +20,12 @@ public class OrderPaymentFailedIntegrationEventHandler implements IntegrationEve
     private final Pipeline pipeline;
 
     @Override
-    public Runnable handle(OrderPaymentFailedIntegrationEvent event) {
+    public void handle(OrderPaymentFailedIntegrationEvent event) {
         log.info("----- Handling integration event: {} at {} - {}", event.getId(), "Ordering", event );
         var command = new CancelOrderCommand(event.getOrderId());
         log.info("----- Sending command: {} - {}: {} {}",
             command.getClass().getSimpleName(), "OrderNumber", command.getOrderNumber(), command);
-        return () -> pipeline.send(command);        
+        pipeline.send(command);        
     }
 
 }

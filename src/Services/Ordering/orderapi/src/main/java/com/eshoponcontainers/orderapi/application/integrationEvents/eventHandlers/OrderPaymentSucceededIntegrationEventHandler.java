@@ -17,12 +17,12 @@ public class OrderPaymentSucceededIntegrationEventHandler implements Integration
     private final Pipeline pipeline;
 
     @Override
-    public Runnable handle(OrderPaymentSucceededIntegrationEvent event) {
+    public void handle(OrderPaymentSucceededIntegrationEvent event) {
         log.info("----- Handling integration event: {} at {} - {}", event.getId(), "Ordering", event );
         var command = new SetPaidOrderStatusCommand(event.getOrderId());
         log.info("----- Sending command: {} - {}: {} {}",
             command.getClass().getSimpleName(), "OrderNumber", command.getOrderNumber(), command);
-        return () -> pipeline.send(command);        
+        pipeline.send(command);
     }
 
 }

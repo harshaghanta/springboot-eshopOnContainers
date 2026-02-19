@@ -172,8 +172,7 @@ public class RabbitMQEventBus implements EventBus {
                                 // Object instance = handler.newInstance();
                                 Object instance = context.getBean(handler);
                                 Method methodInfo = handler.getMethod("handle", eventType);
-                                Runnable runnable = (Runnable) methodInfo.invoke(instance, event);
-                                runnable.run();
+                                methodInfo.invoke(instance, event);
 
                             } catch (IllegalAccessException e) {
                                 // TODO Auto-generated catch block

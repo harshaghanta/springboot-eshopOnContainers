@@ -8,6 +8,7 @@ import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.OrderStatus;
 import com.eshoponcontainers.events.OrderShippedDomainEvent;
+import com.eshoponcontainers.orderapi.aop.MyTransactional;
 import com.eshoponcontainers.orderapi.application.integrationEvents.OrderingIntegrationEventService;
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStatusChangedToShippedIntegrationEvent;
 import com.eshoponcontainers.repositories.BuyerRepository;
@@ -26,6 +27,7 @@ public class OrderShippedDomainEventHandler implements Notification.Handler<Orde
     private final OrderingIntegrationEventService orderingIntegrationEventService;
 
     @Override
+    @MyTransactional
     public void handle(OrderShippedDomainEvent event) {
 
         log.trace("Order with Id: {} has been successfully updated to status {} ({})",

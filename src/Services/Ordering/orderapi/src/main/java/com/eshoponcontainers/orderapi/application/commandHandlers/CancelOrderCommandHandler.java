@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
+import com.eshoponcontainers.orderapi.aop.MyTransactional;
 import com.eshoponcontainers.orderapi.application.commands.CancelOrderCommand;
 
 import an.awesome.pipelinr.Command;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
+@MyTransactional
 public class CancelOrderCommandHandler implements Command.Handler<CancelOrderCommand, Boolean> {
 
     private final IOrderRepository orderRepository;
@@ -22,7 +24,7 @@ public class CancelOrderCommandHandler implements Command.Handler<CancelOrderCom
             return false;
         
         order.SetCancelledStatus();
-        orderRepository.getUnitOfWork().saveChanges();
+        // orderRepository.getUnitOfWork().saveChanges();
         
         return true;
     }
