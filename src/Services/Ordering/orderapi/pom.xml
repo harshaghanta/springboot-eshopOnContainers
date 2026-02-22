@@ -28,13 +28,11 @@
 		<dependency>
 			<groupId>net.sizovs</groupId>
 			<artifactId>pipelinr</artifactId>
-			<version>0.9</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
-			<version>3.5.3</version>
 		</dependency>
 
 		<dependency>
@@ -46,7 +44,6 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>${springdoc.version}</version>
 		</dependency>
 
 		<dependency>
@@ -64,7 +61,6 @@
 		<dependency>
 			<groupId>net.logstash.logback</groupId>
 			<artifactId>logstash-logback-encoder</artifactId>
-			<version>7.4</version>
 		</dependency>
 
 		<dependency>
@@ -74,11 +70,6 @@
 		</dependency>
 
 
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.2.0</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -87,7 +78,6 @@
 		<dependency>
 			<groupId>org.springframework.security.oauth.boot</groupId>
 			<artifactId>spring-security-oauth2-autoconfigure</artifactId>
-			<version>2.6.8</version>
 		</dependency>
 
 	</dependencies>

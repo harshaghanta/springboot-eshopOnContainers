@@ -1,33 +1,32 @@
 package com.eshoponcontainers.orderapi.application.queries;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.eshoponcontainers.config.EntityManagerProvider;
 import com.eshoponcontainers.orderapi.application.viewModels.CardType;
 import com.eshoponcontainers.orderapi.application.viewModels.Order;
 import com.eshoponcontainers.orderapi.application.viewModels.OrderItem;
 import com.eshoponcontainers.orderapi.application.viewModels.OrderSummary;
-import com.eshoponcontainers.seedWork.Entity;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
-import lombok.RequiredArgsConstructor;
+
 
 @Service
-@RequiredArgsConstructor
 public class OrderQueries {
 
     // private final EntityManagerProvider entityManagerProvider;
-    private final EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
+    @Transactional(readOnly = true)
     public Order getOrder(int id) {
         String strQuery = """
                 select o.[Id] as ordernumber,o.OrderDate as date, o.Description as description,
@@ -82,6 +81,7 @@ public class OrderQueries {
         return order;
     }
 
+    @Transactional(readOnly = true)
     public List<OrderSummary> getOrdersFromUser(UUID userId) {
 
         String strQuery = """
@@ -98,17 +98,11 @@ public class OrderQueries {
         try {
             Query query = entityManager.createNativeQuery(strQuery);
             query.setParameter("userId", userId.toString());
-            entityManager.getTransaction().begin();
             List resultList = query.getResultList();
-            entityManager.getTransaction().commit();
             List<OrderSummary> orders = mapToOrderSummary(resultList);
-            
             return orders;
-
         } catch (Exception e) {
             throw e;
-        } finally {            
-            // entityManagerProvider.closeEntityManager();
         }
     }
 
@@ -126,6 +120,7 @@ public class OrderQueries {
         return orders;
     }
 
+    @Transactional(readOnly = true)
     public List<CardType> getCardTypes() {
         // EntityManager entityManager = entityManagerProvider.getEntityManager();
         try {

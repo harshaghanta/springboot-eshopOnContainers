@@ -6,10 +6,10 @@ import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
 
 import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
 
-@RequiredArgsConstructor
+
 @Slf4j
 @Component
 public class OrderRepository implements IOrderRepository  {
@@ -17,7 +17,8 @@ public class OrderRepository implements IOrderRepository  {
     
     // private final IUnitOfWork unitOfWork;
     // private final EntityManagerProvider entityManagerProvider;
-    private final EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     // @Override
     // public IUnitOfWork getUnitOfWork() {

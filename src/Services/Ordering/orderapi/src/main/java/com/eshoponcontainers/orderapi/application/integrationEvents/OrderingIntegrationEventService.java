@@ -9,8 +9,9 @@ import com.eshoponcontainers.entities.IntegrationEventLogEntry;
 import com.eshoponcontainers.eventbus.abstractions.EventBus;
 import com.eshoponcontainers.eventbus.events.IntegrationEvent;
 import com.eshoponcontainers.orderapi.services.TransactionContext;
-import com.eshoponcontainers.services.IntegrationEventLogService;
+import com.eshoponcontainers.services.impl.DefaultIntegrationEventLogService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,10 +20,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class OrderingIntegrationEventService implements IOrderingIntegrationEventService {
 
-    private final IntegrationEventLogService eventLogService;
+    private final DefaultIntegrationEventLogService eventLogService;
     private final EventBus eventBus;
 
-    @Override    
+    @Override
+    @Transactional
     public void publishEventsThroughEventBus(UUID transactionId) {
 
         List<IntegrationEventLogEntry> pendingLogEvents = eventLogService

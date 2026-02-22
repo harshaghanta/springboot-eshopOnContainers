@@ -4,18 +4,34 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.reflections.Reflections;
+
 import com.eshoponcontainers.eventbus.SubscriptionInfo;
 import com.eshoponcontainers.eventbus.abstractions.EventBusSubscriptionManager;
 import com.eshoponcontainers.eventbus.abstractions.IntegrationEventHandler;
 import com.eshoponcontainers.eventbus.events.IntegrationEvent;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class InMemoryEventBusSubscriptionManager implements EventBusSubscriptionManager {
 
     HashMap<String, List<SubscriptionInfo>> handlers = new HashMap<>();
-    private ArrayList<Class> eventTypes = new ArrayList<>();
+    private ArrayList<Class> subscribedEventTypes = new ArrayList<>();
+    private ArrayList<Class> allEventTypes = new ArrayList<>();
 
     public InMemoryEventBusSubscriptionManager() {
+        log.info("Initializing eventTypes using Reflection");
 
+        Reflections reflections = new Reflections("com.eshoponcontainers");
+        allEventTypes = new ArrayList<>(reflections.getSubTypesOf(IntegrationEvent.class));
+
+        if(allEventTypes == null || allEventTypes.isEmpty())
+        log.warn("No event types found in the specified package.");
+
+        for (Class<? extends IntegrationEvent> eventType : allEventTypes) {
+            log.info("EventType found: {}", eventType.getSimpleName());
+        }
     }
 
     @Override
@@ -26,12 +42,18 @@ public class InMemoryEventBusSubscriptionManager implements EventBusSubscription
 
         doAddSubscription(eventHandlerType, eventName, false);
 
-        if (!eventTypes.contains(eventType)) {
-            System.out.println("Adding event type {} to eventTypes list" + eventType.getName());
-            eventTypes.add(eventType);
+        if (!subscribedEventTypes.contains(eventType)) {
+            log.info("Adding event type {} to subscribedEventTypes list", eventType.getName());
+            subscribedEventTypes.add(eventType);
         }
             
 
+    }
+
+    
+    @Override
+    public List<Class> getAllIntegrationEventTypes() {
+        return allEventTypes;
     }
 
     private void doAddSubscription(Class handlerType, String eventName, Boolean isDynamic) {
@@ -56,7 +78,7 @@ public class InMemoryEventBusSubscriptionManager implements EventBusSubscription
         if (hasSubscriptionsForEvent(eventType)) {
             String eventName = getEventKey(eventType);
             handlers.remove(eventName);
-            eventTypes.remove(eventType);
+            subscribedEventTypes.remove(eventType);
         }
 
     }
@@ -84,7 +106,7 @@ public class InMemoryEventBusSubscriptionManager implements EventBusSubscription
     @Override
     public Class getEventTypeByName(String eventName) {
 
-        Class eventType = eventTypes.stream().filter(x -> x.getSimpleName().equals(eventName)).findAny().orElse(null);
+        Class eventType = subscribedEventTypes.stream().filter(x -> x.getSimpleName().equals(eventName)).findAny().orElse(null);
         return eventType;
     }
 

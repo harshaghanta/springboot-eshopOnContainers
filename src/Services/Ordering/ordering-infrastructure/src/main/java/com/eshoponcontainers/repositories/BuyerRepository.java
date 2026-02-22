@@ -4,24 +4,23 @@ import org.springframework.stereotype.Component;
 
 import com.eshoponcontainers.aggregatesModel.buyerAggregate.Buyer;
 import com.eshoponcontainers.aggregatesModel.buyerAggregate.IBuyerRepository;
-import com.eshoponcontainers.config.EntityManagerProvider;
-import com.eshoponcontainers.seedWork.IUnitOfWork;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
-@RequiredArgsConstructor
+
 @Slf4j
 public class BuyerRepository implements IBuyerRepository {    
     
     // private final IUnitOfWork unitOfWork;
     // private final EntityManagerProvider entityManagerProvider;
-    private final EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     // @Override
     // public IUnitOfWork getUnitOfWork() {

@@ -6,8 +6,11 @@ import org.springframework.stereotype.Component;
 
 import com.eshoponcontainers.aggregatesModel.buyerAggregate.Buyer;
 import com.eshoponcontainers.aggregatesModel.buyerAggregate.IBuyerRepository;
+import com.eshoponcontainers.aggregatesModel.orderAggregate.OrderStatus;
 import com.eshoponcontainers.events.OrderStartedDomainEvent;
 import com.eshoponcontainers.orderapi.aop.MyTransactional;
+import com.eshoponcontainers.orderapi.application.integrationEvents.OrderingIntegrationEventService;
+import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStatusChangedToSubmittedIntegrationEvent;
 
 import an.awesome.pipelinr.Notification;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,7 @@ public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler
         implements Notification.Handler<OrderStartedDomainEvent> {
 
     private final IBuyerRepository buyerRepository;
+    private final OrderingIntegrationEventService orderingIntegrationEventService;
 
     @Override
     @MyTransactional
@@ -49,6 +53,9 @@ public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler
             buyerRepository.update(buyer);
         else
             buyerRepository.add(buyer);
+
+        OrderStatusChangedToSubmittedIntegrationEvent integrationEvent = new OrderStatusChangedToSubmittedIntegrationEvent(event.getOrder().getId(), OrderStatus.Submitted.toString(),event.getUserId());
+        orderingIntegrationEventService.addAndSaveEvent(integrationEvent);
 
         // buyerRepository.getUnitOfWork().saveChanges();
     }

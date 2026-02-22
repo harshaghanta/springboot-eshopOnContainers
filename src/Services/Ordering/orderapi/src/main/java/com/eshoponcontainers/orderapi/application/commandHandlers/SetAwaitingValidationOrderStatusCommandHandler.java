@@ -9,22 +9,29 @@ import com.eshoponcontainers.orderapi.application.commands.SetAwaitingValidation
 
 import an.awesome.pipelinr.Command;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
-@MyTransactional
+
+@Slf4j
 public class SetAwaitingValidationOrderStatusCommandHandler implements Command.Handler<SetAwaitingValidationOrderStatusCommand, Boolean> {
 
     private final IOrderRepository orderRepository;
     @Override
+    @MyTransactional
     public Boolean handle(SetAwaitingValidationOrderStatusCommand command) {
+        log.info("Executing SetAwaitingValidationOrderStatusCommand & Fetching Order: {}", command.getOrderNumber());
         Order order = orderRepository.get(command.getOrderNumber());
-        if(order == null)
+        if(order == null) {
+            log.warn("Order not found: {}", command.getOrderNumber());
             return false;
-        
+        }
         order.setAwaitingValidationStatus();
+        log.info("Order status set to Awaiting Validation: {}", command.getOrderNumber());
         // return orderRepository.getUnitOfWork().saveChanges();
         return true;
     }
+    
 
 }
