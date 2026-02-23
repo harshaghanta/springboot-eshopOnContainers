@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.eshoponcontainers.entities.IntegrationEventLogEntry;
 import com.eshoponcontainers.eventbus.abstractions.EventBus;
@@ -11,7 +12,6 @@ import com.eshoponcontainers.eventbus.events.IntegrationEvent;
 import com.eshoponcontainers.orderapi.services.TransactionContext;
 import com.eshoponcontainers.services.impl.DefaultIntegrationEventLogService;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,7 +46,7 @@ public class OrderingIntegrationEventService implements IOrderingIntegrationEven
 
     @Override
     public void addAndSaveEvent(IntegrationEvent event) {
-        log.info("----- Enqueuing integration event {} to repository ({})", event.getId(), event);
+        log.info("----- Enqueuing integration event {} with transaction ID {} to repository ({})", event.getId(), TransactionContext.getTransactionId(), event);
         eventLogService.saveEvent(event, TransactionContext.getTransactionId());
     }
 

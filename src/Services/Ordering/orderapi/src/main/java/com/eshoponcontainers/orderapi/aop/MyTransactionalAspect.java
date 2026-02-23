@@ -8,6 +8,8 @@ import an.awesome.pipelinr.Pipeline;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.UUID;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -35,13 +37,16 @@ public class MyTransactionalAspect {
     public Object aroundMyTransactional(ProceedingJoinPoint pjp, MyTransactional myTransactional) throws Throwable {
         log.info("Entered aroundMyTransactional for method: {}", pjp.getSignature().toShortString());
         boolean isNew = false;
-        if (TransactionContext.getTransactionId() == null) {
+
+        UUID transactionId = TransactionContext.getTransactionId();
+
+        if (transactionId == null) {
             TransactionContext.beginTransactionContext();
-            log.info("Initializing the TransactionContext");
+            transactionId = TransactionContext.getTransactionId();
+
             isNew = true;
         } else {
-            log.info("TransactionContext already initialized with TransactionID: {}",
-                    TransactionContext.getTransactionId());
+            log.info("TransactionContext already initialized with TransactionID: {}", transactionId);
         }
 
         try {
@@ -76,18 +81,16 @@ public class MyTransactionalAspect {
 
             return result;
 
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             log.error("Exception in aroundMyTransactional: {}", ex.getMessage(), ex);
             throw ex; // Rethrow to ensure transaction rollback
-        }
-         finally {
+        } finally {
             // 4. Cleanup Context
             if (isNew) {
                 // Integration events usually happen here
-                var transactionId = TransactionContext.getTransactionId();
-                orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
                 TransactionContext.clearContext();
+                orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
+                
             }
         }
     }

@@ -16,11 +16,13 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "IntegrationEventLog")
 @Getter
 @Setter
+@ToString
 public class IntegrationEventLogEntry {
     
 

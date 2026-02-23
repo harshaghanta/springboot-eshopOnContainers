@@ -124,6 +124,7 @@ public class DefaultIntegrationEventLogService implements IntegrationEventLogSer
 
         IntegrationEventLogEntry logEntry = new IntegrationEventLogEntry(event, transactionId);
         entityManager.persist(logEntry);
+        log.info("Enqueued IntegrationEventLogEntry: {}", logEntry);
         // eventLogRepository.save(logEntry);
     }
 
