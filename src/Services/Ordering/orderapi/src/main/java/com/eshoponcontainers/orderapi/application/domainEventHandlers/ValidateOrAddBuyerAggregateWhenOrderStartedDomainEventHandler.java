@@ -84,7 +84,7 @@ public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler
 
         // Added to trigger force update on buyer as domain event is not getting raised
         // when there is no change
-        // buyer.setUpateTime(new Date());
+        buyer.setUpateTime(new Date());
 
         if (buyerExisted)
             buyerRepository.update(buyer);
