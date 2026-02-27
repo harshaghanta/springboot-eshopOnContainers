@@ -47,11 +47,12 @@ public class WebhooksSender {
             request.header("X-eshop-whtoken", subscription.getToken());
 
         request
-                .bodyValue(data)
-                .exchange()
-                .doOnError(e -> log.error("Error sending data to webhook {}", subscription.getDestUrl(), e))
-                .doOnSuccess(response -> log.info("Data : {} sent to webhook url: {}", data, subscription.getDestUrl()))
-                .subscribe();
+            .bodyValue(data)
+            .retrieve()
+            .toBodilessEntity()
+            .doOnError(e -> log.error("Error sending data to webhook {}", subscription.getDestUrl(), e))
+            .doOnSuccess(response -> log.info("Data : {} sent to webhook url: {}", data, subscription.getDestUrl()))
+            .subscribe();
     }
 
 }

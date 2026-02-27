@@ -81,7 +81,8 @@ services:
     - 8083:8080
     volumes:
       - applog_volume:/app/logs
-      - ./Secrets/REDIS_PASSWORD:/vault/secrets/REDIS_PASSWORD
+      - ./Secrets/DB_USER_NAME:/vault/secrets/DB_USER_NAME
+      - ./Secrets/DB_PASSWORD:/vault/secrets/DB_PASSWORD
       - ./Secrets/EVENTBUS_USER_NAME:/vault/secrets/EVENTBUS_USER_NAME
       - ./Secrets/EVENTBUS_PASSWORD:/vault/secrets/EVENTBUS_PASSWORD
     networks:
@@ -258,7 +259,15 @@ services:
     image: ${REGISTRY:-springeshop}/webhooksapi:latest
     env_file:
     - .env
-    # environment:
+    environment:
+      SECRETS_PATH: "/vault/secrets"
+      EVENTBUS_HOST: "eventbus"
+      EVENTBUS_SUBSCRIPTION_CLIENT_NAME: "Webhooks"
+      ALLOWED_ORIGINS: "http://localhost:8080"
+      ISSUER_URL: "http://keycloak:8080/realms/eshoponcontainers"
+      DB_HOST_NAME: db
+      DB_HOST_PORT: 1433
+      WEBHOOKS_DB_NAME: "CatalogDB"
     #   OTEL_TRACES_EXPORTER: "jaeger"
     #   OTEL_SERVICE_NAME: "webhooks-api"
     #   OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"
@@ -274,6 +283,12 @@ services:
         condition: service_healthy
     ports:
     - 5113:8080
+    volumes:
+      - applog_volume:/app/logs
+      - ./Secrets/DB_USER_NAME:/vault/secrets/DB_USER_NAME
+      - ./Secrets/DB_PASSWORD:/vault/secrets/DB_PASSWORD
+      - ./Secrets/EVENTBUS_USER_NAME:/vault/secrets/EVENTBUS_USER_NAME
+      - ./Secrets/EVENTBUS_PASSWORD:/vault/secrets/EVENTBUS_PASSWORD
     networks:
     - simpbridgenetwork
   webhooks-client:    
@@ -283,7 +298,11 @@ services:
     image: ${REGISTRY:-springeshop}/webhooksclient:latest
     env_file:
     - .env
-    # environment:
+    environment:
+      SECRETS_PATH: "/vault/secrets"
+      EVENTBUS_HOST: "eventbus"
+      EVENTBUS_SUBSCRIPTION_CLIENT_NAME: "Webhooks"
+      ISSUER_URL: "http://keycloak:8080/realms/eshoponcontainers"
     #   OTEL_TRACES_EXPORTER: "jaeger"
     #   OTEL_SERVICE_NAME: "webhooks-client"
     #   OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"

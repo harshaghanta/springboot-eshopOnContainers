@@ -1,4 +1,4 @@
-package com.eshoponcontainers.basketapi.config;
+package com.eshoponcontainers.webhooksapi.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -9,8 +9,11 @@ import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.pattern.PathPatternParser;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Configuration
 @EnableWebMvc
+@Slf4j
 public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
@@ -27,7 +30,5 @@ public class WebConfig implements WebMvcConfigurer {
         configurer.setPatternParser(patternParser);
         // configurer.setTrailingSlashMatch(true); // Removed: not available in recent Spring versions
     }
-
-
 
 }

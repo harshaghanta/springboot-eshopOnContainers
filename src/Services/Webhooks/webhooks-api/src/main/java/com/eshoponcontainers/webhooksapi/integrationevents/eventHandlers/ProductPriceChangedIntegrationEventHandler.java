@@ -9,17 +9,15 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class ProductPriceChangedIntegrationEventHandler implements IntegrationEventHandler<ProductPriceChangedIntegrationEvent> {
+public class ProductPriceChangedIntegrationEventHandler
+        implements IntegrationEventHandler<ProductPriceChangedIntegrationEvent> {
 
     @Override
-    public Runnable handle(ProductPriceChangedIntegrationEvent event) {
-        
-        Runnable runnable = () -> {
-            log.info("ProductPriceChangeIntegration event: ProductId: {}, OldPrice: {}, NewPrice: {}", event.getProductId(), event.getOldPrice(), event.getNewPrice());
-        };
-        
-        return runnable;
-        
+    public void handle(ProductPriceChangedIntegrationEvent event) {
+
+        log.info("ProductPriceChangeIntegration event: ProductId: {}, OldPrice: {}, NewPrice: {}", event.getProductId(),
+                event.getOldPrice(), event.getNewPrice());
+
     }
 
 }
