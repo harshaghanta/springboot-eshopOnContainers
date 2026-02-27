@@ -32,6 +32,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests((authorize) -> authorize
 						.requestMatchers(HttpMethod.OPTIONS).permitAll()
 						.requestMatchers("/subscriptions").permitAll()
+						.requestMatchers("/api/v1/buyers/addbuyer").permitAll()
 						.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 						.requestMatchers("/actuator/**").permitAll()
 						.anyRequest().authenticated())

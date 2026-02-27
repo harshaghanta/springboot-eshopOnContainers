@@ -10,10 +10,12 @@ import com.eshoponcontainers.seedWork.Entity;
 import com.eshoponcontainers.seedWork.IAggregateRoot;
 
 import lombok.Getter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Slf4j
+@ToString
 public class Buyer extends Entity implements IAggregateRoot {
 
     private String identityUUID;

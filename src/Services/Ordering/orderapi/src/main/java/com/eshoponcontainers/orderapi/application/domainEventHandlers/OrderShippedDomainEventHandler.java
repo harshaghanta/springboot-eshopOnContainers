@@ -3,6 +3,7 @@ package com.eshoponcontainers.orderapi.application.domainEventHandlers;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 
 import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
@@ -27,7 +28,7 @@ public class OrderShippedDomainEventHandler implements Notification.Handler<Orde
     private final OrderingIntegrationEventService orderingIntegrationEventService;
 
     @Override
-    @MyTransactional
+    @MyTransactional(propagation = Propagation.REQUIRES_NEW)
     public void handle(OrderShippedDomainEvent event) {
 
         log.trace("Order with Id: {} has been successfully updated to status {} ({})",

@@ -5,6 +5,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 
 import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
@@ -31,7 +32,7 @@ public class OrderStatusChangedToPaidDomainEventHandler
     private final OrderingIntegrationEventService orderingIntegrationEventService;
 
     @Override
-    @MyTransactional
+    @MyTransactional(propagation = Propagation.REQUIRES_NEW)
     public void handle(OrderStatusChangedToPaidDomainEvent event) {
 
         log.info("Order with Id: {} has been successfully updated to status {} ({})", event.getOrderId(),

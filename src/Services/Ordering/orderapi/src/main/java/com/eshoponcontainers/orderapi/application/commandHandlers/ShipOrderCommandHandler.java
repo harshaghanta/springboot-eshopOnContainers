@@ -1,6 +1,7 @@
 package com.eshoponcontainers.orderapi.application.commandHandlers;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 
 import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
@@ -17,7 +18,7 @@ public class ShipOrderCommandHandler implements Command.Handler<ShipOrderCommand
     private final IOrderRepository orderRepository;
 
     @Override
-    @MyTransactional
+    @MyTransactional(propagation = Propagation.REQUIRES_NEW)
     public Boolean handle(ShipOrderCommand command) {
         Order order = orderRepository.get(command.getOrderNumber());
         if (order == null)

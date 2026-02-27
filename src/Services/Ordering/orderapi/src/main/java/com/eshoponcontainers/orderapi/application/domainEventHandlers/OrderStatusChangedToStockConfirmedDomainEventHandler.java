@@ -1,8 +1,7 @@
 package com.eshoponcontainers.orderapi.application.domainEventHandlers;
 
-import java.util.UUID;
-
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 
 import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
@@ -27,7 +26,7 @@ public class OrderStatusChangedToStockConfirmedDomainEventHandler implements Not
     private final OrderingIntegrationEventService orderingIntegrationEventService;
 
     @Override
-    @MyTransactional
+    @MyTransactional(propagation = Propagation.REQUIRES_NEW)
     public void handle(OrderStatusChangedToStockConfirmedDomainEvent event) {
         log.info("Order with Id: {} has been successfully updated to status {} ({})", event.getOrderId(), OrderStatus.StockConfirmed.name(), OrderStatus.StockConfirmed.getId());
         Order order = orderRepository.get(event.getOrderId());

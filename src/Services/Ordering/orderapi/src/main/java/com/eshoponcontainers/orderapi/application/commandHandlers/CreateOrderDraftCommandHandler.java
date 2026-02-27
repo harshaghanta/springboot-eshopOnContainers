@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
 import com.eshoponcontainers.orderapi.aop.MyTransactional;
@@ -18,7 +19,7 @@ import an.awesome.pipelinr.Command;
 public class CreateOrderDraftCommandHandler implements Command.Handler<CreateOrderDraftCommand, OrderDraftDTO> {
 
     @Override
-    @MyTransactional
+    @MyTransactional(propagation = Propagation.REQUIRES_NEW)
     public OrderDraftDTO handle(CreateOrderDraftCommand command) {
 
         Order order = Order.newDraft();

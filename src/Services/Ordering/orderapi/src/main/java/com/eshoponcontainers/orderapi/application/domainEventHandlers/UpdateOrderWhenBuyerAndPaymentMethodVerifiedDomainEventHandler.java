@@ -1,6 +1,7 @@
 package com.eshoponcontainers.orderapi.application.domainEventHandlers;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 
 import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.events.BuyerAndPaymentMethodVerifiedDomainEvent;
@@ -18,7 +19,7 @@ public class UpdateOrderWhenBuyerAndPaymentMethodVerifiedDomainEventHandler impl
     private final IOrderRepository orderRepository;
 
     @Override
-    @MyTransactional
+    @MyTransactional(propagation = Propagation.REQUIRES_NEW)
     public void handle(BuyerAndPaymentMethodVerifiedDomainEvent event) {
         log.info("Receieved the BuyerAndPaymentMethodVerifiedDomainEvent with buyer: {} for order: {}" , event.getBuyer().getId(),
             event.getOrderId() );

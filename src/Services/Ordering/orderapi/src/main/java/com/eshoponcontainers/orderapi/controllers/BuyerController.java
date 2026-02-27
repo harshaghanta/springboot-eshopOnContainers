@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eshoponcontainers.aggregatesModel.buyerAggregate.Buyer;
 import com.eshoponcontainers.aggregatesModel.buyerAggregate.IBuyerRepository;
+import com.eshoponcontainers.orderapi.aop.MyTransactional;
 import com.eshoponcontainers.orderapi.application.viewModels.BuyerDto;
 
 
@@ -20,7 +21,8 @@ public class BuyerController {
         this.buyerRepository = buyerRepository;
     }
 
-    @PostMapping("/addbuyer")    
+    @PostMapping("/addbuyer")
+    @MyTransactional
     public String addBuyer(@RequestBody BuyerDto buyerDto) {
 
         Buyer buyer = new Buyer( buyerDto.getUserId(), buyerDto.getName());

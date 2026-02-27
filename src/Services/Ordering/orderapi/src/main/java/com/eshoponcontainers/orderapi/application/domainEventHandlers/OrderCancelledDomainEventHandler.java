@@ -1,6 +1,7 @@
 package com.eshoponcontainers.orderapi.application.domainEventHandlers;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 
 import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
@@ -25,7 +26,7 @@ public class OrderCancelledDomainEventHandler implements Notification.Handler<Or
     private final IOrderRepository orderRepository;
 
     @Override
-    @MyTransactional
+    @MyTransactional(propagation = Propagation.REQUIRES_NEW)
     public void handle(OrderCancelledDomainEvent event) {
         log.trace("Order with Id:{} has been successfully updated to status {}", event.getOrder().getId(), OrderStatus.Cancelled.name());
         

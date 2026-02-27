@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eshoponcontainers.entities.IntegrationEventLogEntry;
@@ -24,7 +25,7 @@ public class OrderingIntegrationEventService implements IOrderingIntegrationEven
     private final EventBus eventBus;
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void publishEventsThroughEventBus(UUID transactionId) {
 
         List<IntegrationEventLogEntry> pendingLogEvents = eventLogService

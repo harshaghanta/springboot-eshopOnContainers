@@ -1,6 +1,7 @@
 package com.eshoponcontainers.orderapi.application.commandHandlers;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 
 import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
@@ -18,7 +19,7 @@ public class SetStockRejectedOrderStatusCommandHandler
     private final IOrderRepository orderRepository;
 
     @Override
-    @MyTransactional
+    @MyTransactional(propagation = Propagation.REQUIRES_NEW)
     public Boolean handle(SetStockRejectedOrderStatusCommand command) {
         // Simulate a work time for validating the payment
         // try {

@@ -42,7 +42,7 @@ public class BuyerRepository implements IBuyerRepository {
         log.info("EntityManager hashcode: {} in BuyerRepository update", entityManager.hashCode());       
         entityManager.merge(buyer);
         //TODO: HACK : to be removed. Find out why merge is not triggering the preupdate event on the Buyer entity
-        entityManager.flush();        
+        // entityManager.flush();        
         return buyer;
     }
 

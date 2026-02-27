@@ -1,6 +1,7 @@
 package com.eshoponcontainers.orderapi.application.commandHandlers;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 
 import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
@@ -12,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
-@MyTransactional
+@MyTransactional(propagation = Propagation.REQUIRES_NEW)
 public class CancelOrderCommandHandler implements Command.Handler<CancelOrderCommand, Boolean> {
 
     private final IOrderRepository orderRepository;
