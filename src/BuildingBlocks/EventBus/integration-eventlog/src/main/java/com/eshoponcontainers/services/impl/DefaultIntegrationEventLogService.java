@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.eshoponcontainers.EventStateEnum;
 import com.eshoponcontainers.entities.IntegrationEventLogEntry;
@@ -20,8 +22,6 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import jakarta.transaction.Transactional;
-import jakarta.transaction.Transactional.TxType;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -129,14 +129,14 @@ public class DefaultIntegrationEventLogService implements IntegrationEventLogSer
     }
 
     @Override
-    @Transactional(value = TxType.SUPPORTS)
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void markEventAsPublished(UUID eventId) {
 
         updateEventStatus(eventId, EventStateEnum.PUBLISHED);
     }
 
     @Override
-    @Transactional(value = TxType.SUPPORTS)
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void markEventAsInProgress(UUID eventId) {
 
         updateEventStatus(eventId, EventStateEnum.IN_PROGRESS);

@@ -32,6 +32,7 @@ import com.eshoponcontainers.catalogapi.repositories.CatalogBrandRepository;
 import com.eshoponcontainers.catalogapi.repositories.CatalogItemRepository;
 import com.eshoponcontainers.catalogapi.repositories.CatalogTypeRepository;
 import com.eshoponcontainers.catalogapi.services.CatalogIntegrationService;
+import com.eshoponcontainers.services.impl.OutboxService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -54,6 +55,7 @@ public class CatalogController {
     private final CatalogTypeRepository catalogTypeRepository;
     private final CatalogBrandRepository catalogBrandRepository;
     private final CatalogIntegrationService catalogIntegrationService;
+    private final OutboxService outboxService;
 
     @Value("${picBaseUrl}")
     private String picBaseUrl;
@@ -208,8 +210,9 @@ public class CatalogController {
         if (raisePriceChangedEvent) {
             ProductPriceChangedIntegrationEvent productPriceChangedIntegrationEvent = new ProductPriceChangedIntegrationEvent(
                     requestedItem.getId(), requestedItem.getPrice(), oldPrice);
-            catalogIntegrationService.saveEventAndCatalogChanges(productPriceChangedIntegrationEvent, catitems);
-            catalogIntegrationService.publishThroughEventBus(productPriceChangedIntegrationEvent);
+            // catalogIntegrationService.saveEventAndCatalogChanges(productPriceChangedIntegrationEvent, catitems);
+            outboxService.saveToOutbox(productPriceChangedIntegrationEvent);
+            // catalogIntegrationService.publishThroughEventBus(productPriceChangedIntegrationEvent);
         } else {
             catalogItemRepository.save(requestedItem);
         }

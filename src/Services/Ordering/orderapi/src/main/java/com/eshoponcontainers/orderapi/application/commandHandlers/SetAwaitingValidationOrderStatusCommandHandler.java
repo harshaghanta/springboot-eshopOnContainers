@@ -43,7 +43,7 @@ public class SetAwaitingValidationOrderStatusCommandHandler
             public void afterCompletion(int status) {
                 if (status == TransactionSynchronization.STATUS_COMMITTED) {
                     log.info("Transaction completed with COMMIT status.");
-                    orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
+                    // orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
                     var domainEvents = DomainContext.getDomainEvents();
                     DomainContext.clearContext(); // Safety: clear after sending
                     if (domainEvents != null) {

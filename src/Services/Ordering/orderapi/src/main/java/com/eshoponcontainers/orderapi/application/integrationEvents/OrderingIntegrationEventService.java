@@ -24,26 +24,26 @@ public class OrderingIntegrationEventService implements IOrderingIntegrationEven
     private final DefaultIntegrationEventLogService eventLogService;
     private final EventBus eventBus;
 
-    @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void publishEventsThroughEventBus(UUID transactionId) {
+    // @Override
+    // @Transactional(propagation = Propagation.REQUIRES_NEW)
+    // public void publishEventsThroughEventBus(UUID transactionId) {
 
-        List<IntegrationEventLogEntry> pendingLogEvents = eventLogService
-                .retrieveEventLogsPendingToPublish(transactionId);
-        for (IntegrationEventLogEntry logEntry : pendingLogEvents) {
-            UUID eventId = logEntry.getEventId();
-            log.info("----- Publishing integration event: {} from {} - ({})", eventId, "OrderAPI", logEntry);
+    //     List<IntegrationEventLogEntry> pendingLogEvents = eventLogService
+    //             .retrieveEventLogsPendingToPublish(transactionId);
+    //     for (IntegrationEventLogEntry logEntry : pendingLogEvents) {
+    //         UUID eventId = logEntry.getEventId();
+    //         log.info("----- Publishing integration event: {} from {} - ({})", eventId, "OrderAPI", logEntry);
             
-            try {
-                eventLogService.markEventAsInProgress(eventId);
-                eventBus.publish(logEntry.getEvent());
-                eventLogService.markEventAsPublished(logEntry.getEventId());
-            } catch (Exception e) {
-                log.error("ERROR publishing integration event: " + eventId + " from OrderAPI" , e);
-                eventLogService.markEventAsFailed(eventId);
-            }
-        }
-    }
+    //         try {
+    //             eventLogService.markEventAsInProgress(eventId);
+    //             eventBus.publish(logEntry.getEvent());
+    //             eventLogService.markEventAsPublished(logEntry.getEventId());
+    //         } catch (Exception e) {
+    //             log.error("ERROR publishing integration event: " + eventId + " from OrderAPI" , e);
+    //             eventLogService.markEventAsFailed(eventId);
+    //         }
+    //     }
+    // }
 
     @Override
     public void addAndSaveEvent(IntegrationEvent event) {

@@ -16,6 +16,7 @@ import com.eshoponcontainers.events.OrderStartedDomainEvent;
 import com.eshoponcontainers.orderapi.application.integrationEvents.OrderingIntegrationEventService;
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStatusChangedToSubmittedIntegrationEvent;
 import com.eshoponcontainers.orderapi.services.TransactionContext;
+import com.eshoponcontainers.services.impl.OutboxService;
 
 import an.awesome.pipelinr.Notification;
 import an.awesome.pipelinr.Pipeline;
@@ -32,6 +33,7 @@ public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler
     private final IBuyerRepository buyerRepository;
     private final OrderingIntegrationEventService orderingIntegrationEventService;
     private final Pipeline pipeline;
+    private final OutboxService outboxService;
 
     @Override
     // @MyTransactional(propagation = Propagation.REQUIRES_NEW)
@@ -45,7 +47,7 @@ public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler
             public void afterCompletion(int status) {
                 if (status == TransactionSynchronization.STATUS_COMMITTED) {
                     log.info("Transaction completed with COMMIT status.");
-                    orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
+                    // orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
                     var domainEvents = DomainContext.getDomainEvents();
                     DomainContext.clearContext(); // Safety: clear after sending
                     if (domainEvents != null) {
@@ -93,7 +95,8 @@ public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler
 
         OrderStatusChangedToSubmittedIntegrationEvent integrationEvent = new OrderStatusChangedToSubmittedIntegrationEvent(
                 event.getOrder().getId(), OrderStatus.Submitted.toString(), event.getUserId());
-        orderingIntegrationEventService.addAndSaveEvent(integrationEvent);
+        // orderingIntegrationEventService.addAndSaveEvent(integrationEvent);
+        outboxService.saveToOutbox(integrationEvent);
 
         // buyerRepository.getUnitOfWork().saveChanges();
     }

@@ -19,6 +19,7 @@ import com.eshoponcontainers.orderapi.application.integrationEvents.events.Order
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStockItem;
 import com.eshoponcontainers.orderapi.services.TransactionContext;
 import com.eshoponcontainers.repositories.BuyerRepository;
+import com.eshoponcontainers.services.impl.OutboxService;
 
 import an.awesome.pipelinr.Notification;
 import an.awesome.pipelinr.Pipeline;
@@ -35,6 +36,7 @@ public class OrderStatusChangedToPaidDomainEventHandler
     private final BuyerRepository buyerRepository;
     private final OrderingIntegrationEventService orderingIntegrationEventService;
     private final Pipeline pipeline;
+    private final OutboxService outboxService;
     @Override
 //     @MyTransactional(propagation = Propagation.REQUIRES_NEW)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -48,7 +50,7 @@ public class OrderStatusChangedToPaidDomainEventHandler
             public void afterCompletion(int status) {
                 if (status == TransactionSynchronization.STATUS_COMMITTED) {
                     log.info("Transaction completed with COMMIT status.");
-                    orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
+                    // orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
                     var domainEvents = DomainContext.getDomainEvents();
                     DomainContext.clearContext(); // Safety: clear after sending
                     if (domainEvents != null) {
@@ -79,7 +81,8 @@ public class OrderStatusChangedToPaidDomainEventHandler
 
         var integrationEvent = new OrderStatusChangedToPaidIntegrationEvent(event.getOrderId(),
                 order.getOrderStatus().name(), buyer.getName(), orderStockList);
-        orderingIntegrationEventService.addAndSaveEvent(integrationEvent);
+        // orderingIntegrationEventService.addAndSaveEvent(integrationEvent);
+        outboxService.saveToOutbox(integrationEvent);
 
     }
 

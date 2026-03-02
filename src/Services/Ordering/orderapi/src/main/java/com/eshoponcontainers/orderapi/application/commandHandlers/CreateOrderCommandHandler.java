@@ -15,6 +15,7 @@ import com.eshoponcontainers.orderapi.application.integrationEvents.OrderingInte
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStartedIntegrationEvent;
 import com.eshoponcontainers.orderapi.application.viewModels.OrderItemDTO;
 import com.eshoponcontainers.orderapi.services.TransactionContext;
+import com.eshoponcontainers.services.impl.OutboxService;
 
 import an.awesome.pipelinr.Command;
 import an.awesome.pipelinr.Pipeline;
@@ -29,6 +30,7 @@ public class CreateOrderCommandHandler implements Command.Handler<CreateOrderCom
     private final OrderingIntegrationEventService orderingIntegrationEventService;
     private final IOrderRepository orderRepository;
     private final Pipeline pipeline;
+    private final OutboxService outboxService;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -42,7 +44,7 @@ public class CreateOrderCommandHandler implements Command.Handler<CreateOrderCom
                     @Override
                     public void afterCommit() {
                         log.info("Transaction has been committed.");
-                             orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
+                            //  orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
                         var domainEvents = DomainContext.getDomainEvents();
                         DomainContext.clearContext(); // Clear after fetching
                         if (domainEvents != null) {
@@ -57,7 +59,10 @@ public class CreateOrderCommandHandler implements Command.Handler<CreateOrderCom
                 
         log.info("Received CreateOrderCommand: {}", command);
         var orderStartedIntegrationEvent = new OrderStartedIntegrationEvent(command.getUserId());
-        orderingIntegrationEventService.addAndSaveEvent(orderStartedIntegrationEvent);
+        outboxService.saveToOutbox(orderStartedIntegrationEvent);
+        // orderingIntegrationEventService.addAndSaveEvent(orderStartedIntegrationEvent);
+
+
 
         var address = new Address(command.getStreet(), command.getCity(), command.getState(), command.getCountry(),
                 command.getZipCode());

@@ -44,11 +44,13 @@ public class MyTransactionalAspect {
             public void afterCompletion(int status) {
                 if (status == TransactionSynchronization.STATUS_COMMITTED) {
                     // 1. Publish Integration Events NOW (The DB commit is final)
-                    orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
+                    // orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
                     
                     log.info("Transaction {} committed. Processing domain events.", transactionId);
 
                     var domainEvents = DomainContext.getDomainEvents();
+                    // Clear context immediately after processing to prevent double-processing
+
                     DomainContext.clearContext();
 
                     if (domainEvents != null && !domainEvents.isEmpty()) {
@@ -56,7 +58,6 @@ public class MyTransactionalAspect {
                             log.info("Publishing domain event: {}", event.getClass().getSimpleName());
                             pipeline.send(event);
                         });
-                        // Clear context immediately after processing to prevent double-processing
                         
                     }
                 } else if (status == TransactionSynchronization.STATUS_ROLLED_BACK) {

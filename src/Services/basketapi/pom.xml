@@ -62,6 +62,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.eshoponcontainers</groupId>
+			<artifactId>integration-eventlog</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
+		</dependency>
+
+
+		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
 		</dependency>

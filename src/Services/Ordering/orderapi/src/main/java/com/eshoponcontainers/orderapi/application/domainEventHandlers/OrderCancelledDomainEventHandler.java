@@ -16,6 +16,7 @@ import com.eshoponcontainers.orderapi.application.integrationEvents.IOrderingInt
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStatusChangedToCancelledIntegrationEvent;
 import com.eshoponcontainers.orderapi.services.TransactionContext;
 import com.eshoponcontainers.repositories.BuyerRepository;
+import com.eshoponcontainers.services.impl.OutboxService;
 
 import an.awesome.pipelinr.Notification;
 import an.awesome.pipelinr.Pipeline;
@@ -31,6 +32,7 @@ public class OrderCancelledDomainEventHandler implements Notification.Handler<Or
     private final BuyerRepository buyerRepository;
     private final IOrderRepository orderRepository;
     private final Pipeline pipeline;
+    private final OutboxService outboxService;
 
     @Override
     // @MyTransactional(propagation = Propagation.REQUIRES_NEW)
@@ -45,7 +47,7 @@ public class OrderCancelledDomainEventHandler implements Notification.Handler<Or
             public void afterCompletion(int status) {
                 if (status == TransactionSynchronization.STATUS_COMMITTED) {
                     log.info("Transaction completed with COMMIT status.");
-                    orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
+                    // orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
                     var domainEvents = DomainContext.getDomainEvents();
                     DomainContext.clearContext(); // Safety: clear after sending
                     if (domainEvents != null) {
@@ -69,6 +71,7 @@ public class OrderCancelledDomainEventHandler implements Notification.Handler<Or
         var buyer = buyerRepository.findById(order.getBuyerId().toString());
 
         var orderStatusChangedToCancelledIntegrationEvent = new OrderStatusChangedToCancelledIntegrationEvent(order.getId(), order.getOrderStatus().name(), buyer.getName());
-        orderingIntegrationEventService.addAndSaveEvent(orderStatusChangedToCancelledIntegrationEvent);        
+        // orderingIntegrationEventService.addAndSaveEvent(orderStatusChangedToCancelledIntegrationEvent);        
+        outboxService.saveToOutbox(orderStatusChangedToCancelledIntegrationEvent);
     }
 }

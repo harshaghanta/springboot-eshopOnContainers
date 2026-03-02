@@ -9,10 +9,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.eshoponcontainers.eventbus.abstractions.EventBus;
 import com.eshoponcontainers.orderingbackgroundtasks.events.GracePeriodConfirmedIntegrationEvent;
 import com.eshoponcontainers.orderingbackgroundtasks.repositories.OrderRepository;
+import com.eshoponcontainers.services.impl.OutboxService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class OrderingBackgroundtasksApplication {
 
 	private final EventBus eventBus;
+	private final OutboxService outboxService;
 	private final OrderRepository orderRepository;
 
 	private volatile boolean shutdownRequested = false;
@@ -39,6 +42,7 @@ public class OrderingBackgroundtasksApplication {
 	}
 
 	@Scheduled(fixedDelay = 30000) // Run every  (30 second)
+	@Transactional
 	public void backgroundProcess() {
 		if (shutdownRequested) {
 
@@ -49,7 +53,8 @@ public class OrderingBackgroundtasksApplication {
 			for (Integer orderId : ordersToProcess) {
 				GracePeriodConfirmedIntegrationEvent event = new GracePeriodConfirmedIntegrationEvent(orderId);
 				log.info("----- Publishing integration event: {} from {} - {}", event.getId(), "Ordering-Backgroundtasks", event);
-				eventBus.publish(event);
+				// eventBus.publish(event);
+				outboxService.saveToOutbox(event);
 			}
 		}
 	}

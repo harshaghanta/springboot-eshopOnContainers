@@ -20,6 +20,7 @@ import com.eshoponcontainers.orderapi.application.integrationEvents.events.Order
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStockItem;
 import com.eshoponcontainers.orderapi.services.TransactionContext;
 import com.eshoponcontainers.repositories.BuyerRepository;
+import com.eshoponcontainers.services.impl.OutboxService;
 
 import an.awesome.pipelinr.Notification;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class OrderStatusChangedToAwaitingValidationDomainEventHandler
     private final IOrderRepository orderRepository;
     private final BuyerRepository buyerRepository;
     private final OrderingIntegrationEventService orderingIntegrationEventService;
-
+    private final OutboxService outboxService;
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handle(OrderStatusChangedToAwaitingValidationDomainEvent event) {
@@ -49,7 +50,7 @@ public class OrderStatusChangedToAwaitingValidationDomainEventHandler
             public void afterCompletion(int status) {
                 if (status == TransactionSynchronization.STATUS_COMMITTED) {
                     log.info("Transaction completed with COMMIT status.");
-                    orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
+                    // orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
                
                 } else if (status == TransactionSynchronization.STATUS_ROLLED_BACK) {
                     log.error("Transaction completed with ROLLBACK status.");
@@ -70,7 +71,8 @@ public class OrderStatusChangedToAwaitingValidationDomainEventHandler
         var integrationEvent = new OrderStatusChangedToAwaitingValidationIntegrationEvent(event.getOrderId(),
                 order.getOrderStatus().name(), buyer.getName(), orderItems);
         // log.info("Saving OrderStatusChangedToAwaitingValidationIntegrationEvent with transactionId:{}", TransactionContext.getTransactionId());
-        orderingIntegrationEventService.addAndSaveEvent(integrationEvent);
+        // orderingIntegrationEventService.addAndSaveEvent(integrationEvent);
+        outboxService.saveToOutbox(integrationEvent);
     }
 
 }

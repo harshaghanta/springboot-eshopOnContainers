@@ -15,6 +15,7 @@ import com.eshoponcontainers.orderapi.application.integrationEvents.OrderingInte
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStatusChangedToShippedIntegrationEvent;
 import com.eshoponcontainers.orderapi.services.TransactionContext;
 import com.eshoponcontainers.repositories.BuyerRepository;
+import com.eshoponcontainers.services.impl.OutboxService;
 
 import an.awesome.pipelinr.Notification;
 import an.awesome.pipelinr.Pipeline;
@@ -30,6 +31,7 @@ public class OrderShippedDomainEventHandler implements Notification.Handler<Orde
     private final BuyerRepository buyerRepository;
     private final OrderingIntegrationEventService orderingIntegrationEventService;
     private final Pipeline pipeline;
+    private final OutboxService outboxService;
     
     @Override
     // @MyTransactional(propagation = Propagation.REQUIRES_NEW)
@@ -47,7 +49,7 @@ public class OrderShippedDomainEventHandler implements Notification.Handler<Orde
             public void afterCompletion(int status) {
                 if (status == TransactionSynchronization.STATUS_COMMITTED) {
                     log.info("Transaction completed with COMMIT status.");
-                    orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
+                    // orderingIntegrationEventService.publishEventsThroughEventBus(transactionId);
                     var domainEvents = DomainContext.getDomainEvents();
                     DomainContext.clearContext(); // Safety: clear after sending
                     if (domainEvents != null) {
@@ -70,7 +72,8 @@ public class OrderShippedDomainEventHandler implements Notification.Handler<Orde
         var buyer = buyerRepository.findById(order.getBuyerId().toString());
         
         OrderStatusChangedToShippedIntegrationEvent integrationEvent = new OrderStatusChangedToShippedIntegrationEvent(order.getId(), order.getOrderStatus().name(), buyer.getName());
-        orderingIntegrationEventService.addAndSaveEvent(integrationEvent);
+        // orderingIntegrationEventService.addAndSaveEvent(integrationEvent);
+        outboxService.saveToOutbox(integrationEvent);
     }
 
 }
