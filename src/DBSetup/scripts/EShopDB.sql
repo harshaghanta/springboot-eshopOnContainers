@@ -95,6 +95,24 @@ PRIMARY KEY CLUSTERED
 END
 GO
 
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Outbox]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[Outbox](
+	[Id] [uniqueidentifier] NOT NULL,
+	[EventTypeName] [nvarchar](500) NOT NULL,
+	[Content] [nvarchar](max) NOT NULL,
+	[Status] [varchar](50) NOT NULL,
+	[LockedBy] [nvarchar](200) NULL,
+	[LastAttemptedAt] [datetime2] NULL,
+	[RetryCount] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END
+GO
+
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Subscriptions]') AND type in (N'U'))
 BEGIN
 	CREATE TABLE [dbo].[Subscriptions](

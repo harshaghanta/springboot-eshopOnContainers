@@ -3,6 +3,7 @@ package com.eshoponcontainers.services.impl;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import com.eshoponcontainers.entities.OutboxEntity;
@@ -19,6 +20,7 @@ public class OutboxService {
 
     private final OutboxRepository outboxRepository;
     private final ObjectMapper objectMapper;
+    private final Environment env;
 
     public void saveToOutbox(IntegrationEvent event) {
 
@@ -37,7 +39,7 @@ public class OutboxService {
                 .toLocalDateTime();
 
         OutboxEntity entry = new OutboxEntity(event.getId(), event.getClass().getName(), content, "PENDING",
-                creationDateTime, 0);
+             env.getProperty("HOSTNAME"), creationDateTime, 0);
         outboxRepository.save(entry);
     }
 }
