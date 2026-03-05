@@ -61,11 +61,11 @@
 			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.eshoponcontainers</groupId>
 			<artifactId>integration-eventlog</artifactId>
 			<version>0.0.2-SNAPSHOT</version>
-		</dependency>
+		</dependency> -->
 
 
 		<dependency>

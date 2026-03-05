@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +19,6 @@ import com.eshoponcontainers.basketapi.model.CustomerBasket;
 import com.eshoponcontainers.basketapi.repositories.RedisBasketDataRepository;
 import com.eshoponcontainers.basketapi.services.IdentityService;
 import com.eshoponcontainers.eventbus.abstractions.EventBus;
-import com.eshoponcontainers.services.impl.OutboxService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +32,6 @@ public class BasketController {
     private final RedisBasketDataRepository basketDataRepository;
     private final EventBus eventBus;
     private final IdentityService identityService;
-    private final OutboxService outboxService;
 
     @GetMapping("/{id}")
     public ResponseEntity<CustomerBasket> getBasket(@PathVariable String id, Principal principal) {
@@ -45,11 +42,11 @@ public class BasketController {
         return ResponseEntity.ok(basket);
     }
 
-    @PostMapping({"/", ""})
+    @PostMapping({ "/", "" })
     public ResponseEntity<CustomerBasket> updateBasket(@RequestBody CustomerBasket basket) {
-        log.info("Received update basket request : {} for the basket with id: {}", basket,  basket.getBuyerId());
+        log.info("Received update basket request : {} for the basket with id: {}", basket, basket.getBuyerId());
         CustomerBasket updatedBasket = basketDataRepository.updateBasket(basket);
-        log.info("Sending updated Basket: {} to client",  updatedBasket);
+        log.info("Sending updated Basket: {} to client", updatedBasket);
         return ResponseEntity.ok(updatedBasket);
     }
 
@@ -60,7 +57,6 @@ public class BasketController {
     }
 
     @PostMapping("/checkout")
-    @Transactional
     public ResponseEntity<Void> checkout(@RequestBody BasketCheckout basketCheckout,
             @RequestHeader(name = "x-requestid") String requestId, Principal principal) {
         UUID rquestUUID = null;
@@ -87,10 +83,8 @@ public class BasketController {
 
         log.info("RequestID: {}", event.getRequestId());
 
+        eventBus.publish(event);
 
-            // eventBus.publish(event);
-            outboxService.saveToOutbox(event);
-        
         return ResponseEntity.accepted().build();
 
     }
