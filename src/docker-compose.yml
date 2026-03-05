@@ -80,9 +80,8 @@ services:
     ports:
     - 8083:8080
     volumes:
-      - applog_volume:/app/logs
-      - ./Secrets/DB_USER_NAME:/vault/secrets/DB_USER_NAME
-      - ./Secrets/DB_PASSWORD:/vault/secrets/DB_PASSWORD
+      - applog_volume:/app/logs      
+      - ./Secrets/REDIS_PASSWORD:/vault/secrets/REDIS_PASSWORD
       - ./Secrets/EVENTBUS_USER_NAME:/vault/secrets/EVENTBUS_USER_NAME
       - ./Secrets/EVENTBUS_PASSWORD:/vault/secrets/EVENTBUS_PASSWORD
     networks:
