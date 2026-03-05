@@ -7,24 +7,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 @SpringBootApplication(scanBasePackages = "com.eshoponcontainers")
-// @EnableJpaRepositories(basePackages = { "com.eshoponcontainers.repositories"
-// })
+@EnableJpaRepositories(basePackages = { "com.eshoponcontainers.repositories"
+})
+// @EntityScan(basePackages = { "com.eshoponcontainers.entities" })
 @EnableTransactionManagement(order = 0)
-// @EnableAutoConfiguration(exclude = {
+@EnableAutoConfiguration(exclude = {
 // PersistenceExceptionTranslationAutoConfiguration.class,
-// HibernateJpaAutoConfiguration.class, DataSourceAutoConfiguration.class })
+// HibernateJpaAutoConfiguration.class, 
+DataSourceAutoConfiguration.class })
 public class OrderapiApplication {
 
 	public static void main(String[] args) {
@@ -76,6 +83,11 @@ public class OrderapiApplication {
 		} catch (IOException e) {
 			throw new RuntimeException("Could not read database secret at " + filePath, e);
 		}
+	}
+
+	@Bean
+	public ObjectMapper objectMapper() {
+		return new ObjectMapper();
 	}
 
 }
