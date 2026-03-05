@@ -1,13 +1,11 @@
 package com.eshoponcontainers.paymentapi.integrationEvents.eventHandlers;
 
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.eshoponcontainers.eventbus.abstractions.EventBus;
 import com.eshoponcontainers.eventbus.abstractions.IntegrationEventHandler;
 import com.eshoponcontainers.paymentapi.integrationEvents.events.OrderPaymentSucceededIntegrationEvent;
 import com.eshoponcontainers.paymentapi.integrationEvents.events.OrderStatusChangedToStockConfirmedIntegrationEvent;
-import com.eshoponcontainers.services.impl.OutboxService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -20,12 +18,11 @@ import lombok.extern.slf4j.Slf4j;
 public class OrderStatusChangedToStockConfirmedIntegrationEventHandler
         implements IntegrationEventHandler<OrderStatusChangedToStockConfirmedIntegrationEvent> {
 
-    // private final EventBus eventBus;
+    private final EventBus eventBus;
     private final ObjectMapper objectMapper;
-    private final OutboxService outboxService;
+    // private final OutboxService outboxService;
 
     @Override
-    @Transactional
     public void handle(OrderStatusChangedToStockConfirmedIntegrationEvent event) {
 
         log.info("----- Handling integration event: {} at {} - {}", event.getId(), "Payment", event);
@@ -41,8 +38,8 @@ public class OrderStatusChangedToStockConfirmedIntegrationEventHandler
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        outboxService.saveToOutbox(paymentEvent);
-        // eventBus.publish(paymentEvent);
+        // outboxService.saveToOutbox(paymentEvent);
+        eventBus.publish(paymentEvent);
 
     }
 
