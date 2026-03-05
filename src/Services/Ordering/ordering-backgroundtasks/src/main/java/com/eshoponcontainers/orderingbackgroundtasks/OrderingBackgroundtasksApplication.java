@@ -1,82 +1,29 @@
 package com.eshoponcontainers.orderingbackgroundtasks;
 
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.eshoponcontainers.eventbus.abstractions.EventBus;
-import com.eshoponcontainers.orderingbackgroundtasks.events.GracePeriodConfirmedIntegrationEvent;
-import com.eshoponcontainers.orderingbackgroundtasks.repositories.OrderRepository;
-import com.eshoponcontainers.services.impl.OutboxService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@SpringBootApplication(scanBasePackages = "com.eshoponcontainers")
 @EnableScheduling
+@EntityScan(basePackages = { "com.eshoponcontainers.entities" })
 @Slf4j
-@RequiredArgsConstructor
+@EnableJpaRepositories(basePackages = { "com.eshoponcontainers" })
+@SpringBootApplication(scanBasePackages = "com.eshoponcontainers")
 public class OrderingBackgroundtasksApplication {
 
-	private final EventBus eventBus;
-	private final OutboxService outboxService;
-	private final OrderRepository orderRepository;
-
-	private volatile boolean shutdownRequested = false;
-	private List<Integer> ordersToProcess = new ArrayList<>();
-
 	public static void main(String[] args) {
-
-		ConfigurableApplicationContext context = SpringApplication.run(OrderingBackgroundtasksApplication.class, args);
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			log.warn("Received shutdown signal...");
-			context.getBean(OrderingBackgroundtasksApplication.class).handleShutdown();
-		}));
+		SpringApplication.run(OrderingBackgroundtasksApplication.class, args);
 	}
 
-	@Scheduled(fixedDelay = 30000) // Run every  (30 second)
-	@Transactional
-	public void backgroundProcess() {
-		if (shutdownRequested) {
-
-		} else {
-			log.info("Fetching confirmed grace period orders..");
-			ordersToProcess = orderRepository.getConfirmedGracePeriodOrders();
-			log.info("Retrieved {} confirmed grace period orders.", ordersToProcess.size());
-			for (Integer orderId : ordersToProcess) {
-				GracePeriodConfirmedIntegrationEvent event = new GracePeriodConfirmedIntegrationEvent(orderId);
-				log.info("----- Publishing integration event: {} from {} - {}", event.getId(), "Ordering-Backgroundtasks", event);
-				// eventBus.publish(event);
-				outboxService.saveToOutbox(event);
-			}
-		}
+	@Bean
+	public ObjectMapper objectMapper() {
+		return new ObjectMapper();
 	}
-
-	// Method to handle shutdown and pause ongoing work
-	public synchronized void handleShutdown() {
-
-		while (!ordersToProcess.isEmpty()) {
-			log.info("Orders getting processed. Waiting for them to be processed...");
-			Sleep(Duration.ofSeconds(3));
-		}
-		shutdownRequested = true;
-		log.warn("No orders to process.Shutting down....");
-	}
-
-	private void Sleep(Duration duration) {
-		try {
-			Thread.sleep(duration.toMillis());
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 }
