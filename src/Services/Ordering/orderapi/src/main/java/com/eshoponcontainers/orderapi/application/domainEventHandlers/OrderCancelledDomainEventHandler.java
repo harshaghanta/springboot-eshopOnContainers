@@ -40,6 +40,8 @@ public class OrderCancelledDomainEventHandler implements Notification.Handler<Or
     public void handle(OrderCancelledDomainEvent event) {
 
         TransactionContext.beginTransactionContext();
+
+        
         var transactionId = TransactionContext.getTransactionId();
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
             

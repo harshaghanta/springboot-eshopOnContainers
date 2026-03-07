@@ -12,6 +12,7 @@
   <!-- <class>com.example.CardType</class> -->
   <class>com.eshoponcontainers.entities.IntegrationEventLogEntry</class>
   <class>com.eshoponcontainers.entities.OutboxEntity</class>
+  <class>com.eshoponcontainers.entities.InboxMessage</class>
 
 
   

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.eshoponcontainers.catalogapi.entities.CatalogItem;
 import com.eshoponcontainers.catalogapi.integrationevents.events.ConfirmedOrderStockItem;
@@ -15,6 +17,7 @@ import com.eshoponcontainers.catalogapi.repositories.CatalogItemRepository;
 import com.eshoponcontainers.catalogapi.services.CatalogIntegrationService;
 import com.eshoponcontainers.eventbus.abstractions.IntegrationEventHandler;
 import com.eshoponcontainers.eventbus.events.IntegrationEvent;
+import com.eshoponcontainers.repositories.InboxRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +30,18 @@ public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler
 
     private final CatalogIntegrationService catalogIntegrationService;
     private final CatalogItemRepository catalogItemRepository;
+    private final InboxRepository inboxRepository;
 
     @Override
+    @Transactional(propagation =Propagation.REQUIRES_NEW)
     public void handle(OrderStatusChangedToAwaitingValidationIntegrationEvent event) {
+
+        if(inboxRepository.existsById(event.getId()))
+        {
+            log.info("Event with id {} already processed. Skipping.", event.getId());
+            return;
+        }
+        
         log.info("----- Handling integration event: {} at {} - ({})", event.getId(), "Catalog", event);
         var confirmedOrderStockItems = new ArrayList<ConfirmedOrderStockItem>();
         var catItems = new ArrayList<CatalogItem>();
@@ -55,6 +67,7 @@ public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler
             integrationEvent = new OrderStockConfirmedIntegrationEvent(event.getOrderId());
 
         catalogIntegrationService.saveEventAndCatalogChanges(integrationEvent, catItems);
+        
         // catalogIntegrationService.publishThroughEventBus(integrationEvent);
 
     }
