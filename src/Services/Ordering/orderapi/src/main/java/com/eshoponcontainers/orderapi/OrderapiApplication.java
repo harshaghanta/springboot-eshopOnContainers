@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -29,9 +30,10 @@ import jakarta.persistence.Persistence;
 // @EntityScan(basePackages = { "com.eshoponcontainers.entities" })
 @EnableTransactionManagement(order = 0)
 @EnableAutoConfiguration(exclude = {
-// PersistenceExceptionTranslationAutoConfiguration.class,
-// HibernateJpaAutoConfiguration.class, 
-DataSourceAutoConfiguration.class })
+		// PersistenceExceptionTranslationAutoConfiguration.class,
+		// HibernateJpaAutoConfiguration.class,
+		DataSourceAutoConfiguration.class })
+@EnableScheduling
 public class OrderapiApplication {
 
 	public static void main(String[] args) {
@@ -43,6 +45,14 @@ public class OrderapiApplication {
 	// public EntityManager entityManager(EntityManagerFactory factory) {
 	// return factory.createEntityManager();
 	// }
+
+	@Bean
+	@Primary
+	public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+		JpaTransactionManager transactionManager = new JpaTransactionManager();
+		transactionManager.setEntityManagerFactory(emf);
+		return transactionManager;
+	}
 
 	@Bean
 	public EntityManagerFactory entityManagerFactory(Environment env) {
@@ -68,13 +78,6 @@ public class OrderapiApplication {
 		return emFactory;
 	}
 
-	@Bean
-	@Primary
-	public PlatformTransactionManager tm(EntityManagerFactory emf) {
-		final JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(emf);
-		return transactionManager;
-	}
 
 	private String readSecret(String filePath) {
 		try {

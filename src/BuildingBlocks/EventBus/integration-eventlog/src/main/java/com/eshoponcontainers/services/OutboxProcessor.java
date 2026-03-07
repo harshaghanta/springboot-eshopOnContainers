@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -23,12 +24,14 @@ public class OutboxProcessor {
     private final OutboxRepository outboxRepository;
     private final EventBus eventBus;
     private final String podName;
+    private final String appName;
     private final ObjectMapper objectMapper;
 
-    public OutboxProcessor(OutboxRepository outboxRepository, EventBus eventBus, ObjectMapper objectMapper) {
+    public OutboxProcessor(OutboxRepository outboxRepository, Environment env,  EventBus eventBus, ObjectMapper objectMapper) {
         this.outboxRepository = outboxRepository;
         this.eventBus = eventBus;
-        this.podName = System.getenv().getOrDefault("HOSTNAME", "LOCAL-WORKER");
+        this.podName = env.getProperty("HOSTNAME", "LOCAL-WORKER");
+        this.appName = env.getProperty("spring.application.name", "LOCAL-APP");
         this.objectMapper = objectMapper;
     }
 
@@ -41,14 +44,16 @@ public class OutboxProcessor {
     }
 
     private boolean processNextBatch() {
-        log.info("podName : {}", podName);
+       
         // 1. Fetch batch using our atomic SQL query
-        List<OutboxEntity> outboxEvents = outboxRepository.fetchAndLockBatch(podName, 3);
+        List<OutboxEntity> outboxEvents = outboxRepository.fetchAndLockBatch(podName, 3, appName);
 
         List<IntegrationEvent> integrationEvents = null; // Convert Outbox to IntegrationEvent using your mapping logic
 
-        if (outboxEvents.isEmpty())
+        if (outboxEvents.isEmpty()) {
+            log.info("No outstanding outbox events");
             return false;
+        }
 
         integrationEvents = convertToIntegrationEvents(outboxEvents);
 
@@ -57,6 +62,7 @@ public class OutboxProcessor {
                 eventBus.publish(event);
                 // 2. On success, mark PUBLISHED)
                 outboxRepository.markAsPublished(event.getId());
+                log.info("Published event: {} from outbox", event);
             } catch (Exception e) {
                 log.error("Failed to publish event {}: {}", event.getId(), e.getMessage());
                 // We don't need to do anything here;

@@ -34,5 +34,8 @@ public class OutboxEntity {
     private LocalDateTime lastAttemptedAt;
     @Column(name = "RetryCount", columnDefinition = "int")
     private int retryCount;
+    @Column(name = "ApplicationName", columnDefinition = "nvarchar(200)")
+    private String applicationName;
+
 
 }

@@ -3,6 +3,7 @@ package com.eshoponcontainers.services.impl;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@ConditionalOnProperty(prefix = "outbox", name = "enabled", havingValue = "true", matchIfMissing = true)
 @RequiredArgsConstructor
 public class OutboxService {
 
@@ -30,8 +32,7 @@ public class OutboxService {
         try {
             content = objectMapper.writeValueAsString(event);
         } catch (JsonProcessingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException("Failed to serialize event", e);
         }
 
         LocalDateTime creationDateTime = event.getCreationDate().toInstant()
@@ -39,7 +40,7 @@ public class OutboxService {
                 .toLocalDateTime();
 
         OutboxEntity entry = new OutboxEntity(event.getId(), event.getClass().getName(), content, "PENDING",
-             env.getProperty("HOSTNAME"), creationDateTime, 0);
+                env.getProperty("HOSTNAME"), creationDateTime, 0, env.getProperty("spring.application.name"));
         outboxRepository.save(entry);
     }
 }

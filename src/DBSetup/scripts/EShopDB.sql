@@ -105,6 +105,7 @@ CREATE TABLE [dbo].[Outbox](
 	[LockedBy] [nvarchar](200) NULL,
 	[LastAttemptedAt] [datetime2] NULL,
 	[RetryCount] [int] NOT NULL,
+	[ApplicationName] [nvarchar](200) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -324,6 +325,7 @@ CREATE TABLE [dbo].[Outbox](
 	[LockedBy] [nvarchar](200) NULL,
 	[LastAttemptedAt] [datetime2] NULL,
 	[RetryCount] [int] NOT NULL,
+	[ApplicationName] [nvarchar](200) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

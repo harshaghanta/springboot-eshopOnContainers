@@ -25,11 +25,11 @@ public interface OutboxRepository extends JpaRepository<OutboxEntity, UUID> {
                 RetryCount = RetryCount + 1
             OUTPUT inserted.*
             WHERE (Status = 'PENDING' OR (Status = 'PROCESSING' AND LastAttemptedAt < DATEADD(minute, -15, GETDATE())))
-              AND RetryCount < :maxRetries
+              AND RetryCount < :maxRetries AND ApplicationName = :appName
             """, nativeQuery = true)
     // @Procedure(value = "dbo.FetchAndLockOutbox")
     // @Query(value = "SET NOCOUNT ON; EXEC FetchAndLockOutbox :podName, :maxRetries", nativeQuery = true)
-    List<OutboxEntity> fetchAndLockBatch(@Param("podName") String podName, @Param("maxRetries") int maxRetries);
+    List<OutboxEntity> fetchAndLockBatch(@Param("podName") String podName, @Param("maxRetries") int maxRetries, @Param("appName") String appName);
 
     @Transactional
     @Modifying
