@@ -7,13 +7,8 @@ public class OrderStatusChangedToSubmittedIntegrationEventHandler
         implements IntegrationEventHandler<OrderStatusChangedToSubmittedIntegrationEvent> {
 
     @Override
-    public Runnable handle(OrderStatusChangedToSubmittedIntegrationEvent event) {
-        // TODO : HIGH : Need to notify the buyer of the updated state
-        Runnable runnable = () -> {
-
-        };
-        
-        return runnable;
+    public void handle(OrderStatusChangedToSubmittedIntegrationEvent event) {
+    
     }
 
 }

@@ -9,13 +9,8 @@ import com.eshoponcontainers.orderingnotification.integrationEvents.events.Order
 public class OrderStatusChangedToCancelledIntegrationEventHandler implements IntegrationEventHandler<OrderStatusChangedToCancelledIntegrationEvent> {
 
     @Override
-    public Runnable handle(OrderStatusChangedToCancelledIntegrationEvent event) {
-        // TODO : HIGH : Need to notify the buyer of the updated state
-        Runnable runnable = () -> {
-
-        };
+    public void handle(OrderStatusChangedToCancelledIntegrationEvent event) {
         
-        return runnable;
     }
 
 }

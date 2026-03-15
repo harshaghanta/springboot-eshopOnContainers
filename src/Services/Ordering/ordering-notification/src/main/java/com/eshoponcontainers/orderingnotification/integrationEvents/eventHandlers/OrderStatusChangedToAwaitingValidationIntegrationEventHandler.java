@@ -10,13 +10,8 @@ public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler
         implements IntegrationEventHandler<OrderStatusChangedToAwaitingValidationIntegrationEvent> {
 
     @Override
-    public Runnable handle(OrderStatusChangedToAwaitingValidationIntegrationEvent event) {
-        // TODO : HIGH : Need to notify the buyer of the updated state
-        Runnable runnable = () -> {
-
-        };
+    public void handle(OrderStatusChangedToAwaitingValidationIntegrationEvent event) {
         
-        return runnable;
     }
 
 }

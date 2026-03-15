@@ -10,13 +10,8 @@ public class OrderStatusChangedToShippedIntegrationEventHandler
         implements IntegrationEventHandler<OrderStatusChangedToShippedIntegrationEvent> {
 
     @Override
-    public Runnable handle(OrderStatusChangedToShippedIntegrationEvent event) {
-        // TODO : HIGH : Need to notify the buyer of the updated state
-        Runnable runnable = () -> {
-
-        };
+    public void handle(OrderStatusChangedToShippedIntegrationEvent event) {
         
-        return runnable;
     }
 
 }

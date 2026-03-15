@@ -6,13 +6,8 @@ import com.eshoponcontainers.orderingnotification.integrationEvents.events.Order
 public class OrderStatusChangedToPaidIntegrationEventHandler implements IntegrationEventHandler<OrderStatusChangedToPaidIntegrationEvent> {
 
     @Override
-    public Runnable handle(OrderStatusChangedToPaidIntegrationEvent event) {
-        // TODO : HIGH : Need to notify the buyer of the updated state
-        Runnable runnable = () -> {
-
-        };
+    public void handle(OrderStatusChangedToPaidIntegrationEvent event) {
         
-        return runnable;
     }
 
 }
