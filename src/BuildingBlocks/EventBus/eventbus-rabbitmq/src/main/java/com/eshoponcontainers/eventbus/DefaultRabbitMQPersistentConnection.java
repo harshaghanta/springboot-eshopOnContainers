@@ -38,7 +38,7 @@ public class DefaultRabbitMQPersistentConnection implements RabbitMQPersistentCo
     }
 
     @Override
-    public Boolean tryConnect() {
+    public boolean tryConnect() {
         try {
             connection = connectionFactory.newConnection();
             return isConnected();
@@ -50,7 +50,7 @@ public class DefaultRabbitMQPersistentConnection implements RabbitMQPersistentCo
     }
 
     @Override
-    public Boolean isConnected() {
+    public boolean isConnected() {
         //TODO: HIGH DISPOSE IMPLEMENTATION PENDING
         return connection != null && connection.isOpen();
     }
