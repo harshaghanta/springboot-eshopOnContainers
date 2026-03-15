@@ -21,6 +21,25 @@
 		<!-- <hibernate.version>6.4.4.Final</hibernate.version> -->
 	</properties>
 
+
+    <modules>
+        <!-- BuildingBlocks/EventBus modules -->
+        <module>../EventBus/eventbus</module>
+        <module>../EventBus/eventbus-rabbitmq</module>
+        <module>../EventBus/integration-eventlog</module>
+
+        <!-- Services modules -->
+        <module>../../Services/basketapi</module>
+        <module>../../Services/catalogapi</module>
+        <module>../../Services/Ordering/orderapi</module>
+        <module>../../Services/Ordering/ordering-backgroundtasks</module>
+        <module>../../Services/Ordering/ordering-domain</module>
+        <module>../../Services/Ordering/ordering-infrastructure</module>
+        <!-- <module>../../Services/Ordering/ordering-notification</module> -->
+        <module>../../Services/Payment/paymentapi</module>
+        <!-- <module>../../Services/Webhooks/webhooks-api</module> -->
+        <!-- <module>../../Services/Webhooks/webhooks-client</module> -->
+    </modules>
 	<distributionManagement>
 		<repository>
 			<id>github</id>
@@ -28,6 +47,7 @@
 			<url>https://maven.pkg.github.com/harshaghanta/mvnrepository</url>
 		</repository>
 	</distributionManagement>
+
 
 	<dependencyManagement>
 		<dependencies>

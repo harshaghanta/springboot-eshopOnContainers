@@ -476,6 +476,17 @@ services:
     networks:
     - simpbridgenetwork
 
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube
+    restart: always
+    ports:
+      - "9000:9000"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+
 
   
   # using Dockerfile filebeat to get around the file permission issue
@@ -516,6 +527,9 @@ volumes:
   applog_volume:
   esdata:
   vault_data:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
 
 networks:
   simpbridgenetwork:

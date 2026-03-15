@@ -9,7 +9,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import com.eshoponcontainers.aggregatesModel.orderAggregate.IOrderRepository;
 import com.eshoponcontainers.aggregatesModel.orderAggregate.Order;
 import com.eshoponcontainers.context.DomainContext;
-import com.eshoponcontainers.orderapi.aop.MyTransactional;
 import com.eshoponcontainers.orderapi.application.commands.SetPaidOrderStatusCommand;
 import com.eshoponcontainers.orderapi.services.TransactionContext;
 
@@ -32,13 +31,6 @@ public class SetPaidOrderStatusCommandHandler implements Command.Handler<SetPaid
     @Transactional(propagation = Propagation.REQUIRES_NEW)
 
     public Boolean handle(SetPaidOrderStatusCommand command) {
-        // Simulate a work time for validating the payment
-        // try {
-        // Thread.sleep(10000);
-        // } catch (InterruptedException e) {
-        // // TODO Auto-generated catch block
-        // e.printStackTrace();
-        // }
 
         TransactionContext.beginTransactionContext();
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {            
@@ -71,7 +63,6 @@ public class SetPaidOrderStatusCommandHandler implements Command.Handler<SetPaid
         }
 
         order.SetPaidStatus();
-        // return orderRepository.getUnitOfWork().saveChanges();
         return true;
     }
 

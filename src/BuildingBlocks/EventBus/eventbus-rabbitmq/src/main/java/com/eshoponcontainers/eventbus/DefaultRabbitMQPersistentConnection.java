@@ -41,23 +41,12 @@ public class DefaultRabbitMQPersistentConnection implements RabbitMQPersistentCo
     public Boolean tryConnect() {
         try {
             connection = connectionFactory.newConnection();
-            if(isConnected()) {
-                //TODO : HIGH NEED TO ADD EVENT HANDLERS
-                return true;
-            }
-            else {
-                return false;
-            }
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
+            return isConnected();
+            
+        } catch (IOException | TimeoutException e) {
             e.printStackTrace();
-        } catch (TimeoutException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        } 
         return false;
-
-
     }
 
     @Override
