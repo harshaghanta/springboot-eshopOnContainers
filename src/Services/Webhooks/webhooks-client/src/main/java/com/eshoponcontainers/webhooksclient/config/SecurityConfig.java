@@ -46,7 +46,8 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 				.authorizeHttpRequests(
-						c -> c.requestMatchers("/checkpost").permitAll()
+						c -> c.requestMatchers("/css/**", "/images/**", "/js/**").permitAll()
+								.requestMatchers("/checkpost").permitAll()
 								.requestMatchers("/check").permitAll()
 								.requestMatchers("/webhook-received").permitAll()
 								.requestMatchers("/actuator/**").permitAll()
