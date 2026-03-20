@@ -9,20 +9,20 @@ settings:
   selfUrl: http://localhost:${server.port}/
   validateToken: true
 
-spring:
-  security:
-    oauth2:
-      client:
-        registration:
-          keycloak:
-            client-id: webhookclient
-            authorization-grant-type: authorization_code
-            scope: openid, profile
-            client-secret: mWvdHgqp6araT56e7aMqNBt2BBk5z7lm
-            redirect-uri: http://localhost:${server.port}/login/oauth2/code/keycloak
-        provider:
-          keycloak:
-            issuer-uri: ${oauthIssuerUrl}
+# spring:
+#   security:
+#     oauth2:
+#       client:
+#         registration:
+#           keycloak:
+#             client-id: webhookclient
+#             authorization-grant-type: authorization_code
+#             scope: openid, profile
+#             client-secret: mWvdHgqp6araT56e7aMqNBt2BBk5z7lm
+#             redirect-uri: http://localhost:${server.port}/login/oauth2/code/keycloak
+#         provider:
+#           keycloak:
+#             issuer-uri: ${oauthIssuerUrl}
             # user-name-attribute: preferred_username
             # authorization-uri: http://host.docker.internal:8095/realms/eshoponcontainers/protocol/openid-connect/auth
             # token-uri: http://host.docker.internal:8095/realms/eshoponcontainers/protocol/openid-connect/token

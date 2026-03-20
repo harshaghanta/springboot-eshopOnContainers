@@ -1,6 +1,9 @@
 package com.eshoponcontainers.webhooksclient.config;
 
+import org.jspecify.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -11,9 +14,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
+	@Autowired
+	private Environment env;
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("http://host.docker.internal:8095").allowedMethods("*")
+        @Nullable
+        String allowedOrigins = env.getProperty("ALLOWED_ORIGINS");
+        registry.addMapping("/**").allowedOrigins(allowedOrigins).allowedMethods("*")
                 .allowedHeaders("*");
     }
 

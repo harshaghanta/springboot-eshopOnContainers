@@ -31,7 +31,7 @@ public class DefaultRabbitMQPersistentConnection implements RabbitMQPersistentCo
 
          try {
             channel = connection.createChannel();
-        } catch (IOException e) {
+        } catch (IOException _) {
             throw illegalStateException;            
         }
         return channel;

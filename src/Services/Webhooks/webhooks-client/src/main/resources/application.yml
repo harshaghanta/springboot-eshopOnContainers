@@ -3,7 +3,7 @@ spring:
     name: webhooks-client
   profiles:
     active:
-    - dev
+    - local
 
 #enable management endpoints
 management:
@@ -35,7 +35,7 @@ management:
     tracing:
       endpoint: http://tempo:9411/api/v2/spans
 
-oauthIssuerUrl: http://host.docker.internal:8095/realms/eshoponcontainers
+# oauthIssuerUrl: http://host.docker.internal:8095/realms/eshoponcontainers
 
 logging:
   level:

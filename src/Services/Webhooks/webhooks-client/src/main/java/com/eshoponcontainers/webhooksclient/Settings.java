@@ -11,7 +11,7 @@ import lombok.Data;
 public class Settings {
 
     private String token;
-    private String identityUrl;
+    // private String identityUrl;
     private String callbackUrl;
     private String webhookUrl;
     private String selfUrl;
