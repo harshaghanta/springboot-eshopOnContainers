@@ -191,6 +191,39 @@ services:
       - ./Secrets/EVENTBUS_PASSWORD:/vault/secrets/EVENTBUS_PASSWORD
     networks:
       - simpbridgenetwork
+
+  ordering-notification:
+    build:
+      context: .
+      dockerfile: Services/Ordering/ordering-notification/Dockerfile
+    image: ${REGISTRY:-springeshop}/ordering-notification:latest
+    env_file:
+    - .env
+    environment:
+      SECRETS_PATH: "/vault/secrets"
+      EVENTBUS_HOST: "eventbus"
+      EVENTBUS_SUBSCRIPTION_CLIENT_NAME: "OrderingNotification"
+      ALLOWED_ORIGINS: "http://localhost:8080"
+      ISSUER_URL: "http://keycloak:8080/realms/eshoponcontainers"
+    #   OTEL_TRACES_EXPORTER: "jaeger"
+    #   OTEL_SERVICE_NAME: "ordering-notification"
+    #   OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"
+    #   OTEL_METRICS_EXPORTER: "prometheus"
+    #   OTEL_EXPORTER_PROMETHEUS_HOST: "0.0.0.0"
+    #   OTEL_EXPORTER_PROMETHEUS_PORT: "9464"
+    #   OTEL_LOGS_EXPORTER: "otlp"
+    #   OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: "http://collector:4317"
+    depends_on:      
+      eventbus:
+        condition: service_healthy
+    ports:
+    - 5112:8080
+    volumes:
+      - applog_volume:/app/logs
+      - ./Secrets/EVENTBUS_USER_NAME:/vault/secrets/EVENTBUS_USER_NAME
+      - ./Secrets/EVENTBUS_PASSWORD:/vault/secrets/EVENTBUS_PASSWORD
+    networks:
+      - simpbridgenetwork    
   webspa:
     build:
       context: .
