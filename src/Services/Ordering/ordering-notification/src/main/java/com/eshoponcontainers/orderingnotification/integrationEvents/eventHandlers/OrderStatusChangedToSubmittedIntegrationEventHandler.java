@@ -13,24 +13,25 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class OrderStatusChangedToSubmittedIntegrationEventHandler
-        implements IntegrationEventHandler<OrderStatusChangedToSubmittedIntegrationEvent> {
+                implements IntegrationEventHandler<OrderStatusChangedToSubmittedIntegrationEvent> {
 
-    private final SimpMessagingTemplate messagingTemplate;
+        private final SimpMessagingTemplate messagingTemplate;
 
-    @Override
-    public void handle(OrderStatusChangedToSubmittedIntegrationEvent event) {
-    
-                log.info("----- Handling integration event: {} at {} - ({})", event.getId(), "ordering-notification", event);
+        @Override
+        public void handle(OrderStatusChangedToSubmittedIntegrationEvent event) {
 
-        // Create the payload expected by the Angular NotificationService
-        NotificationMessage message = new NotificationMessage(event.getOrderId(), event.getOrderStatus());
+                log.info("----- Handling integration event: {} at {} - ({})", event.getId(), "ordering-notification",
+                                event);
 
-        // Send to the specific user's queue
-        // The destination matches the client's subscription: /user/queue/notifications
-        messagingTemplate.convertAndSendToUser(
-                event.getBuyerName(), // This must match the 'sub' or name in the JWT
-                "/queue/notifications",
-                message);
-    }
+                // Create the payload expected by the Angular NotificationService
+                NotificationMessage message = new NotificationMessage(event.getOrderId(), event.getOrderStatus());
+
+                // Send to the specific user's queue
+                // The destination matches the client's subscription: /user/queue/notifications
+                messagingTemplate.convertAndSendToUser(
+                                event.getBuyerName(), // This must match the 'sub' or name in the JWT
+                                "/queue/notifications",
+                                message);
+        }
 
 }
