@@ -37,11 +37,14 @@ public class OrderStatusChangedToPaidIntegrationEventHandler
 
 // Simple DTO to match your Angular 'msg' object
 class NotificationMessage {
-    public int orderId;
-    public String status;
+    private int orderId;
+    private String status;
 
     public NotificationMessage(int orderId, String status) {
         this.orderId = orderId;
         this.status = status;
     }
+
+    public int getOrderId() { return orderId; }
+    public String getStatus() { return status; }
 }
