@@ -75,7 +75,14 @@
             "name": "OrderingNotificationApplication",
             "request": "launch",
             "mainClass": "com.eshoponcontainers.orderingnotification.OrderingNotificationApplication",
-            "projectName": "ordering-notification"
+            "projectName": "ordering-notification",
+            "env": {
+                "SECRETS_PATH": "/vault/secrets",
+                "EVENTBUS_HOST": "localhost",
+                "EVENTBUS_SUBSCRIPTION_CLIENT_NAME": "OrderingNotification",
+                "ALLOWED_ORIGINS": "http://localhost:8080",
+                "ISSUER_URL": "http://localhost:8095/realms/eshoponcontainers"
+            }
         },
         {
             "type": "java",
