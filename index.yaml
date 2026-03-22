@@ -3,6 +3,16 @@ entries:
   apigwws:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-03-22T10:28:28.036614606Z"
+    description: A Helm chart for Kubernetes
+    digest: 9489dd58c27cf2c39c44412f6b705e3484a09357021c26de6f4588bf9faf8182
+    name: apigwws
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/apigwws-0.9.0/apigwws-0.9.0.tgz
+    version: 0.9.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-08-27T16:07:15.392199974Z"
     description: A Helm chart for Kubernetes
     digest: a494a8b027c488abd33795cdc594ab16e81969071aa7c4dc5271dea147dca287
@@ -72,6 +82,16 @@ entries:
     - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/apigwws-0.1.0/apigwws-0.1.0.tgz
     version: 0.1.0
   basket-api:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-03-22T10:28:28.228960827Z"
+    description: A Helm chart for Kubernetes
+    digest: e3572f14266bbb2c2336c4698b85618cd317168b6b15c9918823f1edfa877431
+    name: basket-api
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/basket-api-0.9.0/basket-api-0.9.0.tgz
+    version: 0.9.0
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2025-10-14T16:05:52.993220946Z"
@@ -185,6 +205,16 @@ entries:
   basket-data:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-03-22T10:28:28.423147423Z"
+    description: A Helm chart for Kubernetes
+    digest: 80e382ea926958633ca51635062d01022fa7efe081419e7372655794af662f9b
+    name: basket-data
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/basket-data-0.9.0/basket-data-0.9.0.tgz
+    version: 0.9.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-08-24T17:20:16.465432015Z"
     description: A Helm chart for Kubernetes
     digest: cdd9fd3b54c0d8d2a4856b039b11c9cfe4f4d33f3a1e80123bf2c05b32f40412
@@ -204,6 +234,16 @@ entries:
     - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/basket-data-0.1.0/basket-data-0.1.0.tgz
     version: 0.1.0
   catalog-api:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-03-22T10:28:28.587425043Z"
+    description: A Helm chart for Kubernetes
+    digest: be18358e95b234fde8029250b9cab41523dca0b871fd4602a1ba2d06716684c5
+    name: catalog-api
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/catalog-api-0.9.0/catalog-api-0.9.0.tgz
+    version: 0.9.0
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2025-10-23T15:56:30.455544149Z"
@@ -537,6 +577,16 @@ entries:
   keycloak:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-03-22T10:28:28.791058468Z"
+    description: A Helm chart for Kubernetes
+    digest: 9e11095d9e3dd2fb4a508cbc4ee936b829e4333506afc981fccf69b94a2c8908
+    name: keycloak
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/keycloak-0.9.0/keycloak-0.9.0.tgz
+    version: 0.9.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-09-10T18:02:17.427809949Z"
     description: A Helm chart for Kubernetes
     digest: 167f7586b01ab441dbfca2a7e2c13b0fabf73640bf18bf025730637cb3267d2a
@@ -628,6 +678,16 @@ entries:
   ordering-api:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-03-22T10:28:28.965750961Z"
+    description: A Helm chart for Kubernetes
+    digest: 1e2714058be73ece56f0902694207fe883732c2c1b4eca0326a242860cbb0b12
+    name: ordering-api
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/ordering-api-0.9.0/ordering-api-0.9.0.tgz
+    version: 0.9.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-10-14T16:24:47.945590494Z"
     description: A Helm chart for Kubernetes
     digest: 7b6a136609ecf87b01e2e9c6a8e12349093337f84a03d8d66ec5e1f8eb8ab2f8
@@ -699,6 +759,16 @@ entries:
   ordering-backgroundtasks:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-03-22T10:28:29.148688378Z"
+    description: A Helm chart for Kubernetes
+    digest: 93f2a40ba5b448172554fc8dd73823f6211f256c238e0db7dd4f781dfc879e2f
+    name: ordering-backgroundtasks
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/ordering-backgroundtasks-0.9.0/ordering-backgroundtasks-0.9.0.tgz
+    version: 0.9.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-10-06T17:14:59.530906863Z"
     description: A Helm chart for Kubernetes
     digest: a4d2b1c26a0590a27b0839c61fc0b6b439e3cc6e16c6d0c1804ef4a0c13190da
@@ -738,6 +808,16 @@ entries:
     - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/ordering-backgroundtasks-0.1.0/ordering-backgroundtasks-0.1.0.tgz
     version: 0.1.0
   payment-api:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-03-22T10:28:29.33814034Z"
+    description: A Helm chart for Kubernetes
+    digest: be1820e9834609327a4718e9420d94c1efd68634b12ee9cdba564a12e65ad7d9
+    name: payment-api
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/payment-api-0.9.0/payment-api-0.9.0.tgz
+    version: 0.9.0
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2025-10-14T13:48:53.747550765Z"
@@ -781,6 +861,16 @@ entries:
   rabbitmq:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-03-22T10:28:29.52106688Z"
+    description: A Helm chart for Kubernetes
+    digest: c5a36d281d84e655c1c8b1d3346aed69725f603a7b90bfead541075494f54e4b
+    name: rabbitmq
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/rabbitmq-0.9.0/rabbitmq-0.9.0.tgz
+    version: 0.9.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-08-24T17:42:57.378540401Z"
     description: A Helm chart for Kubernetes
     digest: ab428b5966f229510e1231b2d80c5c3338c3cd890f398c1261fed6b689320534
@@ -802,6 +892,16 @@ entries:
   sql-data:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-03-22T10:28:29.676525086Z"
+    description: A Helm chart for Kubernetes
+    digest: 82e81f170f040a8ab2b295b66d64447779d78c37cc6dcdaa5b0a27e1d05f0fb3
+    name: sql-data
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/sql-data-0.9.0/sql-data-0.9.0.tgz
+    version: 0.9.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-10-19T12:42:51.499512894Z"
     description: A Helm chart for Kubernetes
     digest: df9fd6daade3da65ea211ac044b499dd5ac7d0c06b171eb763c7e86b86ab9895
@@ -821,6 +921,16 @@ entries:
     - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/sql-data-0.1.1/sql-data-0.1.1.tgz
     version: 0.1.1
   webspa:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-03-22T10:28:29.849469878Z"
+    description: A Helm chart for Kubernetes
+    digest: 9626365caa80762116d1532a865201da961bb4e62c8aa3c33bd11a21c488ef06
+    name: webspa
+    type: application
+    urls:
+    - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/webspa-0.9.0/webspa-0.9.0.tgz
+    version: 0.9.0
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2025-10-14T15:30:37.059088551Z"
@@ -961,4 +1071,4 @@ entries:
     urls:
     - https://github.com/harshaghanta/springboot-eshopOnContainers/releases/download/webspa-0.1.0/webspa-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-23T15:56:30.455963874Z"
+generated: "2026-03-22T10:28:29.849878041Z"
