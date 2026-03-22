@@ -196,7 +196,7 @@ services:
     build:
       context: .
       dockerfile: Services/Ordering/ordering-notification/Dockerfile
-    image: ${REGISTRY:-springeshop}/ordering-notification:latest
+    image: ${REGISTRY:-springeshop}/orderingnotification:latest
     env_file:
     - .env
     environment:
