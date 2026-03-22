@@ -6,7 +6,7 @@ import com.eshoponcontainers.eventbus.events.IntegrationEvent;
 
 public interface IOrderingIntegrationEventService {
 
-    void publishEventsThroughEventBus(UUID transactionId);
+    // void publishEventsThroughEventBus(UUID transactionId);
 
     void addAndSaveEvent(IntegrationEvent event);
 }

@@ -6,7 +6,7 @@ public interface RabbitMQPersistentConnection {
     
     Channel createChannel();
 
-    Boolean tryConnect();
+    boolean tryConnect();
 
-    Boolean isConnected();
+    boolean isConnected();
 }

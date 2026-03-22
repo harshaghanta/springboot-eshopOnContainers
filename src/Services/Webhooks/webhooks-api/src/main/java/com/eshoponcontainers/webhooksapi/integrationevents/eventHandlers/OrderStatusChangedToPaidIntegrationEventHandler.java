@@ -15,21 +15,22 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class OrderStatusChangedToPaidIntegrationEventHandler implements IntegrationEventHandler<OrderStatusChangedToPaidIntegrationEvent> {
+public class OrderStatusChangedToPaidIntegrationEventHandler
+        implements IntegrationEventHandler<OrderStatusChangedToPaidIntegrationEvent> {
 
     private final WebhooksRetriever retriever;
     private final WebhooksSender sender;
-    @Override
-    public Runnable handle(OrderStatusChangedToPaidIntegrationEvent event) {
-        Runnable runnable = () -> {
-            var subscriptions = retriever.getSubscriptionsOfType(WebhookType.OrderPaid);
-            log.info("Received OrderStatusChangedToPaidIntegrationEvent and got {} subscriptions to process", subscriptions.size());
 
-            var whook = new WebhookData(WebhookType.OrderPaid, event);
-            log.info(null, "Sending WebhookData: {} to {} subscriptions", whook, subscriptions.size());
-            sender.sendAll(subscriptions, whook);
-        };
-        
-        return runnable;
+    @Override
+    public void handle(OrderStatusChangedToPaidIntegrationEvent event) {
+
+        var subscriptions = retriever.getSubscriptionsOfType(WebhookType.OrderPaid);
+        log.info("Received OrderStatusChangedToPaidIntegrationEvent and got {} subscriptions to process",
+                subscriptions.size());
+
+        var whook = new WebhookData(WebhookType.OrderPaid, event);
+        log.info(null, "Sending WebhookData: {} to {} subscriptions", whook, subscriptions.size());
+        sender.sendAll(subscriptions, whook);
+
     }
 }

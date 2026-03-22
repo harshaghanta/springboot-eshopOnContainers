@@ -1,30 +1,32 @@
 package com.eshoponcontainers.orderapi.application.queries;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.eshoponcontainers.config.EntityManagerProvider;
 import com.eshoponcontainers.orderapi.application.viewModels.CardType;
 import com.eshoponcontainers.orderapi.application.viewModels.Order;
 import com.eshoponcontainers.orderapi.application.viewModels.OrderItem;
 import com.eshoponcontainers.orderapi.application.viewModels.OrderSummary;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
-import lombok.RequiredArgsConstructor;
+
 
 @Service
-@RequiredArgsConstructor
 public class OrderQueries {
 
-    private final EntityManagerProvider entityManagerProvider;
+    // private final EntityManagerProvider entityManagerProvider;
+    @PersistenceContext
+    private EntityManager entityManager;
 
+    @Transactional(readOnly = true)
     public Order getOrder(int id) {
         String strQuery = """
                 select o.[Id] as ordernumber,o.OrderDate as date, o.Description as description,
@@ -36,7 +38,8 @@ public class OrderQueries {
                 WHERE o.Id= :orderId""";
         // EntityManager entityManager = EntityManagerUtil.getEntityManager();
         try {
-            Query query = entityManagerProvider.getEntityManager().createNativeQuery(strQuery);
+            // Query query = entityManagerProvider.getEntityManager().createNativeQuery(strQuery);
+            Query query = entityManager.createNativeQuery(strQuery);
             query.setParameter("orderId", id);
             List orderData = query.getResultList();
 
@@ -44,7 +47,7 @@ public class OrderQueries {
         } catch (Exception e) {
             throw e;
         } finally {
-            entityManagerProvider.closeEntityManager();
+            // entityManagerProvider.closeEntityManager();
         }
 
     }
@@ -55,9 +58,9 @@ public class OrderQueries {
         Object[] orderCommonAttributes = (Object[]) orderData.get(0);
 
         order.setOrderNumber((Integer) orderCommonAttributes[0]);
-        Timestamp timestamp = (java.sql.Timestamp) orderCommonAttributes[1];
-        Instant instant = timestamp.toInstant();
-        order.setDate(instant);
+        LocalDateTime orderDate = (LocalDateTime) orderCommonAttributes[1];
+        
+        order.setDate(orderDate.toLocalDate());
         order.setDescription((String) orderCommonAttributes[2]);
         order.setCity((String) orderCommonAttributes[3]);
         order.setCountry((String) orderCommonAttributes[4]);
@@ -78,6 +81,7 @@ public class OrderQueries {
         return order;
     }
 
+    @Transactional(readOnly = true)
     public List<OrderSummary> getOrdersFromUser(UUID userId) {
 
         String strQuery = """
@@ -89,21 +93,16 @@ public class OrderQueries {
                 GROUP BY o.[Id], o.[OrderDate], os.[Name] ORDER BY o.[Id]
                 """;
 
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        // EntityManager entityManager = entityManagerProvider.getEntityManager();
+        
         try {
             Query query = entityManager.createNativeQuery(strQuery);
             query.setParameter("userId", userId.toString());
-            entityManager.getTransaction().begin();
             List resultList = query.getResultList();
-            entityManager.getTransaction().commit();
             List<OrderSummary> orders = mapToOrderSummary(resultList);
-            
             return orders;
-
         } catch (Exception e) {
             throw e;
-        } finally {            
-            entityManagerProvider.closeEntityManager();
         }
     }
 
@@ -112,15 +111,18 @@ public class OrderQueries {
         List<OrderSummary> orders = new ArrayList<>();
         for (Object rowObject : resultList) {
             Object[] rowData = (Object[]) rowObject;
-            OrderSummary summary = new OrderSummary((Integer) rowData[0], ((java.sql.Timestamp) rowData[1]),
+            LocalDateTime localDateTime = (LocalDateTime) rowData[1];
+            
+            OrderSummary summary = new OrderSummary((Integer) rowData[0], localDateTime.toLocalDate(),
                     (String) rowData[2], ((BigDecimal) rowData[3]).doubleValue());
             orders.add(summary);
         }
         return orders;
     }
 
+    @Transactional(readOnly = true)
     public List<CardType> getCardTypes() {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        // EntityManager entityManager = entityManagerProvider.getEntityManager();
         try {
             Query query = entityManager.createNativeQuery("SELECT Id, Name FROM [ordering].[cardtypes]",
                     CardType.class);
@@ -128,7 +130,7 @@ public class OrderQueries {
         } catch (Exception e) {
             throw e;
         } finally {
-            entityManagerProvider.closeEntityManager();
+            // entityManagerProvider.closeEntityManager();
         }
     }
 

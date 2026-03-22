@@ -1,7 +1,6 @@
 package com.eshoponcontainers.basketapi.controllers;
 
 import java.security.Principal;
-import java.text.MessageFormat;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -43,11 +42,11 @@ public class BasketController {
         return ResponseEntity.ok(basket);
     }
 
-    @PostMapping()
+    @PostMapping({ "/", "" })
     public ResponseEntity<CustomerBasket> updateBasket(@RequestBody CustomerBasket basket) {
-        log.info("Received update basket request : {} for the basket with id: {}", basket,  basket.getBuyerId());
+        log.info("Received update basket request : {} for the basket with id: {}", basket, basket.getBuyerId());
         CustomerBasket updatedBasket = basketDataRepository.updateBasket(basket);
-        log.info("Sending updated Basket: {} to client",  updatedBasket);
+        log.info("Sending updated Basket: {} to client", updatedBasket);
         return ResponseEntity.ok(updatedBasket);
     }
 
@@ -84,12 +83,7 @@ public class BasketController {
 
         log.info("RequestID: {}", event.getRequestId());
 
-        try {
-            eventBus.publish(event);
-        } catch (Exception e) {
-            log.error(MessageFormat.format("ERROR Publishing Integration event: {0} from {1}", event.getId(), "Basket"),
-                    e);
-        }
+        eventBus.publish(event);
 
         return ResponseEntity.accepted().build();
 

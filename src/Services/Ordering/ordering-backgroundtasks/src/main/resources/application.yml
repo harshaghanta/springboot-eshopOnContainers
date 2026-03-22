@@ -3,7 +3,12 @@ spring:
     name: ordering-backgroundtasks
   profiles:
     active:
-    - dev
+    - local
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming.physical-strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
+      naming.implicit-strategy: "org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl"
 
 #enable management endpoints
 management:

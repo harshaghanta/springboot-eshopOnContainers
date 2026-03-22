@@ -10,8 +10,12 @@ import com.eshoponcontainers.seedWork.Entity;
 import com.eshoponcontainers.seedWork.IAggregateRoot;
 
 import lombok.Getter;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
+@Slf4j
+@ToString
 public class Buyer extends Entity implements IAggregateRoot {
 
     private String identityUUID;
@@ -40,11 +44,17 @@ public class Buyer extends Entity implements IAggregateRoot {
 
         var existingPayment = paymentMethods.stream().filter(meth -> meth.isEqualTo(cardTypeId, cardNumber, expiration))
                 .findFirst();
-        if (existingPayment.isPresent()) {
+
+        boolean isPresent = existingPayment.isPresent();
+        if(!isPresent)
+            log.info("Payment method not exist for buyer {}.", this.identityUUID);
+
+        if (isPresent) {
             addDomainEvent(new BuyerAndPaymentMethodVerifiedDomainEvent(this, existingPayment.get(), orderId));
             return existingPayment.get();
         }
 
+        log.info("Adding payment method to the InMemory collection");
         var payment = new PaymentMethod(this, cardTypeId, alias, cardNumber, securityNumber, cardHolderName, expiration);
         paymentMethods.add(payment);
 

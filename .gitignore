@@ -47,3 +47,4 @@
 ## Helm Charts
 ##############################
 **/charts
+src/settings.xml

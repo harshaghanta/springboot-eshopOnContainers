@@ -4,5 +4,5 @@ import com.eshoponcontainers.eventbus.events.IntegrationEvent;
 
 public interface IntegrationEventHandler<T extends IntegrationEvent> {
 
-    Runnable handle(T event);
+    void handle(T event);
 }

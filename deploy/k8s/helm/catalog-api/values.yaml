@@ -35,6 +35,9 @@ fluentbit:
     port: 9200
     user: "elastic"
     password: "elastic"
+  vault:
+    address: http://vault.vault.svc:8200
+    roleName: eshop-vault-role
   
 
 

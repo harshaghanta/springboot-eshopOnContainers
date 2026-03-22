@@ -21,23 +21,17 @@ public class ProductPriceChangedEventHandler implements IntegrationEventHandler<
   private final RedisBasketDataRepository basketDataRepository;
 
   @Override
-  public Runnable handle(ProductPriceChangedIntegrationEvent event) {
+  public void handle(ProductPriceChangedIntegrationEvent event) {
 
-    Runnable runnable = new Runnable() {
-      @Override
-      public void run() {
-        log.info("Handling integration event: {} at {}  - ({})", event.getId(), "BasketAPI", event);
-        List<String> users = basketDataRepository.getUsers();
-        if (users != null) {
-          for (String user : users) {
-            CustomerBasket basket = basketDataRepository.getBasket(user);
-            updatePriceInBasketItems(event.getProductId(), event.getNewPrice(), event.getOldPrice(), basket);
-          }
-        }
+    log.info("Handling integration event: {} at {}  - ({})", event.getId(), "BasketAPI", event);
+    List<String> users = basketDataRepository.getUsers();
+    if (users != null) {
+      for (String user : users) {
+        CustomerBasket basket = basketDataRepository.getBasket(user);
+        updatePriceInBasketItems(event.getProductId(), event.getNewPrice(), event.getOldPrice(), basket);
       }
-    };
+    }
 
-    return runnable;
   }
 
   private void updatePriceInBasketItems(int productId, double newPrice, double oldPrice, CustomerBasket basket) {

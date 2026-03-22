@@ -9,9 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.eshoponcontainers.catalogapi.context.TransactionIdHolder;
 import com.eshoponcontainers.catalogapi.entities.CatalogItem;
 import com.eshoponcontainers.catalogapi.repositories.CatalogItemRepository;
+import com.eshoponcontainers.entities.InboxMessage;
 import com.eshoponcontainers.eventbus.abstractions.EventBus;
 import com.eshoponcontainers.eventbus.events.IntegrationEvent;
+import com.eshoponcontainers.repositories.InboxRepository;
 import com.eshoponcontainers.services.IntegrationEventLogService;
+import com.eshoponcontainers.services.impl.OutboxService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,26 +27,29 @@ public class CatalogIntegrationService {
     private final CatalogItemRepository catalogItemRepository;
     private final IntegrationEventLogService eventLogService;
     private final EventBus eventBus;
+    private final OutboxService outboxService;
+    private final InboxRepository inboxRepository;
 
-    @Transactional
     public void saveEventAndCatalogChanges(IntegrationEvent event, List<CatalogItem> requestedItem) {
 
         catalogItemRepository.saveAll(requestedItem);
+        outboxService.saveToOutbox(event);
+        inboxRepository.save(new InboxMessage(event.getId(), event.getClass().getName()));
+        // eventLogService.saveEvent(event, TransactionIdHolder.getTransactionId());
 
-        eventLogService.saveEvent(event, TransactionIdHolder.getTransactionId());
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void publishThroughEventBus(IntegrationEvent event) {
+    // @Transactional(propagation = Propagation.REQUIRES_NEW)
+    // public void publishThroughEventBus(IntegrationEvent event) {
 
-        try {
-            log.info("----- Publishing integration event: {} from {} - ({})", event.getId(), "Catalog", event);
-            eventLogService.markEventAsInProgress(event.getId());
-            eventBus.publish(event);
-            eventLogService.markEventAsPublished(event.getId());
-        } catch (Exception e) {
-            log.info("ERROR Publishing integration event: {} from {} - ({})", event.getId(), "Catalog", event);
-            eventLogService.markEventAsFailed(event.getId());
-        }
-    }
+    //     try {
+    //         log.info("----- Publishing integration event: {} from {} - ({})", event.getId(), "Catalog", event);
+    //         eventLogService.markEventAsInProgress(event.getId());
+    //         eventBus.publish(event);
+    //         eventLogService.markEventAsPublished(event.getId());
+    //     } catch (Exception e) {
+    //         log.info("ERROR Publishing integration event: {} from {} - ({})", event.getId(), "Catalog", event);
+    //         eventLogService.markEventAsFailed(event.getId());
+    //     }
+    // }
 }

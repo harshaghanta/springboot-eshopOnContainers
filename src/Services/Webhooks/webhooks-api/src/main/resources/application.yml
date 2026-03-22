@@ -3,9 +3,28 @@ spring:
     name: webhooks-api
   profiles:
     active:
-    - dev
+    - local
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming.physical-strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
+      naming.implicit-strategy: "org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl"
+  autoconfigure:
+    exclude:
+    - net.ttddyy.observation.boot.autoconfigure.DataSourceObservationAutoConfiguration
 
-#enable management endpoints
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+    try-it-out-enabled: true
+
+
+  #enable management endpoints
 management:
   metrics:
     distribution:
@@ -15,8 +34,9 @@ management:
             requests: true
   tracing:
     enabled: false
-    sampling:
-      probability: 1.0
+  # tracing:
+  #   sampling:
+  #     probability: 1.0
         
   endpoints:
     web:
@@ -30,11 +50,6 @@ management:
     metrics:
       export:
         enabled: true
-
-  zipkin:
-    tracing:
-      endpoint: http://tempo:9411/api/v2/spans
-
 
 logging:
   level:

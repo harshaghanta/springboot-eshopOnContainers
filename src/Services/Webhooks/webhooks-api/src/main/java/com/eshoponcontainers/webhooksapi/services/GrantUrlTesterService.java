@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class GrantUrlTesterService {    
+public class GrantUrlTesterService {
 
     public boolean testGrantUrl(String urlHook, String url, String token) {
 
@@ -32,7 +32,8 @@ public class GrantUrlTesterService {
         log.info("Sending the OPTIONS message to {} with token {}", url, token);
 
         try {
-            HttpResponse<Void> response =  HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.discarding());
+            HttpResponse<Void> response = HttpClient.newHttpClient().send(request,
+                    HttpResponse.BodyHandlers.discarding());
             HttpHeaders headers = response.headers();
             List<String> tokenValues = headers.allValues("X-eshop-whtoken");
             String tokenReceived = tokenValues.isEmpty() ? null : tokenValues.get(0);

@@ -6,19 +6,40 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.7</version>
+		<version>4.0.1</version>
 	</parent>
 	<groupId>com.eshoponcontainers</groupId>
 	<artifactId>parent-pom</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>parent-pom</name>
 	<description>Demo project for Spring Boot</description>
 	<packaging>pom</packaging>
 
 	<properties>
-		<java.version>17</java.version>
+		<java.version>25</java.version>
+		<springdoc.version>2.8.0</springdoc.version>
+		<!-- <hibernate.version>6.4.4.Final</hibernate.version> -->
 	</properties>
 
+
+    <modules>
+        <!-- BuildingBlocks/EventBus modules -->
+        <module>../EventBus/eventbus</module>
+        <module>../EventBus/eventbus-rabbitmq</module>
+        <module>../EventBus/integration-eventlog</module>
+
+        <!-- Services modules -->
+        <module>../../Services/basketapi</module>
+        <module>../../Services/catalogapi</module>
+        <module>../../Services/Ordering/orderapi</module>
+        <module>../../Services/Ordering/ordering-backgroundtasks</module>
+        <module>../../Services/Ordering/ordering-domain</module>
+        <module>../../Services/Ordering/ordering-infrastructure</module>
+        <!-- <module>../../Services/Ordering/ordering-notification</module> -->
+        <module>../../Services/Payment/paymentapi</module>
+        <!-- <module>../../Services/Webhooks/webhooks-api</module> -->
+        <!-- <module>../../Services/Webhooks/webhooks-client</module> -->
+    </modules>
 	<distributionManagement>
 		<repository>
 			<id>github</id>
@@ -27,6 +48,7 @@
 		</repository>
 	</distributionManagement>
 
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -34,37 +56,96 @@
 				<artifactId>opentelemetry-javaagent</artifactId>
 				<version>1.24.0</version>
 			</dependency>
+			<dependency>
+				<groupId>org.reflections</groupId>
+				<artifactId>reflections</artifactId>
+				<version>0.10.2</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.annotation</groupId>
+				<artifactId>javax.annotation-api</artifactId>
+				<version>1.3.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+				<version>${springdoc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.logstash.logback</groupId>
+				<artifactId>logstash-logback-encoder</artifactId>
+				<version>7.4</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security.oauth.boot</groupId>
+				<artifactId>spring-security-oauth2-autoconfigure</artifactId>
+				<version>2.6.8</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sizovs</groupId>
+				<artifactId>pipelinr</artifactId>
+				<version>0.9</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-aop</artifactId>
+				<version>3.5.3</version>
+			</dependency>
+			<dependency>
+				<groupId>com.microsoft.sqlserver</groupId>
+				<artifactId>mssql-jdbc</artifactId>
+				<version>13.2.1.jre11</version>
+			</dependency>
+			<dependency>
+				<groupId>com.zaxxer</groupId>
+				<artifactId>HikariCP</artifactId>
+				<version>5.0.0</version>
+			</dependency>
+
+			<!-- <dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+			</dependency> -->
+
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.11</version>
+				<scope>test</scope>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
 
 	<dependencies>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-tracing-bridge-brave</artifactId>
-		</dependency>
+		</dependency> -->
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>net.ttddyy.observation</groupId>
 			<artifactId>datasource-micrometer-spring-boot</artifactId>
 			<version>1.0.6</version>
-		</dependency>
+		</dependency> -->
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>net.logstash.logback</groupId>
 			<artifactId>logstash-logback-encoder</artifactId>
 			<version>7.4</version>
-		</dependency>
-
+		</dependency> -->
+		<!-- 
 		<dependency>
 			<groupId>io.zipkin.reporter2</groupId>
 			<artifactId>zipkin-reporter-brave</artifactId>
-		</dependency>
+		</dependency> -->
 
 		<!-- <dependency>
 			<groupId>com.github.loki4j</groupId>
@@ -72,7 +153,7 @@
 			<version>1.6.0</version>
 		</dependency> -->
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
 		</dependency>
@@ -80,21 +161,29 @@
 			<groupId>io.github.mweirauch</groupId>
 			<artifactId>micrometer-jvm-extras</artifactId>
 			<version>0.2.2</version>
-		</dependency>
+		</dependency> -->
 
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
+		</dependency> -->
+
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>2.0.9</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<version>1.18.22</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -109,6 +198,25 @@
 		</dependency>
 
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.14.1</version>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>1.18.42</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 
 </project>

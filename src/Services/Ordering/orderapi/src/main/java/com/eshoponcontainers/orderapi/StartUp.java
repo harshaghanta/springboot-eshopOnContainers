@@ -1,11 +1,7 @@
 package com.eshoponcontainers.orderapi;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.stereotype.Component;
 
-import com.eshoponcontainers.config.EntityManagerProvider;
 import com.eshoponcontainers.eventbus.abstractions.EventBus;
 import com.eshoponcontainers.orderapi.application.integrationEvents.eventHandlers.GracePeriodConfirmedIntegrationEventHandler;
 import com.eshoponcontainers.orderapi.application.integrationEvents.eventHandlers.OrderPaymentFailedIntegrationEventHandler;
@@ -19,7 +15,6 @@ import com.eshoponcontainers.orderapi.application.integrationEvents.events.Order
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStockConfirmedIntegrationEvent;
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.OrderStockRejectedIntegrationEvent;
 import com.eshoponcontainers.orderapi.application.integrationEvents.events.UserCheckoutAcceptedIntegrationEvent;
-import com.eshoponcontainers.orderapi.config.OrderingDBConfig;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -31,18 +26,10 @@ import lombok.extern.slf4j.Slf4j;
 public class StartUp {
 
     private final EventBus eventBus;
-    private final OrderingDBConfig orderingDBConfig;
+
 
     @PostConstruct
     public void init() {
-
-        log.info("Initializing EntityManagerFactory for OrderAPI");
-        Map<String, String> properties = new HashMap<>();
-        properties.put("javax.persistence.jdbc.url", orderingDBConfig.getUrl());
-        properties.put("javax.persistence.jdbc.user", orderingDBConfig.getUsername());
-        properties.put("javax.persistence.jdbc.password", orderingDBConfig.getPassword());
-
-        // EntityManagerUtil.intializeEntityManagerFactory(properties);
 
         log.info("Subscribing to the Integration Events in OrderAPI");
         

@@ -1,70 +1,74 @@
 ﻿import { Injectable } from '@angular/core';
 import { SecurityService } from './security.service';
 import { ConfigurationService } from './configuration.service';
-import { HubConnection, HubConnectionBuilder, LogLevel, HttpTransportType } from '@microsoft/signalr';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
+import * as SockJS from 'sockjs-client';
+import { Client, Message } from '@stomp/stompjs';
 
 @Injectable()
-export class SignalrService {
-    private _hubConnection: HubConnection;
-    private SignalrHubUrl: string = '';
+export class SignalrService { // Renamed for clarity
+    private stompClient: Client;
     private msgSignalrSource = new Subject();
     msgReceived$ = this.msgSignalrSource.asObservable();
 
     constructor(
         private securityService: SecurityService,
-        private configurationService: ConfigurationService, private toastr: ToastrService,
+        private configurationService: ConfigurationService, 
+        private toastr: ToastrService,
     ) {
         if (this.configurationService.isReady) {
-            this.SignalrHubUrl = this.configurationService.serverSettings.signalrHubUrl;
             this.init();
+        } else {
+            this.configurationService.settingsLoaded$.subscribe(() => this.init());
         }
-        else {
-            this.configurationService.settingsLoaded$.subscribe(x => {
-                this.SignalrHubUrl = this.configurationService.serverSettings.signalrHubUrl;
-                this.init();
-            });
-        }
-    }
-
-    public stop() {
-        this._hubConnection.stop();
     }
 
     private init() {
-        if (this.securityService.IsAuthorized == true) {
-            this.register();
-            this.stablishConnection();
-            this.registerHandlers();
+        if (this.securityService.IsAuthorized) {
+            this.setupStompClient();
         }
     }
 
-    private register() {
-        this._hubConnection = new HubConnectionBuilder()
-            .withUrl(this.SignalrHubUrl + '/hub/notificationhub', {
-                accessTokenFactory: () => this.securityService.GetToken()
-            })
-            .configureLogging(LogLevel.Information)
-            .withAutomaticReconnect()
-            .build();
-    }
+    private setupStompClient() {
+        const url = this.configurationService.serverSettings.signalrHubUrl + '/ws'; // Your Spring WebSocket endpoint
+        
+        this.stompClient = new Client({
+            webSocketFactory: () => new SockJS(url),
+            connectHeaders: {
+                Authorization: `Bearer ${this.securityService.GetToken()}`
+            },
+            debug: (str) => console.log(str),
+            reconnectDelay: 5000,
+            heartbeatIncoming: 4000,
+            heartbeatOutgoing: 4000,
+        });
 
-    private stablishConnection() {
-        this._hubConnection.start()
-            .then(() => {
-                console.log('Hub connection started')
-            })
-            .catch(() => {
-                console.log('Error while establishing connection')
-            });
+        this.stompClient.onConnect = (frame) => {
+            console.log('Connected: ' + frame);
+            this.registerHandlers();
+        };
+
+        this.stompClient.onStompError = (frame) => {
+            console.error('Broker reported error: ' + frame.headers['message']);
+        };
+
+        this.stompClient.activate();
     }
 
     private registerHandlers() {
-        this._hubConnection.on('UpdatedOrderState', (msg) => {
+        // Subscribing to a specific user's notification topic
+        this.stompClient.subscribe('/user/queue/notifications', (message: Message) => {
+            const msg = JSON.parse(message.body);
             console.log(`Order ${msg.orderId} updated to ${msg.status}`);
             this.toastr.success('Updated to status: ' + msg.status, 'Order Id: ' + msg.orderId);
             this.msgSignalrSource.next();
         });
+    }
+
+    public stop() {
+        if (this.stompClient) {
+            this.stompClient.deactivate();
+        }
     }
 }

@@ -1,8 +1,10 @@
 package com.eshoponcontainers.basketapi.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +19,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Configuration
@@ -24,41 +28,56 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SecurityConfig {
 
-	@Value("${oauthIssuerUrl}")
-	private String oauthIssuerUrl;
+	@Autowired
+	private Environment env;
 
-	@Value("${allowedCorsOrigin}")
-	private String allowedCorsOrigin;
+	// @Value("${oauthIssuerUrl}")
+	// private String oauthIssuerUrl;
 
-    @Bean
+	// @Value("${allowedCorsOrigin}")
+	// private String allowedCorsOrigin;
+
+	@Bean
+	public ObjectMapper objectMapper() {
+		return new ObjectMapper();
+	}
+
+	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-			.authorizeHttpRequests((authorize) -> authorize				
-				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-				.requestMatchers("/actuator/**").permitAll()
-				.anyRequest().authenticated()
-			)
-			.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.oauth2ResourceServer((oauth2) -> oauth2
-				.jwt(Customizer.withDefaults())
-			);
+				.cors(Customizer.withDefaults())
+				.authorizeHttpRequests((authorize) -> authorize
+						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+						.requestMatchers("/actuator/**").permitAll()
+						.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+						.anyRequest().authenticated())
+				.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.oauth2ResourceServer((oauth2) -> oauth2
+						.jwt(Customizer.withDefaults()));
 		return http.build();
 	}
 
-	 @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin(allowedCorsOrigin);
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-    }
+	@Bean
+	public CorsFilter corsFilter() {
 
-    @Bean
+		String allowedCorsOrigin = env.getProperty("ALLOWED_ORIGINS");
+		String allowedHeaders = env.getProperty("ALLOWED_HEADERS", "*");
+		String allowedMethods = env.getProperty("ALLOWED_METHODS", "*");
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowCredentials(true);
+
+		config.addAllowedOrigin(allowedCorsOrigin);
+		config.addAllowedHeader(allowedHeaders);
+		config.addAllowedMethod(allowedMethods);
+		source.registerCorsConfiguration("/**", config);
+		return new CorsFilter(source);
+	}
+
+	@Bean
 	public JwtDecoder jwtDecoder() {
+		String oauthIssuerUrl = env.getProperty("ISSUER_URL");
 		log.info("Printing oauthIssuerUrl: {}", oauthIssuerUrl);
 		// log.info("IssuerUrl:{}", oauthIssuerUrl);
 		// return JwtDecoders.fromIssuerLocation(oauthIssuerUrl);
@@ -71,9 +90,9 @@ public class SecurityConfig {
 
 		private final JwtDecoder jwtDecoder;
 
-        public CustomJwtDecoder(JwtDecoder jwtDecoder) {
-            this.jwtDecoder = jwtDecoder;
-        }
+		public CustomJwtDecoder(JwtDecoder jwtDecoder) {
+			this.jwtDecoder = jwtDecoder;
+		}
 
 		@Override
 		public Jwt decode(String token) throws JwtException {

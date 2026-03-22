@@ -1,19 +1,5 @@
-spring:
-  redis:
-    host: host.docker.internal
-    client-name: basketapi
 
+# oauthIssuerUrl: http://localhost:8095/realms/eshoponcontainers
 
-basketdata.host: redis://host.docker.internal:6379
-oauthIssuerUrl: http://host.docker.internal:8095/realms/eshoponcontainers
-allowedCorsOrigin: host.docker.internal:8080
-
-eventbus:
-  host: "host.docker.internal"
-  username:
-  password:
-  retryCount: 5
-  subscriptionClientName: "Basket"
 
 server.port: 9095
-

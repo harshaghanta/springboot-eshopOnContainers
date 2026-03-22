@@ -49,16 +49,16 @@ static_resources:
                 route:
                   auto_host_rewrite: true
                   cluster: ordering
-              # - name: "h-long"
-              #   match:
-              #     prefix: "/hub/notificationhub"
-              #   route:
-              #     auto_host_rewrite: true
-              #     cluster: signalr-hub
-              #     timeout: 300s
-              #     upgrade_configs:
-              #       upgrade_type: "websocket"
-              #       enabled: true
+              - name: "h-long"
+                match:
+                  prefix: "/ws/"
+                route:
+                  auto_host_rewrite: true
+                  cluster: signalr-hub
+                  timeout: 300s
+                  upgrade_configs:
+                    upgrade_type: "websocket"
+                    enabled: true
               - name: "b-short"
                 match:
                   prefix: "/b/"
@@ -132,11 +132,11 @@ static_resources:
     - socket_address:
         address: ordering-api
         port_value: 8080
-  # - name: signalr-hub
-  # connect_timeout: 0.25s
-  # type: strict_dns
-  # lb_policy: round_robin
-  # hosts:
-  # - socket_address:
-  #     address: ordering-signalrhub
-  #     port_value: 80
+  - name: signalr-hub
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    hosts:
+    - socket_address:
+        address: ordering-notification
+        port_value: 8080
