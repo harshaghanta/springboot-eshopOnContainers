@@ -26,5 +26,7 @@ public interface EventBusSubscriptionManager {
     HashMap<String, List<SubscriptionInfo>> getAllSubscriptions();
 
     boolean isEmpty();
+
+    List<Class> getAllIntegrationEventTypes();
     
 }

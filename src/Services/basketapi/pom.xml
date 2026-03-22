@@ -6,23 +6,20 @@
 	<parent>
 		<groupId>com.eshoponcontainers</groupId>
 		<artifactId>parent-pom</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 	<groupId>com.eshoponcontainers</groupId>
 	<artifactId>basketapi</artifactId>
 	<name>basketapi</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>25</java.version>
 	</properties>
 	<dependencies>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter-webmvc</artifactId>
 		</dependency>
 
 		<dependency>
@@ -46,7 +43,10 @@
 		<dependency>
 			<groupId>org.springframework.security.oauth.boot</groupId>
 			<artifactId>spring-security-oauth2-autoconfigure</artifactId>
-			<version>2.6.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 		</dependency>
 
 		<!-- <dependency>
@@ -58,8 +58,15 @@
 		<dependency>
 			<groupId>com.eshoponcontainers.eventbus</groupId>
 			<artifactId>eventbus-rabbitmq</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
+
+		<!-- <dependency>
+			<groupId>com.eshoponcontainers</groupId>
+			<artifactId>integration-eventlog</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
+		</dependency> -->
+
 
 		<dependency>
 			<groupId>redis.clients</groupId>
@@ -67,7 +74,7 @@
 		</dependency>
 
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-tracing-bridge-brave</artifactId>
 		</dependency>
@@ -91,7 +98,7 @@
 			<groupId>io.github.mweirauch</groupId>
 			<artifactId>micrometer-jvm-extras</artifactId>
 			<version>0.2.2</version>
-		</dependency>
+		</dependency> -->
 
 
 		<dependency>
@@ -99,6 +106,12 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
+		</dependency>
+
+
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
 		</dependency>
 
 

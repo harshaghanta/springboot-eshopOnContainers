@@ -3,7 +3,9 @@ spring:
     name: ordering-api
   profiles:
     active:
-    - dev
+    - local
+
+springdoc.swagger-ui.path: /swagger-ui-custom.html
 
 logging:
   level:

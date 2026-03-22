@@ -1,0 +1,147 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "BasketapiApplication",
+            "request": "launch",
+            "mainClass": "com.eshoponcontainers.basketapi.BasketapiApplication",
+            "projectName": "basketapi",
+            "env": {
+                "SECRETS_PATH": "/vault/secrets",
+                "REDIS_HOST_NAME": "localhost",
+                "REDIS_HOST_PORT": "6379",
+                "EVENTBUS_HOST": "localhost",
+                "EVENTBUS_SUBSCRIPTION_CLIENT_NAME": "Basket",
+                "ISSUER_URL": "http://keycloak:8080/realms/eshoponcontainers"
+
+            }
+
+        },
+        {
+            "type": "java",
+            "name": "CatalogapiApplication",
+            "request": "launch",
+            "mainClass": "com.eshoponcontainers.catalogapi.CatalogapiApplication",
+            "projectName": "catalogapi",
+            "env": {
+                "SECRETS_PATH": "/vault/secrets",
+                "DB_HOST_NAME": "localhost",
+                "DB_HOST_PORT": "9133",
+                "CATALOG_DB_NAME" : "CatalogDb",
+                "EVENTBUS_HOST": "localhost",
+                "EVENTBUS_SUBSCRIPTION_CLIENT_NAME": "Catalog"
+            }
+
+        },
+        {
+            "type": "java",
+            "name": "OrderapiApplication",
+            "request": "launch",
+            "mainClass": "com.eshoponcontainers.orderapi.OrderapiApplication",
+            "projectName": "orderapi",
+            "env": {
+                "SECRETS_PATH": "/vault/secrets",
+                "DB_HOST_NAME": "localhost",
+                "DB_HOST_PORT": "9133",
+                "ORDER_DB_NAME" : "OrderDB",
+                "EVENTBUS_HOST": "localhost",
+                "EVENTBUS_SUBSCRIPTION_CLIENT_NAME": "Ordering",
+                "ALLOWED_ORIGINS": "http://localhost:8080",
+                // "ISSUER_URL": "http://keycloak:8080/realms/eshoponcontainers"
+                "ISSUER_URL": "http://localhost:8095/realms/eshoponcontainers"
+            }
+        },
+        {
+            "type": "java",
+            "name": "OrderingBackgroundtasksApplication",
+            "request": "launch",
+            "mainClass": "com.eshoponcontainers.orderingbackgroundtasks.OrderingBackgroundtasksApplication",
+            "projectName": "ordering-backgroundtasks",
+            "env": {
+                "SECRETS_PATH": "/vault/secrets",
+                "DB_HOST_NAME": "localhost",
+                "DB_HOST_PORT": "9133",
+                "ORDER_DB_NAME" : "OrderDB",
+                "EVENTBUS_HOST": "localhost",
+                "EVENTBUS_SUBSCRIPTION_CLIENT_NAME": "BackgroundTasks"
+            }
+        },
+        {
+            "type": "java",
+            "name": "OrderingNotificationApplication",
+            "request": "launch",
+            "mainClass": "com.eshoponcontainers.orderingnotification.OrderingNotificationApplication",
+            "projectName": "ordering-notification",
+            "env": {
+                "SECRETS_PATH": "/vault/secrets",
+                "EVENTBUS_HOST": "localhost",
+                "EVENTBUS_SUBSCRIPTION_CLIENT_NAME": "OrderingNotification",
+                "ALLOWED_ORIGINS": "http://localhost:8080",
+                "ISSUER_URL": "http://localhost:8095/realms/eshoponcontainers"
+            }
+        },
+        {
+            "type": "java",
+            "name": "PaymentapiApplication",
+            "request": "launch",
+            "mainClass": "com.eshoponcontainers.paymentapi.PaymentapiApplication",
+            "projectName": "paymentapi",
+            "env": {
+                "SECRETS_PATH": "/vault/secrets",
+                "EVENTBUS_HOST": "localhost",
+                "EVENTBUS_SUBSCRIPTION_CLIENT_NAME": "Ordering"
+            }
+        },
+        {
+            "type": "java",
+            "name": "ServerApplication",
+            "request": "launch",
+            "mainClass": "com.eshoponcontainers.server.ServerApplication",
+            "projectName": "server",
+            "env": {
+                "IDENTITY_URL": "http://localhost:8095/realms/eshoponcontainers/protocol",
+                "BASKET_URL": "http://localhost:8090",
+                "PURCHASE_URL": "http://localhost:8090",
+                "NOTIFICATION_HUB_URL": "http://localhost:8090"
+            }
+        },
+        {
+            "type": "java",
+            "name": "WebhooksApiApplication",
+            "request": "launch",
+            "mainClass": "com.eshoponcontainers.webhooksapi.WebhooksApiApplication",
+            "projectName": "webhooks-api",
+            "env": {
+                "SECRETS_PATH": "/vault/secrets",
+                "DB_HOST_NAME": "localhost",
+                "DB_HOST_PORT": "9133",
+                "WEBHOOKS_DB_NAME" : "CatalogDB",
+                "EVENTBUS_HOST": "localhost",
+                "EVENTBUS_SUBSCRIPTION_CLIENT_NAME": "Webhooks",
+                "ALLOWED_ORIGINS": "*",
+                "ISSUER_URL": "http://localhost:8095/realms/eshoponcontainers"
+            }
+        },
+        {
+            "type": "java",
+            "name": "WebhooksClientApplication",
+            "request": "launch",
+            "mainClass": "com.eshoponcontainers.webhooksclient.WebhooksClientApplication",
+            "projectName": "webhooks-client",
+            "env": {
+                "IDENTITY_URL": "http://localhost:8095/realms/eshoponcontainers/protocol",
+                "WEBHOOKS_API_URL": "http://localhost:8090",
+                "ISSUER_URL": "http://localhost:8095/realms/eshoponcontainers",
+                "CLIENT_ID": "webhookclient",
+                "AUTHORIZATION_GRANT_TYPE": "authorization_code",
+                "AUTHORIZATION_SCOPES": "openid,profile,email",
+                "REDIRECT_URI": "http://localhost:5114",
+                "ALLOWED_ORIGINS": "http://localhost:8095"
+            }
+        }
+    ]
+}

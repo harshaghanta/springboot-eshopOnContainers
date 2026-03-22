@@ -63,8 +63,7 @@ public class RabbitMQEventBus implements EventBus {
         try {
             channel.exchangeDeclare(EXCHANGE_NAME, EXCHANGE_DIRECT);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error("Error while declaring exchange", e);
         }
 
         // TODO: HIGH : INJECT OBJECTMAPPER
@@ -74,7 +73,7 @@ public class RabbitMQEventBus implements EventBus {
         try {
             messageBytes = objectMapper.writeValueAsBytes(event);
         } catch (JsonProcessingException e1) {
-            e1.printStackTrace();
+            log.error("Error while serializing event during publishing", e1);
         }
 
         BasicProperties properties = new AMQP.BasicProperties().builder().deliveryMode(2).build();
@@ -83,8 +82,7 @@ public class RabbitMQEventBus implements EventBus {
         try {
             channel.basicPublish(EXCHANGE_NAME, eventName, true, properties, messageBytes);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error("Error while publishing event to RabbitMQ", e);
         }
     }
 
@@ -113,8 +111,7 @@ public class RabbitMQEventBus implements EventBus {
             try {
                 consumerChannel.queueBind(subscribtionName, EXCHANGE_NAME, eventName);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                log.error("Error while binding queue: {} to exchange: {}", subscribtionName, EXCHANGE_NAME, e);
             }
         }
     }
@@ -131,8 +128,7 @@ public class RabbitMQEventBus implements EventBus {
             channel.exchangeDeclare(EXCHANGE_NAME, EXCHANGE_DIRECT);
             channel.queueDeclare(subscribtionName, true, false, false, null);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error("Error while declaring queue: {}", subscribtionName, e);
         }
         return channel;
     }
@@ -172,8 +168,7 @@ public class RabbitMQEventBus implements EventBus {
                                 // Object instance = handler.newInstance();
                                 Object instance = context.getBean(handler);
                                 Method methodInfo = handler.getMethod("handle", eventType);
-                                Runnable runnable = (Runnable) methodInfo.invoke(instance, event);
-                                runnable.run();
+                                methodInfo.invoke(instance, event);
 
                             } catch (IllegalAccessException e) {
                                 // TODO Auto-generated catch block
@@ -196,7 +191,7 @@ public class RabbitMQEventBus implements EventBus {
                         consumerChannel.basicAck(envelope.getDeliveryTag(), false);
 
                     } catch (Exception e) {
-                        log.error("Error occured in handleDelivery: {}", e.getMessage());
+                        log.error("Error occured in handleDelivery: ", e);
                     }
 
                 }

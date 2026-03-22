@@ -26,9 +26,6 @@
         <table name="[ordering].[cardtypes]"></table>
 
         <attributes>
-            <id name="id">
-                <generated-value strategy="IDENTITY"></generated-value>
-            </id>
             <basic name="name" />
         </attributes>
     </entity>
@@ -42,11 +39,15 @@
             <basic name="identityUUID" optional="false">
                 <column name="IdentityGuid" nullable="false" />
             </basic>
-            <basic name="name" optional="true" />
-            <basic name="updateTime">
-                <column name="UpdateTime" nullable="false" />
+            <basic name="name" optional="true">
+                <column name="Name" nullable="true" />
             </basic>
-            <one-to-many name="paymentMethods" mapped-by="buyer" fetch="LAZY">
+
+            <basic name="updateTime">
+                <column name="UpdateTime" nullable="false" column-definition="DATETIME" />
+            </basic>
+            <one-to-many name="paymentMethods" mapped-by="buyer" fetch="EAGER">
+
                 <!-- <join-column name="BuyerId" referenced-column-name="Id"  /> -->
                 <cascade>
                     <cascade-persist />
@@ -54,7 +55,7 @@
                     <cascade-remove />
 
                 </cascade>
-                
+
             </one-to-many>
 
         </attributes>
@@ -65,6 +66,7 @@
     <entity class="com.eshoponcontainers.aggregatesModel.buyerAggregate.PaymentMethod"
         access="FIELD" name="PaymentMethod">
         <table name="[ordering].[paymentmethods]"></table>
+
 
         <attributes>
 
@@ -79,26 +81,24 @@
                 <column name="CardHolderName" />
             </basic>
             <basic name="expiration">
-                <column name="Expiration" />
+                <column name="Expiration" column-definition="DATETIME" />
             </basic>
-            <basic name="cardTypeId" />
+            <basic name="cardTypeId">
+                <column name="CardTypeId" column-definition="INT" />
+            </basic>
+
 
             <many-to-one name="buyer">
-                <join-column name="BuyerId" referenced-column-name="Id"  />
+                <join-column name="BuyerId" referenced-column-name="Id" />
             </many-to-one>
-
-
-            <!-- <many-to-one name="CardType">
-                <join-column name="CardTypeId" />
-            </many-to-one> -->
-            <!-- <transient name="cardTypeId" /> -->
 
             <transient name="securityNumber" />
 
         </attributes>
     </entity>
 
-    <entity class="com.eshoponcontainers.aggregatesModel.orderAggregate.OrderItem" name="OrderItem">
+    <entity class="com.eshoponcontainers.aggregatesModel.orderAggregate.OrderItem" name="OrderItem"
+        access="FIELD">
         <table name="[ordering].[orderItems]"></table>
         <attributes>
             <basic name="productId">
@@ -133,9 +133,9 @@
             </entity-listener>
         </entity-listeners> -->
         <attributes>
-            <id name="id">
+            <!-- <id name="id">
                 <generated-value strategy="IDENTITY"></generated-value>
-            </id>
+            </id> -->
             <basic name="orderDate">
                 <column name="OrderDate" />
                 <temporal>DATE</temporal>
@@ -153,12 +153,12 @@
                     <cascade-persist />
                 </cascade>
             </one-to-many>
-            <one-to-one name="buyer">
+            <!-- <one-to-one name="buyer">
                 <join-column name="BuyerId" />
-            </one-to-one>
-            <one-to-one name="paymentMethod">
+            </one-to-one> -->
+            <!-- <one-to-one name="paymentMethod">
                 <join-column name="PaymentMethodId" />
-            </one-to-one>
+            </one-to-one> -->
 
             <embedded name="address">
                 <attribute-override name="city">
@@ -180,7 +180,7 @@
 
             <transient name="isDraft" />
         </attributes>
-        
+
     </entity>
 
 

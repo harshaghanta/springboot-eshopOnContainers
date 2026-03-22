@@ -1,9 +1,9 @@
 settings:
   token: 6168DB8D-DC58-4094-AF24-483278923590
-  identityUrl: 
+  identityUrl: http://localhost:8095/realms/eshoponcontainers
   callbackUrl:
-  webhookUrl: http://host.docker.internal:5113
-  selfUrl: http://host.docker.internal:5114
+  webhookUrl: http://localhost:5113
+  selfUrl: http://localhost:5114
   validateToken: true
 
 spring:
@@ -15,13 +15,13 @@ spring:
             client-id: webhookclient
             authorization-grant-type: authorization_code
             scope: openid, profile
-            client-secret: VRCq3Dwuoxhye942DZmWbmKn6qHbbfvE
+            client-secret: TLqVSoKLJnbHAkehLb6RvmYR7jh9h1kx
             redirect-uri: ${settings.selfUrl}/login/oauth2/code/keycloak
         provider:
           keycloak:
-            issuer-uri: ${oauthIssuerUrl}
+            issuer-uri: ${ISSUER_URL}
 
-oauthIssuerUrl: http://host.docker.internal:8095/realms/eshoponcontainers
+
 
 logging:
   level:

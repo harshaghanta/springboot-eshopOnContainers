@@ -31,37 +31,26 @@ public class DefaultRabbitMQPersistentConnection implements RabbitMQPersistentCo
 
          try {
             channel = connection.createChannel();
-        } catch (IOException e) {
+        } catch (IOException _) {
             throw illegalStateException;            
         }
         return channel;
     }
 
     @Override
-    public Boolean tryConnect() {
+    public boolean tryConnect() {
         try {
             connection = connectionFactory.newConnection();
-            if(isConnected()) {
-                //TODO : HIGH NEED TO ADD EVENT HANDLERS
-                return true;
-            }
-            else {
-                return false;
-            }
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
+            return isConnected();
+            
+        } catch (IOException | TimeoutException e) {
             e.printStackTrace();
-        } catch (TimeoutException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        } 
         return false;
-
-
     }
 
     @Override
-    public Boolean isConnected() {
+    public boolean isConnected() {
         //TODO: HIGH DISPOSE IMPLEMENTATION PENDING
         return connection != null && connection.isOpen();
     }

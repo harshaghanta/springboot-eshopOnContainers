@@ -128,3 +128,9 @@ spec:
           configMap:
             name: fluentbit-cm
         {{- end }}
+        - name: secrets-store
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "spc-{{$name}}"

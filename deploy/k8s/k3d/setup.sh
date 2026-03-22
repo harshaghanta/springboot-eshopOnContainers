@@ -13,6 +13,9 @@ kubectl label node k3d-eshop-cluster-agent-0 appType=service
 kubectl label node k3d-eshop-cluster-agent-1 category=product
 kubectl label node k3d-eshop-cluster-agent-1 appType=service
 
+helm repo add hashicorp https://helm.releases.hashicorp.com
+helm install vault hashicorp/vault -n vault --create-namespace
+
 
 # Install MetalLb Load Balancer
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.15.2/config/manifests/metallb-native.yaml

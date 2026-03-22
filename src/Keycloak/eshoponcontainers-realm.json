@@ -481,7 +481,19 @@
         "default-roles-eshoponcontainers"
       ],
       "notBefore": 0,
-      "groups": []
+      "groups": [],
+      "attributes": {
+        "address_street": "Madhapur",
+        "address_city": "Hyderabad",
+        "address_country": "India",
+        "address_state": "Telangana",
+        "address_zip_code": "500033",
+        "card_holder": "SriHarsha",
+        "card_number": "1234567890123456",
+        "card_security_number": "123",
+        "card_expiration": "12/36",
+        "card_type": "1"
+      }
     }
   ],
   "scopeMappings": [
@@ -688,9 +700,9 @@
       "clientId": "js",
       "name": "eshopangular",
       "description": "",
-      "rootUrl": "http://host.docker.internal:8080",
+      "rootUrl": "http://localhost:8080",
       "adminUrl": "",
-      "baseUrl": "http://host.docker.internal:8080",
+      "baseUrl": "http://localhost:8080",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": true,
@@ -850,16 +862,16 @@
       "clientId": "webhookclient",
       "name": "webhookclient",
       "description": "",
-      "rootUrl": "http://host.docker.internal:5114",
-      "adminUrl": "http://host.docker.internal:5114",
-      "baseUrl": "http://host.docker.internal:5114",
+      "rootUrl": "http://localhost:5114",
+      "adminUrl": "http://localhost:5114",
+      "baseUrl": "http://localhost:5114",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "http://host.docker.internal:5114/login/oauth2/code/keycloak"
+        "http://localhost:5114/login/oauth2/code/keycloak"
       ],
       "webOrigins": [
         "*"
@@ -1338,6 +1350,166 @@
             "introspection.token.claim": "true",
             "access.token.claim": "true",
             "userinfo.token.claim": "true"
+          }
+        },
+        {
+          "id": "a1b2c3d4-0001-4000-8000-000000000001",
+          "name": "address_street",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "address_street",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "address_street",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "a1b2c3d4-0001-4000-8000-000000000002",
+          "name": "address_city",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "address_city",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "address_city",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "a1b2c3d4-0001-4000-8000-000000000003",
+          "name": "address_country",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "address_country",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "address_country",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "a1b2c3d4-0001-4000-8000-000000000004",
+          "name": "address_state",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "address_state",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "address_state",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "a1b2c3d4-0001-4000-8000-000000000005",
+          "name": "address_zip_code",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "address_zip_code",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "address_zip_code",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "a1b2c3d4-0001-4000-8000-000000000006",
+          "name": "card_holder",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "card_holder",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "card_holder",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "a1b2c3d4-0001-4000-8000-000000000007",
+          "name": "card_number",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "card_number",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "card_number",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "a1b2c3d4-0001-4000-8000-000000000008",
+          "name": "card_security_number",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "card_security_number",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "card_security_number",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "a1b2c3d4-0001-4000-8000-000000000009",
+          "name": "card_expiration",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "card_expiration",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "card_expiration",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "a1b2c3d4-0001-4000-8000-000000000010",
+          "name": "card_type",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "card_type",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "card_type",
+            "jsonType.label": "String"
           }
         }
       ]

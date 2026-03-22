@@ -2,39 +2,41 @@ package com.eshoponcontainers.services.impl;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
-import javax.annotation.PostConstruct;
-
-import org.reflections.Reflections;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.eshoponcontainers.EventStateEnum;
 import com.eshoponcontainers.entities.IntegrationEventLogEntry;
+import com.eshoponcontainers.eventbus.abstractions.EventBusSubscriptionManager;
 import com.eshoponcontainers.eventbus.events.IntegrationEvent;
 import com.eshoponcontainers.services.IntegrationEventLogService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import jakarta.transaction.Transactional;
-import jakarta.transaction.Transactional.TxType;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@RequiredArgsConstructor
 @Service
 @Slf4j
+
 public class DefaultIntegrationEventLogService implements IntegrationEventLogService {
 
     // IntegrationEventLogRepository eventLogRepository;
-    private final EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    private Set<Class<? extends IntegrationEvent>> eventTypes;
+    @Autowired
+    private EventBusSubscriptionManager eventBusSubscriptionManager;
+
+    // private Set<Class<? extends IntegrationEvent>> eventTypes;
 
     // public DefaultIntegrationEventLogService(IntegrationEventLogRepository
     // eventLogRepository) {
@@ -45,13 +47,22 @@ public class DefaultIntegrationEventLogService implements IntegrationEventLogSer
     // this.entityManager = entityManager;
     // }
 
-    @PostConstruct
-    public void loadEventTypes() {
+    // @PostConstruct
+    // public void loadEventTypes() {
 
-        Reflections reflections = new Reflections("com.eshoponcontainers");
-        eventTypes = reflections.getSubTypesOf(IntegrationEvent.class);
+    // log.info("Initializing eventTypes using Reflection");
 
-    }
+    // Reflections reflections = new Reflections("com.eshoponcontainers");
+    // eventTypes = reflections.getSubTypesOf(IntegrationEvent.class);
+
+    // if(eventTypes == null || eventTypes.isEmpty())
+    // log.warn("No event types found in the specified package.");
+
+    // for (Class<? extends IntegrationEvent> eventType : eventTypes) {
+    // log.info("EventType found: {}", eventType.getSimpleName());
+    // }
+
+    // }
 
     @Override
     public List<IntegrationEventLogEntry> retrieveEventLogsPendingToPublish(UUID transactionId) {
@@ -60,7 +71,7 @@ public class DefaultIntegrationEventLogService implements IntegrationEventLogSer
         // EventStateEnum.NOT_PUBLISHED);
         List<IntegrationEventLogEntry> eventlogEntries = null;
 
-        entityManager.getTransaction().begin();
+        // entityManager.getTransaction().begin();
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<IntegrationEventLogEntry> criteria = criteriaBuilder.createQuery(IntegrationEventLogEntry.class);
@@ -73,7 +84,7 @@ public class DefaultIntegrationEventLogService implements IntegrationEventLogSer
                 .where(criteriaBuilder.and(transactionFilter, eventStateFilter));
 
         eventlogEntries = entityManager.createQuery(criteriaQuery).getResultList();
-        entityManager.getTransaction().commit();
+        // entityManager.getTransaction().commit();
         // String strQuery = "SELECT iel FROM IntegrationEventLogEntry iel WHERE
         // iel.transactionId = :transactionId AND " +
         // "iel.state = :state";
@@ -92,6 +103,7 @@ public class DefaultIntegrationEventLogService implements IntegrationEventLogSer
         if (eventlogEntries != null && !eventlogEntries.isEmpty()) {
             eventlogEntries.sort(Comparator.comparing(IntegrationEventLogEntry::getCreationTime));
 
+            var eventTypes = eventBusSubscriptionManager.getAllIntegrationEventTypes();
             eventlogEntries.forEach(logEntry -> {
                 try {
                     logEntry.deserializeEventContent(eventTypes.stream()
@@ -112,18 +124,19 @@ public class DefaultIntegrationEventLogService implements IntegrationEventLogSer
 
         IntegrationEventLogEntry logEntry = new IntegrationEventLogEntry(event, transactionId);
         entityManager.persist(logEntry);
+        log.info("Enqueued IntegrationEventLogEntry: {}", logEntry);
         // eventLogRepository.save(logEntry);
     }
 
     @Override
-    @Transactional(value = TxType.SUPPORTS)
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void markEventAsPublished(UUID eventId) {
 
         updateEventStatus(eventId, EventStateEnum.PUBLISHED);
     }
 
     @Override
-    @Transactional(value = TxType.SUPPORTS)
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void markEventAsInProgress(UUID eventId) {
 
         updateEventStatus(eventId, EventStateEnum.IN_PROGRESS);

@@ -15,12 +15,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.eshoponcontainers.webhooksclient.Settings;
 import com.eshoponcontainers.webhooksclient.models.WebhookSubscriptionRequest;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 @Controller
 @RequiredArgsConstructor
@@ -98,7 +98,7 @@ public class RegisterWebhookController {
             modelAndView.setViewName("registerwebhook");
             try {
                 modelAndView.addObject("requestBodyJson", new ObjectMapper().writeValueAsString(payload));
-            } catch (JsonProcessingException e) {
+            } catch (JacksonException e) {
             }
             
             modelAndView.addObject("responseCode", responseData.responseCode);

@@ -17,18 +17,10 @@ public class OrderStartedIntegrationEventHandler implements IntegrationEventHand
     private final RedisBasketDataRepository basketDataRepository;
 
     @Override
-    public Runnable handle(OrderStartedIntegrationEvent event) {
-        Runnable runnable = new Runnable() 
-        {
-            @Override
-            public void run()
-            {
-                log.info("Handling integration event: {} at {}  - ({})", event.getId(), "BasketAPI", event);
-                basketDataRepository.deleteBasket(event.getUserId());
-            }
-        };
-        
-        return runnable;
-        
+    public void handle(OrderStartedIntegrationEvent event) {
+
+        log.info("Handling integration event: {} at {}  - ({})", event.getId(), "BasketAPI", event);
+        basketDataRepository.deleteBasket(event.getUserId());
+
     }
 }
