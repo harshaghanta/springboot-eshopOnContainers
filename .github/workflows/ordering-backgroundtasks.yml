@@ -1,18 +1,17 @@
-name: Web SPA Build
+name: Ordering BackgroundTasks Build
 on:
   workflow_dispatch:
   push:
     branches:
       - main
 
-    paths:
-    - src/Web/**
-    - .github/workflows/webspa.yml
-
+    paths:    
+    - src/Services/Ordering/ordering-backgroundtasks/**
+    - .github/workflows/ordering-backgroundtasks.yml
 
 env:
-  SERVICE: webspa
-  IMAGE: webspa
+  SERVICE: ordering-backgroundtasks
+  IMAGE: orderingbackgroundtasks
 
 jobs:
   BuildLinux:
@@ -33,3 +32,4 @@ jobs:
         registry_password: ${{ secrets.DOCKER_PASSWORD }}
         registry_namespace: ${{ secrets.DOCKER_NAMESPACE }}
         git_token: ${{ secrets.GIT_TOKEN }}
+   
