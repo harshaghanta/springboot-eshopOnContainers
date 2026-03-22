@@ -41,7 +41,6 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						.requestMatchers("/actuator/**").permitAll()
 						.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-						.requestMatchers("/ws/**").permitAll()
 						.anyRequest().authenticated())
 				.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.oauth2ResourceServer((oauth2) -> oauth2

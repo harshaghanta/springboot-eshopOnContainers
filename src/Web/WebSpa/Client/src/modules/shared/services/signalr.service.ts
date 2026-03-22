@@ -1,14 +1,12 @@
-﻿import { Injectable } from '@angular/core';
+﻿import { Injectable, NgZone } from '@angular/core';
 import { SecurityService } from './security.service';
 import { ConfigurationService } from './configuration.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
-import * as SockJS from 'sockjs-client';
-import { Client, Message } from '@stomp/stompjs';
 
 @Injectable()
-export class SignalrService { // Renamed for clarity
-    private stompClient: Client;
+export class SignalrService {
+    private abortController: AbortController | null = null;
     private msgSignalrSource = new Subject();
     msgReceived$ = this.msgSignalrSource.asObservable();
 
@@ -16,6 +14,7 @@ export class SignalrService { // Renamed for clarity
         private securityService: SecurityService,
         private configurationService: ConfigurationService, 
         private toastr: ToastrService,
+        private ngZone: NgZone,
     ) {
         if (this.configurationService.isReady) {
             this.init();
@@ -26,49 +25,90 @@ export class SignalrService { // Renamed for clarity
 
     private init() {
         if (this.securityService.IsAuthorized) {
-            this.setupStompClient();
+            this.connectSse();
         }
     }
 
-    private setupStompClient() {
-        const url = this.configurationService.serverSettings.signalrHubUrl + '/ws'; // Your Spring WebSocket endpoint
-        
-        this.stompClient = new Client({
-            webSocketFactory: () => new SockJS(url),
-            connectHeaders: {
-                Authorization: `Bearer ${this.securityService.GetToken()}`
-            },
-            debug: (str) => console.log(str),
-            reconnectDelay: 5000,
-            heartbeatIncoming: 4000,
-            heartbeatOutgoing: 4000,
+    private connectSse() {
+        const url = this.configurationService.serverSettings.signalrHubUrl + '/ws/api/notifications/stream';
+        const token = this.securityService.GetToken();
+
+        this.abortController = new AbortController();
+
+        fetch(url, {
+            headers: { 'Authorization': `Bearer ${token}` },
+            signal: this.abortController.signal,
+        }).then(response => {
+            if (!response.ok || !response.body) {
+                console.error('SSE connection failed:', response.status);
+                this.scheduleReconnect();
+                return;
+            }
+            console.log('SSE connected');
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+
+            const read = () => {
+                reader.read().then(({ done, value }) => {
+                    if (done) {
+                        console.log('SSE stream ended');
+                        this.scheduleReconnect();
+                        return;
+                    }
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop() || '';
+
+                    let dataLines: string[] = [];
+                    for (const line of lines) {
+                        if (line.startsWith('data:')) {
+                            dataLines.push(line.substring(5));
+                        } else if (line.trim() === '' && dataLines.length > 0) {
+                            const data = dataLines.join('\n').trim();
+                            dataLines = [];
+                            try {
+                                const msg = JSON.parse(data);
+                                this.ngZone.run(() => {
+                                    console.log(`Order ${msg.orderId} updated to ${msg.status}`);
+                                    this.toastr.success('Updated to status: ' + msg.status, 'Order Id: ' + msg.orderId);
+                                    this.msgSignalrSource.next();
+                                });
+                            } catch (e) {
+                                console.warn('Failed to parse SSE data:', data);
+                            }
+                        }
+                    }
+                    read();
+                }).catch(err => {
+                    if (err.name !== 'AbortError') {
+                        console.error('SSE read error:', err);
+                        this.scheduleReconnect();
+                    }
+                });
+            };
+            read();
+        }).catch(err => {
+            if (err.name !== 'AbortError') {
+                console.error('SSE fetch error:', err);
+                this.scheduleReconnect();
+            }
         });
-
-        this.stompClient.onConnect = (frame) => {
-            console.log('Connected: ' + frame);
-            this.registerHandlers();
-        };
-
-        this.stompClient.onStompError = (frame) => {
-            console.error('Broker reported error: ' + frame.headers['message']);
-        };
-
-        this.stompClient.activate();
     }
 
-    private registerHandlers() {
-        // Subscribing to a specific user's notification topic
-        this.stompClient.subscribe('/user/queue/notifications', (message: Message) => {
-            const msg = JSON.parse(message.body);
-            console.log(`Order ${msg.orderId} updated to ${msg.status}`);
-            this.toastr.success('Updated to status: ' + msg.status, 'Order Id: ' + msg.orderId);
-            this.msgSignalrSource.next();
-        });
+    private scheduleReconnect() {
+        setTimeout(() => {
+            if (this.securityService.IsAuthorized) {
+                console.log('SSE reconnecting...');
+                this.connectSse();
+            }
+        }, 5000);
     }
 
     public stop() {
-        if (this.stompClient) {
-            this.stompClient.deactivate();
+        if (this.abortController) {
+            this.abortController.abort();
+            this.abortController = null;
         }
     }
 }
