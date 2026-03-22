@@ -94,7 +94,7 @@ public class ValidateOrAddBuyerAggregateWhenOrderStartedDomainEventHandler
             buyerRepository.add(buyer);
 
         OrderStatusChangedToSubmittedIntegrationEvent integrationEvent = new OrderStatusChangedToSubmittedIntegrationEvent(
-                event.getOrder().getId(), OrderStatus.Submitted.toString(), event.getUserId());
+                event.getOrder().getId(), OrderStatus.Submitted.toString(), event.getUserName());
         // orderingIntegrationEventService.addAndSaveEvent(integrationEvent);
         outboxService.saveToOutbox(integrationEvent);
 
