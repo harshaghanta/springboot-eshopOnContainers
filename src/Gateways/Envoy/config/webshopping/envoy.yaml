@@ -54,11 +54,9 @@ static_resources:
                   prefix: "/ws/"
                 route:
                   auto_host_rewrite: true
+                  prefix_rewrite: "/"
                   cluster: signalr-hub
-                  timeout: 300s
-                  upgrade_configs:
-                    upgrade_type: "websocket"
-                    enabled: true
+                  timeout: 0s
               - name: "b-short"
                 match:
                   prefix: "/b/"
