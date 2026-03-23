@@ -253,8 +253,11 @@ services:
     image: quay.io/keycloak/keycloak:latest
     environment:
     - KEYCLOAK_ADMIN=admin
-    - KEYCLOAK_ADMIN_PASSWORD=admin 
-    - DB_VENDOR=h2
+    - KEYCLOAK_ADMIN_PASSWORD=admin
+    - KC_DB=postgres
+    - KC_DB_URL=jdbc:postgresql://postgres:5432/keycloak
+    - KC_DB_USERNAME=keycloak
+    - KC_DB_PASSWORD=keycloakpass
     - KC_HEALTH_ENABLED=true
     - KEYCLOAK_FRONTEND_URL=http://localhost:8080/keycloak
     healthcheck:
@@ -263,6 +266,9 @@ services:
       timeout: 30s
       retries: 5
       start_period: 30s
+    depends_on:
+      postgres:
+        condition: service_healthy
     volumes:
       - ./Keycloak:/opt/keycloak/data/import
     command: -v start-dev --import-realm
@@ -387,6 +393,24 @@ services:
       retries: 5
       start_period: 30s
 
+  postgres:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+    - 5432:5432
+    volumes:
+      - ./DBSetup/scripts/init-keycloak-db.sql:/docker-entrypoint-initdb.d/init-keycloak-db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+    - simpbridgenetwork
   # vault:
   #   image: hashicorp/vault
   #   container_name: vault
