@@ -22,6 +22,8 @@ springdoc:
 
   #enable management endpoints
 management:
+  server:
+    port: 8081
   metrics:
     distribution:
       percentiles-histogram:
