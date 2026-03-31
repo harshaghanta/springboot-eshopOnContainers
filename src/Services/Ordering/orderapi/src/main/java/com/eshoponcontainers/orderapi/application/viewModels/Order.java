@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Order {
 
+    @JsonProperty("ordernumber")
     private Integer orderNumber;
     private LocalDate date;
     private String status;
@@ -20,6 +23,8 @@ public class Order {
     private String zipCode;
     private String country;
     private String state;
+
+    @JsonProperty("orderitems")
     private List<OrderItem> orderItems = new ArrayList<>();
     private Double total;
 }

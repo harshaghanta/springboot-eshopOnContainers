@@ -2,6 +2,8 @@ package com.eshoponcontainers.orderapi.application.viewModels;
 
 import java.math.BigDecimal;
 
-public record OrderItem(String productName, int units, BigDecimal unitPrice, String pictureUrl) {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record OrderItem(@JsonProperty("productname") String productName, int units, @JsonProperty("unitprice") BigDecimal unitPrice, String pictureUrl) {
 
 }
