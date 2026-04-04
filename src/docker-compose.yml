@@ -81,6 +81,10 @@ services:
         condition: service_healthy
       basketdata:
         condition: service_started
+      eventbus:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
     ports:
     - 8083:8080
     volumes:
@@ -98,18 +102,27 @@ services:
     image: ${REGISTRY:-springeshop}/db:latest
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=Pass@word
+    command: >
+      /bin/bash -lc "export SA_PASSWORD=\"$$(tr -d '\r\n' < /run/secrets/DB_PASSWORD)\" && exec /usr/src/app/entrypoint.sh"
     ports:
     - 9133:1433
+    volumes:
+      - ./Secrets/DB_PASSWORD:/run/secrets/DB_PASSWORD:ro
+    healthcheck:
+      test: /bin/bash -lc 'export SA_PASSWORD="$$(tr -d "\r\n" < /run/secrets/DB_PASSWORD)" && /usr/src/app/healthcheck.sh'
     networks:
     - simpbridgenetwork
 
   eventbus:
     image: rabbitmq:3-management-alpine
     container_name: eventbus
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest1
+    command:
+    - /bin/sh
+    - -lc
+    - export RABBITMQ_DEFAULT_USER="$$(tr -d '\r\n' < /run/secrets/EVENTBUS_USER_NAME)" && export RABBITMQ_DEFAULT_PASS="$$(tr -d '\r\n' < /run/secrets/EVENTBUS_PASSWORD)" && exec /usr/local/bin/docker-entrypoint.sh rabbitmq-server
+    volumes:
+    - ./Secrets/EVENTBUS_USER_NAME:/run/secrets/EVENTBUS_USER_NAME:ro
+    - ./Secrets/EVENTBUS_PASSWORD:/run/secrets/EVENTBUS_PASSWORD:ro
     networks:
     - simpbridgenetwork
     ports:
@@ -151,6 +164,9 @@ services:
         condition: service_healthy
       eventbus:
         condition: service_healthy
+      keycloak:
+        condition: service_healthy
+
     ports:
     - 8082:8080
     volumes:
@@ -291,9 +307,14 @@ services:
 
   basketdata:
     image: redis:alpine
-    command: ["redis-server", "--requirepass", "redispassword"]
+    command:
+    - /bin/sh
+    - -c
+    - exec redis-server --requirepass "$$(tr -d '\r\n' < /run/secrets/REDIS_PASSWORD)"
     ports:
     - 6379:6379
+    volumes:
+    - ./Secrets/REDIS_PASSWORD:/run/secrets/REDIS_PASSWORD:ro
     networks:
     - simpbridgenetwork
   
