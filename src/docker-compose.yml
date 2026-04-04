@@ -107,6 +107,9 @@ services:
   eventbus:
     image: rabbitmq:3-management-alpine
     container_name: eventbus
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest1
     networks:
     - simpbridgenetwork
     ports:
