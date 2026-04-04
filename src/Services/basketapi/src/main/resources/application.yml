@@ -4,6 +4,12 @@ spring:
   profiles:
     active:
     - local
+  grpc:
+    client:
+      channels:
+        catalog-grpc:
+          address: static://${CATALOG_GRPC_HOST}:${CATALOG_GRPC_PORT}
+          negotiation-type: plaintext
 
 logging:
   level:

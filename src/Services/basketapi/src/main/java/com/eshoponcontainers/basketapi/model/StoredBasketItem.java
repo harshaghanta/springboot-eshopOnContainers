@@ -7,13 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BasketItem {
+public class StoredBasketItem {
 
     private String id;
     private int productId;
-    private String productName;
-    private double unitPrice;
-    private double oldUnitPrice;
     private int quantity;
-    private String pictureUrl;
 }

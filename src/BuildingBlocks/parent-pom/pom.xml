@@ -19,27 +19,29 @@
 		<java.version>25</java.version>
 		<springdoc.version>2.8.0</springdoc.version>
 		<!-- <hibernate.version>6.4.4.Final</hibernate.version> -->
+		<shared.proto.dir>${project.basedir}/../../proto</shared.proto.dir>
+		<protobuf.version>4.29.3</protobuf.version>
 	</properties>
 
 
-    <modules>
-        <!-- BuildingBlocks/EventBus modules -->
-        <module>../EventBus/eventbus</module>
-        <module>../EventBus/eventbus-rabbitmq</module>
-        <module>../EventBus/integration-eventlog</module>
+	<modules>
+		<!-- BuildingBlocks/EventBus modules -->
+		<module>../EventBus/eventbus</module>
+		<module>../EventBus/eventbus-rabbitmq</module>
+		<module>../EventBus/integration-eventlog</module>
 
-        <!-- Services modules -->
-        <module>../../Services/basketapi</module>
-        <module>../../Services/catalogapi</module>
-        <module>../../Services/Ordering/orderapi</module>
-        <module>../../Services/Ordering/ordering-backgroundtasks</module>
-        <module>../../Services/Ordering/ordering-domain</module>
-        <module>../../Services/Ordering/ordering-infrastructure</module>
-        <!-- <module>../../Services/Ordering/ordering-notification</module> -->
-        <module>../../Services/Payment/paymentapi</module>
-        <!-- <module>../../Services/Webhooks/webhooks-api</module> -->
-        <!-- <module>../../Services/Webhooks/webhooks-client</module> -->
-    </modules>
+		<!-- Services modules -->
+		<module>../../Services/basketapi</module>
+		<module>../../Services/catalogapi</module>
+		<module>../../Services/Ordering/orderapi</module>
+		<module>../../Services/Ordering/ordering-backgroundtasks</module>
+		<module>../../Services/Ordering/ordering-domain</module>
+		<module>../../Services/Ordering/ordering-infrastructure</module>
+		<!-- <module>../../Services/Ordering/ordering-notification</module> -->
+		<module>../../Services/Payment/paymentapi</module>
+		<!-- <module>../../Services/Webhooks/webhooks-api</module> -->
+		<!-- <module>../../Services/Webhooks/webhooks-client</module> -->
+	</modules>
 	<distributionManagement>
 		<repository>
 			<id>github</id>
@@ -91,6 +93,21 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-aop</artifactId>
 				<version>3.5.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.grpc</groupId>
+				<artifactId>spring-grpc-spring-boot-starter</artifactId>
+				<version>1.0.2</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.protobuf</groupId>
+				<artifactId>protobuf-java</artifactId>
+				<version>${protobuf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.protobuf</groupId>
+				<artifactId>protobuf-java-util</artifactId>
+				<version>${protobuf.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.microsoft.sqlserver</groupId>
@@ -200,6 +217,90 @@
 	</dependencies>
 
 	<build>
+		<extensions>
+			<extension>
+				<groupId>kr.motd.maven</groupId>
+				<artifactId>os-maven-plugin</artifactId>
+				<version>1.7.1</version>
+			</extension>
+		</extensions>
+		<pluginManagement>
+			<plugins>
+				<!-- Detect OS classifier (also as plugin, not just extension, for IDE compatibility) -->
+				<plugin>
+					<groupId>kr.motd.maven</groupId>
+					<artifactId>os-maven-plugin</artifactId>
+					<version>1.7.1</version>
+					<executions>
+						<execution>
+							<phase>initialize</phase>
+							<goals>
+								<goal>detect</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<!-- Copy shared .proto files from src/proto/ into the service's src/main/proto/ -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>copy-proto-files</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>copy-resources</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>${project.basedir}/src/main/proto</outputDirectory>
+								<overwrite>true</overwrite>
+								<resources>
+									<resource>
+										<directory>${shared.proto.dir}</directory>
+										<includes>
+											<include>**/*.proto</include>
+										</includes>
+									</resource>
+								</resources>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<!-- Compile .proto files into Java sources -->
+				<plugin>
+					<groupId>org.xolstice.maven.plugins</groupId>
+					<artifactId>protobuf-maven-plugin</artifactId>
+					<version>0.6.1</version>
+					<configuration>
+						<protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
+						<pluginId>grpc-java</pluginId>
+						<pluginArtifact>io.grpc:protoc-gen-grpc-java:1.71.0:exe:${os.detected.classifier}</pluginArtifact>
+						<protoSourceRoot>${project.basedir}/src/main/proto</protoSourceRoot>
+						<clearOutputDirectory>false</clearOutputDirectory>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>compile</goal>
+								<goal>compile-custom</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<!-- Clean copied proto files during mvn clean -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<configuration>
+						<filesets>
+							<fileset>
+								<directory>${project.basedir}/src/main/proto</directory>
+							</fileset>
+						</filesets>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

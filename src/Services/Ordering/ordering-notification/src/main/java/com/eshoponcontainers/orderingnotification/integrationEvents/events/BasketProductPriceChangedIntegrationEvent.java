@@ -5,15 +5,15 @@ import com.eshoponcontainers.eventbus.events.IntegrationEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-@Getter
 @AllArgsConstructor
+@Getter
 @NoArgsConstructor
-@ToString(callSuper = true)
-public class OrderStatusChangedToStockConfirmedIntegrationEvent extends IntegrationEvent {
+public class BasketProductPriceChangedIntegrationEvent extends IntegrationEvent {
 
-    private int orderId;
-    private String orderStatus;
-    private String buyerName;
+    private String buyerId;
+    private String username;
+    private int productId;
+    private double oldPrice;
+    private double newPrice;
 }

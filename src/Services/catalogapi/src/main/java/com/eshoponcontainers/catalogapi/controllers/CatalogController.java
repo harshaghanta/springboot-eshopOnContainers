@@ -1,15 +1,9 @@
 package com.eshoponcontainers.catalogapi.controllers;
 
-import java.math.BigDecimal;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,12 +21,7 @@ import com.eshoponcontainers.catalogapi.controllers.viewmodels.PaginatedItemView
 import com.eshoponcontainers.catalogapi.entities.CatalogBrand;
 import com.eshoponcontainers.catalogapi.entities.CatalogItem;
 import com.eshoponcontainers.catalogapi.entities.CatalogType;
-import com.eshoponcontainers.catalogapi.integrationevents.events.ProductPriceChangedIntegrationEvent;
-import com.eshoponcontainers.catalogapi.repositories.CatalogBrandRepository;
-import com.eshoponcontainers.catalogapi.repositories.CatalogItemRepository;
-import com.eshoponcontainers.catalogapi.repositories.CatalogTypeRepository;
-import com.eshoponcontainers.catalogapi.services.CatalogIntegrationService;
-import com.eshoponcontainers.services.impl.OutboxService;
+import com.eshoponcontainers.catalogapi.services.CatalogService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -51,14 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CatalogController {
 
-    private final CatalogItemRepository catalogItemRepository;
-    private final CatalogTypeRepository catalogTypeRepository;
-    private final CatalogBrandRepository catalogBrandRepository;
-    private final CatalogIntegrationService catalogIntegrationService;
-    private final OutboxService outboxService;
-
-    @Value("${picBaseUrl}")
-    private String picBaseUrl;
+    private final CatalogService catalogService;
 
     @GetMapping("/items")
     @Operation(summary = "Get all/specified catalog items", description = "Get all/specified catalog items")
@@ -69,7 +51,7 @@ public class CatalogController {
             @ApiResponse(responseCode = "400", description = "Invalid id supplied", content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "200", description = "PaginatedViewModel", content = @Content(mediaType = "application/json", schema = @Schema(implementation = PaginatedItemViewModel.class)))
     })
-    public ResponseEntity<?> getItems(
+    public ResponseEntity<Object> getItems(
             @RequestParam(name = "pageIndex", required = false, defaultValue = "0") Integer pageIndex,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize,
             @RequestParam(required = false, name = "ids") String ids) {
@@ -78,24 +60,17 @@ public class CatalogController {
 
         if (!(ids == null || ids.isEmpty())) {
 
-            List<CatalogItem> catalogItems = getCatalogItems(ids);
+            List<CatalogItem> catalogItems = catalogService.getCatalogItemsByIds(ids);
             if (catalogItems.isEmpty()) {
                 var message = "ids value invalid. Must be comma-separated list of numbers";
                 log.warn(message);
                 return ResponseEntity.badRequest().body(message);
             }
 
-            changeUrlPlaceHolder(catalogItems);
-
             return ResponseEntity.ok(catalogItems);
         }
 
-        Page<CatalogItem> pageResults = catalogItemRepository
-                .findAll(PageRequest.of(pageIndex, pageSize, Sort.by("name").ascending()));
-        changeUrlPlaceHolder(pageResults.getContent());
-        PaginatedItemViewModel<CatalogItem> paginatedItemViewModel = new PaginatedItemViewModel<CatalogItem>(pageIndex,
-                pageSize, (int) pageResults.getTotalElements(), pageResults.getContent());
-        return ResponseEntity.ok(paginatedItemViewModel);
+        return ResponseEntity.ok(catalogService.getItems(pageIndex, pageSize));
 
     }
 
@@ -105,10 +80,9 @@ public class CatalogController {
         if (id != null && id <= 0)
             return ResponseEntity.badRequest().build();
 
-        Optional<CatalogItem> item = catalogItemRepository.findById(id);
+        Optional<CatalogItem> item = catalogService.getItemById(id);
         if (item.isPresent()) {
-            CatalogItem catalogItem = changeUrlPlaceHolder(item.get());
-            return ResponseEntity.ok(catalogItem);
+            return ResponseEntity.ok(item.get());
         }
 
         log.error("Item with id: {} not found",id);
@@ -121,13 +95,7 @@ public class CatalogController {
             @PathVariable(name = "name") @Min(1) String name,
             @RequestParam(name = "pageIndex", defaultValue = "0") Integer pageIndex,
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
-        PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by("id").ascending());
-        Page<CatalogItem> items = catalogItemRepository.findByNameStartsWith(name, pageRequest);
-        changeUrlPlaceHolder(items.getContent());
-
-        PaginatedItemViewModel<CatalogItem> paginatedItemViewModel = new PaginatedItemViewModel<CatalogItem>(pageIndex,
-                pageSize, (int) items.getTotalElements(), items.getContent());
-        return ResponseEntity.ok(paginatedItemViewModel);
+        return ResponseEntity.ok(catalogService.getItemsByName(name, pageIndex, pageSize));
 
     }
 
@@ -145,19 +113,8 @@ public class CatalogController {
             @PathVariable(name = "catalogBrandId", required = true) Integer catalogBrandId,
             @RequestParam(name = "pageIndex", required = false, defaultValue = "0") Integer pageIndex,
             @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-        Page<CatalogItem> catalogItems = null;
-        PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by("id").ascending());
-        if (catalogBrandId == null) {
-            catalogItems = catalogItemRepository.findByCatalogType_Id(catalogTypeId, pageRequest);
-        } else {
-            catalogItems = catalogItemRepository.findByCatalogType_IdAndCatalogBrand_Id(catalogTypeId, catalogBrandId,
-                    pageRequest);
-        }
-
-        changeUrlPlaceHolder(catalogItems.getContent());
-        PaginatedItemViewModel<CatalogItem> paginatedItemViewModel = new PaginatedItemViewModel<>(pageIndex, pageSize,
-                (int) catalogItems.getTotalElements(), catalogItems.getContent());
-        return ResponseEntity.ok(paginatedItemViewModel);
+        return ResponseEntity.ok(catalogService.getItemsByCatalogTypeAndBrand(catalogTypeId, catalogBrandId,
+            pageIndex, pageSize));
     }
 
     @GetMapping("/items/type/all/brand/{catalogBrandId}")
@@ -165,56 +122,27 @@ public class CatalogController {
             @PathVariable(name = "catalogBrandId", required = false) Integer catalogBrandId,
             @RequestParam(name = "pageIndex", required = false, defaultValue = "0") Integer pageIndex,
             @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-        Page<CatalogItem> catalogItems = null;
-        PageRequest pageRequest = PageRequest.of(pageIndex, pageSize, Sort.by("id").ascending());
-        if (catalogBrandId == null) {
-            catalogItems = catalogItemRepository.findAll(pageRequest);
-        } else {
-            catalogItems = catalogItemRepository.findByCatalogBrand_Id(catalogBrandId, pageRequest);
-        }
-        changeUrlPlaceHolder(catalogItems.getContent());
-        PaginatedItemViewModel<CatalogItem> paginatedItemViewModel = new PaginatedItemViewModel<>(pageIndex, pageSize,
-                (int) catalogItems.getTotalElements(), catalogItems.getContent());
-        return ResponseEntity.ok(paginatedItemViewModel);
+        return ResponseEntity.ok(catalogService.getItemsByBrand(catalogBrandId, pageIndex, pageSize));
     }
 
     @GetMapping("/catalogTypes")
     public ResponseEntity<List<CatalogType>> getAllCatalogTypes() {
-        List<CatalogType> catalogTypes = catalogTypeRepository.findAll();
-        return ResponseEntity.ok(catalogTypes);
+        return ResponseEntity.ok(catalogService.getAllCatalogTypes());
     }
 
     @GetMapping("/catalogBrands")
     public ResponseEntity<List<CatalogBrand>> getAllCatalogBrands() {
-        return ResponseEntity.ok(catalogBrandRepository.findAll());
+        return ResponseEntity.ok(catalogService.getAllCatalogBrands());
     }
 
     @PutMapping("/items")
-    public ResponseEntity<?> updateProduct(@RequestBody CatalogItem requestedItem) {
+    public ResponseEntity<Object> updateProduct(@RequestBody CatalogItem requestedItem) {
 
-        Optional<CatalogItem> catalogItem = catalogItemRepository.findById(requestedItem.getId());
-        if (!catalogItem.isPresent()) {
+        if (!catalogService.updateProduct(requestedItem)) {
             var message = "Item with id " + requestedItem.getId() + " not found.";
             log.error(message);
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(message);
-        }
-
-        BigDecimal oldPrice = catalogItem.get().getPrice();
-        BigDecimal newPrice = requestedItem.getPrice();
-
-        boolean raisePriceChangedEvent = oldPrice != newPrice;
-        List<CatalogItem> catitems = new ArrayList<>();
-        catitems.add(requestedItem);
-
-        if (raisePriceChangedEvent) {
-            ProductPriceChangedIntegrationEvent productPriceChangedIntegrationEvent = new ProductPriceChangedIntegrationEvent(
-                    requestedItem.getId(), requestedItem.getPrice(), oldPrice);
-            // catalogIntegrationService.saveEventAndCatalogChanges(productPriceChangedIntegrationEvent, catitems);
-            outboxService.saveToOutbox(productPriceChangedIntegrationEvent);
-            // catalogIntegrationService.publishThroughEventBus(productPriceChangedIntegrationEvent);
-        } else {
-            catalogItemRepository.save(requestedItem);
         }
 
         URI location = URI.create("/items/" + requestedItem.getId());
@@ -224,46 +152,15 @@ public class CatalogController {
 
     @PostMapping("/items")
     public ResponseEntity<CatalogItem> createProduct(@RequestBody CatalogItem catalogItem) {
-        CatalogItem savedItem = catalogItemRepository.save(catalogItem);
+        CatalogItem savedItem = catalogService.createProduct(catalogItem);
         URI location = URI.create("/items/" + savedItem.getId());
         return ResponseEntity.created(location).body(savedItem);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable Integer id) {
-        catalogItemRepository.deleteById(id);
+    public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
+        catalogService.deleteProduct(id);
         return ResponseEntity.noContent().build();
-    }
-
-    private List<CatalogItem> getCatalogItems(String ids) {
-
-        List<Integer> itemIds = new ArrayList<>();
-
-        String[] catalogIds = ids.split(",");
-
-        for (String catalogId : catalogIds) {
-            try {
-                Integer id = Integer.parseInt(catalogId);
-                itemIds.add(id);
-            } catch (NumberFormatException e) {
-                return new ArrayList<>();
-            }
-        }
-
-        return catalogItemRepository.findAllById(itemIds);
-    }
-
-    private List<CatalogItem> changeUrlPlaceHolder(List<CatalogItem> catalogItems) {
-
-        for (CatalogItem catalogItem : catalogItems) {
-            changeUrlPlaceHolder(catalogItem);
-        }
-        return catalogItems;
-    }
-
-    private CatalogItem changeUrlPlaceHolder(CatalogItem catalogItem) {
-        catalogItem.setPictureUri(picBaseUrl.replace("[0]", catalogItem.getPictureFileName()));
-        return catalogItem;
     }
 
 }

@@ -1,7 +1,5 @@
 package com.eshoponcontainers.basketapi.integrationevents.events;
 
-import java.math.BigDecimal;
-
 import com.eshoponcontainers.eventbus.events.IntegrationEvent;
 
 import lombok.AllArgsConstructor;
@@ -11,9 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @NoArgsConstructor
-public class ProductPriceChangedIntegrationEvent extends IntegrationEvent {
+public class BasketProductPriceChangedIntegrationEvent extends IntegrationEvent {
 
+    private String buyerId;
+    private String username;
     private int productId;
-    private BigDecimal newPrice;
-    private BigDecimal oldPrice;
+    private double oldPrice;
+    private double newPrice;
 }

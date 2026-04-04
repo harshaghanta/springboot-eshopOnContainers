@@ -3,12 +3,14 @@ package com.eshoponcontainers.orderingnotification;
 import org.springframework.stereotype.Component;
 
 import com.eshoponcontainers.eventbus.abstractions.EventBus;
+import com.eshoponcontainers.orderingnotification.integrationEvents.eventHandlers.BasketProductPriceChangedIntegrationEventHandler;
 import com.eshoponcontainers.orderingnotification.integrationEvents.eventHandlers.OrderStatusChangedToAwaitingValidationIntegrationEventHandler;
 import com.eshoponcontainers.orderingnotification.integrationEvents.eventHandlers.OrderStatusChangedToCancelledIntegrationEventHandler;
 import com.eshoponcontainers.orderingnotification.integrationEvents.eventHandlers.OrderStatusChangedToPaidIntegrationEventHandler;
 import com.eshoponcontainers.orderingnotification.integrationEvents.eventHandlers.OrderStatusChangedToShippedIntegrationEventHandler;
 import com.eshoponcontainers.orderingnotification.integrationEvents.eventHandlers.OrderStatusChangedToStockConfirmedIntegrationEventHandler;
 import com.eshoponcontainers.orderingnotification.integrationEvents.eventHandlers.OrderStatusChangedToSubmittedIntegrationEventHandler;
+import com.eshoponcontainers.orderingnotification.integrationEvents.events.BasketProductPriceChangedIntegrationEvent;
 import com.eshoponcontainers.orderingnotification.integrationEvents.events.OrderStatusChangedToAwaitingValidationIntegrationEvent;
 import com.eshoponcontainers.orderingnotification.integrationEvents.events.OrderStatusChangedToCancelledIntegrationEvent;
 import com.eshoponcontainers.orderingnotification.integrationEvents.events.OrderStatusChangedToPaidIntegrationEvent;
@@ -31,6 +33,7 @@ public class StartUp {
     public void init() {
         log.info("Subscribing to the Integration Events in OrderNotfication");
 
+        eventBus.subscribe(BasketProductPriceChangedIntegrationEvent.class, BasketProductPriceChangedIntegrationEventHandler.class);
         eventBus.subscribe(OrderStatusChangedToAwaitingValidationIntegrationEvent.class, OrderStatusChangedToAwaitingValidationIntegrationEventHandler.class);
         eventBus.subscribe(OrderStatusChangedToPaidIntegrationEvent.class, OrderStatusChangedToPaidIntegrationEventHandler.class);
         eventBus.subscribe(OrderStatusChangedToStockConfirmedIntegrationEvent.class, OrderStatusChangedToStockConfirmedIntegrationEventHandler.class);

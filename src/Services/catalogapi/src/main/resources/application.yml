@@ -10,6 +10,10 @@ spring:
       naming.physical-strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
       naming.implicit-strategy: "org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl"
 
+  grpc:
+    server:
+      port: ${CATALOG_GRPC_PORT:50001}
+
 springdoc:
   api-docs:
     path: /api-docs

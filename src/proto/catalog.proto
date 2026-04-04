@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.eshoponcontainers.proto.catalog";
+
+package CatalogAPI;
+
+// Shared catalog proto definitions
+// Add your service definitions and messages here
+
+message CatalogItemRequest {
+    int32 id = 1;
+}
+
+message CatalogItemsRequest {
+    string ids = 1;
+    int32 pageSize = 2;
+    int32 pageIndex = 3;
+}
+
+message CatalogBrand {
+	int32 id = 1;
+	string name = 2;
+}
+
+message CatalogType {
+	int32 id = 1;
+	string type = 2;
+}
+
+message CatalogItemResponse {
+    int32 id = 1;
+	string name = 2;
+    string description=3;
+    double price=4;
+    string picture_file_name=5;
+    string picture_uri=6;
+    CatalogType catalog_type=8;
+    CatalogBrand catalog_brand=10;
+    int32 available_stock=11;
+    int32 restock_threshold=12;
+    int32 max_stock_threshold=13;
+    bool on_reorder=14;
+}
+
+message PaginatedItemsResponse {
+    int32 pageIndex = 1;
+    int32 pageSize = 2;
+    int64 count = 3;
+    repeated CatalogItemResponse data = 4;
+}
+
+service Catalog {
+
+    rpc GetItemById (CatalogItemRequest) returns (CatalogItemResponse) {}
+
+    rpc GetItemsByIds (CatalogItemsRequest) returns (PaginatedItemsResponse) {}
+}

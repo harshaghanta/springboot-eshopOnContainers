@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class CatalogapiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CatalogapiApplication.class, args);
+		SpringApplication.run(CatalogapiApplication.class, args);		
 	}
 
 	@Bean

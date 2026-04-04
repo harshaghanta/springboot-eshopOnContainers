@@ -1,17 +1,15 @@
 package com.eshoponcontainers.orderingnotification.integrationEvents.events;
 
 import com.eshoponcontainers.eventbus.events.IntegrationEvent;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
-@JsonIgnoreProperties(ignoreUnknown = true)
-
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class OrderStatusChangedToCancelledIntegrationEvent extends IntegrationEvent {
 
     private int orderId;

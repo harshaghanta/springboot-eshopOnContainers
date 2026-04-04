@@ -7,6 +7,7 @@
 		<groupId>com.eshoponcontainers</groupId>
 		<artifactId>parent-pom</artifactId>
 		<version>0.0.2-SNAPSHOT</version>
+		<relativePath>../../BuildingBlocks/parent-pom/pom.xml</relativePath>
 	</parent>
 	<groupId>com.eshoponcontainers</groupId>
 	<artifactId>basketapi</artifactId>
@@ -71,6 +72,16 @@
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.grpc</groupId>
+			<artifactId>spring-grpc-spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
 		</dependency>
 
 
@@ -150,6 +161,22 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>kr.motd.maven</groupId>
+				<artifactId>os-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.xolstice.maven.plugins</groupId>
+				<artifactId>protobuf-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
 			</plugin>
 		</plugins>
 		<finalName>basket-api</finalName>

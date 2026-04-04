@@ -16,8 +16,9 @@
                 "REDIS_HOST_PORT": "6379",
                 "EVENTBUS_HOST": "localhost",
                 "EVENTBUS_SUBSCRIPTION_CLIENT_NAME": "Basket",
-                "ISSUER_URL": "http://keycloak:8080/realms/eshoponcontainers"
-
+                "ISSUER_URL": "http://keycloak:8080/realms/eshoponcontainers",
+                "CATALOG_GRPC_HOST": "catalog-api",
+                "CATALOG_GRPC_PORT": "50001"
             }
 
         },
@@ -33,7 +34,8 @@
                 "DB_HOST_PORT": "9133",
                 "CATALOG_DB_NAME" : "CatalogDb",
                 "EVENTBUS_HOST": "localhost",
-                "EVENTBUS_SUBSCRIPTION_CLIENT_NAME": "Catalog"
+                "EVENTBUS_SUBSCRIPTION_CLIENT_NAME": "Catalog",
+                "CATALOG_GRPC_PORT": "50001",
             }
 
         },

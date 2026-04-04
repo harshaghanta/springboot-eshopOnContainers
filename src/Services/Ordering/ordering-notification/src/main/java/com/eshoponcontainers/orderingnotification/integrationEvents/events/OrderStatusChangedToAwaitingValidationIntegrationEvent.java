@@ -1,19 +1,22 @@
 package com.eshoponcontainers.orderingnotification.integrationEvents.events;
 
+import java.util.Collection;
+
 import com.eshoponcontainers.eventbus.events.IntegrationEvent;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
-@JsonIgnoreProperties(ignoreUnknown = true)
+@ToString
 public class OrderStatusChangedToAwaitingValidationIntegrationEvent extends IntegrationEvent {
 
     private int orderId;
     private String orderStatus;
     private String buyerName;
+    private Collection<OrderStockItem> orderStockItems;
 }

@@ -15,6 +15,7 @@ services:
       EVENTBUS_HOST: "eventbus"
       EVENTBUS_SUBSCRIPTION_CLIENT_NAME: "Catalog"
       ALLOWED_ORIGINS: "http://localhost:8080"
+      CATALOG_GRPC_PORT: "50001"
       
       # OTEL_TRACES_EXPORTER: "jaeger,zipkin,otlp"
       # OTEL_TRACES_EXPORTER: "otlp"
@@ -64,6 +65,9 @@ services:
       REDIS_TIMEOUT: "3000"
       ALLOWED_ORIGINS: "http://localhost:8080"
       ISSUER_URL: "http://keycloak:8080/realms/eshoponcontainers"
+      CATALOG_GRPC_HOST: "catalog-api"
+      CATALOG_GRPC_PORT: "50001"
+
       # OTEL_TRACES_EXPORTER: "jaeger"
       # OTEL_SERVICE_NAME: "basket-api"
       # OTEL_EXPORTER_JAEGER_ENDPOINT: "http://jaeger:14250"
