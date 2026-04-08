@@ -424,15 +424,17 @@ services:
   postgres:
     image: postgres:alpine
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER_FILE: /run/secrets/POSTGRES_USER
+      POSTGRES_PASSWORD_FILE: /run/secrets/POSTGRES_PASSWORD
       POSTGRES_DB: postgres
     ports:
     - 5432:5432
     volumes:
+      - ./Secrets/POSTGRES_USER:/run/secrets/POSTGRES_USER:ro
+      - ./Secrets/POSTGRES_PASSWORD:/run/secrets/POSTGRES_PASSWORD:ro
       - ./DBSetup/scripts/init-keycloak-db.sql:/docker-entrypoint-initdb.d/init-keycloak-db.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U \"$$(tr -d '\r\n' < /run/secrets/POSTGRES_USER)\" -d postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
