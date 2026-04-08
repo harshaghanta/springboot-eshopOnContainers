@@ -37,10 +37,10 @@
 		<module>../../Services/Ordering/ordering-backgroundtasks</module>
 		<module>../../Services/Ordering/ordering-domain</module>
 		<module>../../Services/Ordering/ordering-infrastructure</module>
-		<!-- <module>../../Services/Ordering/ordering-notification</module> -->
+		<module>../../Services/Ordering/ordering-notification</module>
 		<module>../../Services/Payment/paymentapi</module>
-		<!-- <module>../../Services/Webhooks/webhooks-api</module> -->
-		<!-- <module>../../Services/Webhooks/webhooks-client</module> -->
+		<module>../../Services/Webhooks/webhooks-api</module>
+		<module>../../Services/Webhooks/webhooks-client</module>
 	</modules>
 	<distributionManagement>
 		<repository>
