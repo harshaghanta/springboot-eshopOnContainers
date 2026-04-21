@@ -7,22 +7,10 @@
         <file>/app/logs/${appName}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover and keep 30 days' worth of history -->
-            <fileNamePattern>logs/${appName}.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/app/logs/${appName}.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
-        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-            <providers>
-                <timestamp>
-                    <fieldName>timestamp</fieldName>
-                    <pattern>yyyy-MM-dd'T'HH:mm:ss.SSSZ</pattern>
-                </timestamp>
-                <pattern>
-                    <pattern>{"level": "%level", "logger": "%logger", "thread": "%thread", "message": "%message", "context": "%mdc"}</pattern>
-                </pattern>
-                <arguments/>
-                <stackTrace/>
-            </providers>
-        </encoder>
+        <encoder class="ch.qos.logback.classic.encoder.JsonEncoder" />
     </appender>
 
 

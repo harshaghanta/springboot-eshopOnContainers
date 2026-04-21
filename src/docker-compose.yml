@@ -267,6 +267,8 @@ services:
     #   OTEL_EXPORTER_PROMETHEUS_PORT: "9464"
     #   OTEL_LOGS_EXPORTER: "otlp"
     #   OTEL_EXPORTER_OTLP_LOGS_ENDPOINT: "http://collector:4317"
+    volumes:
+      - applog_volume:/app/logs
     ports:
     - 8080:8080
     networks:
@@ -382,6 +384,8 @@ services:
         condition: service_healthy
     ports:
     - 5114:8080
+    volumes:
+      - applog_volume:/app/logs
     networks:
     - simpbridgenetwork
   payment-api:
@@ -576,43 +580,50 @@ services:
 
 
   
-  # using Dockerfile filebeat to get around the file permission issue
-  # filebeat:
-  #   build:
-  #     context: .
-  #     dockerfile: EFK/Dockerfile
-  #   volumes:
-  #     # - ./EFK/filebeat.yml:/usr/share/filebeat/filebeat.yml
-  #     - applog_volume:/app/logs
-  #   networks:
-  #   - simpbridgenetwork
+  fluent-bit:
+    container_name: fluent-bit
+    image: cr.fluentbit.io/fluent/fluent-bit:5.0.2
+    depends_on:
+      - elasticsearch
+    volumes:
+      - applog_volume:/app/logs
+      - fluentbit_data:/fluent-bit/state
+      - ./EFK/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+      - ./EFK/parsers.conf:/fluent-bit/etc/parsers.conf:ro
+    networks:
+    - simpbridgenetwork
 
-  # elasticsearch:
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:8.13.3
-  #   environment:
-  #     - discovery.type=single-node
-  #     - ELASTIC_PASSWORD=elastic
-  #     - xpack.security.enabled=false
-  #   volumes:
-  #     - esdata:/usr/share/elasticsearch/data
-  #   ports:
-  #     - 9200:9200
-  #   networks:
-  #   - simpbridgenetwork
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.3.3
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+    - simpbridgenetwork
 
-  # kibana:
-  #   image: docker.elastic.co/kibana/kibana:8.13.3
-  #   ports:
-  #     - 5601:5601
-  #   depends_on:
-  #     - elasticsearch
-  #   networks:
-  #   - simpbridgenetwork
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:9.3.3
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    networks:
+    - simpbridgenetwork
     
 
 volumes:
   applog_volume:
   esdata:
+  fluentbit_data:
   vault_data:
   sonarqube_data:
   sonarqube_extensions:
