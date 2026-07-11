@@ -43,6 +43,15 @@
 **/.angular
 **/.vscode
 
+
+##############################
+## Terraform
+##############################
+**/.terraform
+**/.terraform.lock.hcl
+**/.terraform.tfstate
+**/.terraform.tfstate.backup
+
 ##############################
 ## Helm Charts
 ##############################
@@ -53,3 +62,4 @@ src/settings.xml
 ## Proto (copied by build)
 ##############################
 **/src/main/proto/
+deploy/eks/vault-secrets/
