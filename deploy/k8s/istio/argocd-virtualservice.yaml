@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: argocd-virtualservice
+spec:
+  hosts:
+  - argocd.ghantas.com
+  gateways:
+  - argocd-gateway
+  http:
+  - name: argcod-routing
+    match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: argocd-server.argocd.svc.cluster.local
+        subset: argocd-service-subset
+        

@@ -1,0 +1,10 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: argocd-destinationrule
+spec:
+  host: argocd-server.argocd.svc.cluster.local
+  subsets:
+  - name: argocd-service-subset
+    labels:
+      app.kubernetes.io/name: argocd-server
