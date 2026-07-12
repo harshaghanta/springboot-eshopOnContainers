@@ -42,7 +42,6 @@ vault:
   dbSecretPath: database/config
   
 
-
 registry:
   server: ""
 
