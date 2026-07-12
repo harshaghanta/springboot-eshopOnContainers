@@ -64,6 +64,8 @@ spec:
           volumeMounts:
             - name: log-volume
               mountPath: /app/logs
+            - name: secrets-store
+              mountPath: "/vault/secrets"
           env:
             - name: k8sname
               value: {{ .Values.clusterName }}
