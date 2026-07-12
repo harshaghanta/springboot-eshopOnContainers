@@ -109,6 +109,14 @@ env:
   values:
     - name: SERVER_SERVLET_CONTEXT_PATH
       value: "/catalog-api"
+    - name: SECRETS_PATH
+      value: "/vault/secrets"
+    - name: DB_HOST_NAME
+      value: "sql-data"
+    - name: DB_HOST_PORT
+      value: "1433"
+    - name: CATALOG_DB_NAME
+      value: "CatalogDB"
   probes:
     liveness:
       path: /catalog-api/actuator/health/liveness
