@@ -119,6 +119,8 @@ env:
       value: "CatalogDB"
     - name: EVENTBUS_HOST
       value: "rabbitmq"
+    - name: EVENTBUS_SUBSCRIPTION_CLIENT_NAME
+      value: Catalog
   probes:
     liveness:
       path: /catalog-api/actuator/health/liveness
