@@ -105,6 +105,10 @@ env:
       value: "6379"
     - name: REDIS_TIMEOUT
       value: "5000"
+    - name: CATALOG_GRPC_HOST
+      value: "catalog-api"
+    - name: CATALOG_GRPC_PORT
+      value: "50001"
   
 
 probes:
