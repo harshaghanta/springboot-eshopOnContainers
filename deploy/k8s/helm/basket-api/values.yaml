@@ -55,25 +55,25 @@ affinity: {}
 
 env:
   urls:
-  configmap:
-    - name: "eventbus.host"
-      key: eventbus__host
-    - name: "eventbus.username"
-      key: eventbus__username
-    - name: "eventbus.password"
-      key: eventbus__password
-    - name: "eventbus.retryCount"
-      key: eventbus__retryCount
-    # - name: "issuer.host"
-    #   key: issuer__host
-    # - name: "issuer.port"
-    #   key: issuer__port
-    - name: "basketdata.host"
-      key: basketdata__host
-    # - name: "issuer.url"
-    #   key: issuer__url
-    - name: "webspa.allowedCorsOrigin"
-      key: allowed__origins
+  # configmap:
+  #   - name: "eventbus.host"
+  #     key: eventbus__host
+  #   - name: "eventbus.username"
+  #     key: eventbus__username
+  #   - name: "eventbus.password"
+  #     key: eventbus__password
+  #   - name: "eventbus.retryCount"
+  #     key: eventbus__retryCount
+  #   # - name: "issuer.host"
+  #   #   key: issuer__host
+  #   # - name: "issuer.port"
+  #   #   key: issuer__port
+  #   - name: "basketdata.host"
+  #     key: basketdata__host
+  #   # - name: "issuer.url"
+  #   #   key: issuer__url
+  #   - name: "webspa.allowedCorsOrigin"
+  #     key: allowed__origins
     
   
   values:
