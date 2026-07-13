@@ -20,6 +20,12 @@ fluentbit:
     user: "elastic"
     password: "elastic"
 
+vault:
+  address: http://vault.vault.svc:8200
+  roleName: eshop-vault-role
+  mountPath: kv
+  dbSecretPath: database/config
+
 ingress:
   enabled: true
 
