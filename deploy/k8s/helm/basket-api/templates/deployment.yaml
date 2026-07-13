@@ -28,7 +28,8 @@ spec:
           volumeMounts:
             - name: log-volume
               mountPath: /app/logs
-                      
+            - name: secrets-store
+              mountPath: "/vault/secrets"          
           {{- if .Values.env.values }}
           env:  
             {{- range .Values.env.values }}
@@ -60,4 +61,10 @@ spec:
           configMap:
             name: fluentbit-cm-basketapi
         {{- end }}
+        - name: secrets-store
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "spc-{{$name}}"
           
