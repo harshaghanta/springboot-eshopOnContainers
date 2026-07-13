@@ -64,14 +64,14 @@ env:
       key: eventbus__password
     - name: "eventbus.retryCount"
       key: eventbus__retryCount
-    - name: "issuer.host"
-      key: issuer__host
-    - name: "issuer.port"
-      key: issuer__port
+    # - name: "issuer.host"
+    #   key: issuer__host
+    # - name: "issuer.port"
+    #   key: issuer__port
     - name: "basketdata.host"
       key: basketdata__host
-    - name: "issuer.url"
-      key: issuer__url
+    # - name: "issuer.url"
+    #   key: issuer__url
     - name: "webspa.allowedCorsOrigin"
       key: allowed__origins
     
@@ -79,18 +79,39 @@ env:
   values:
     - name: SERVER_SERVLET_CONTEXT_PATH
       value: "/basket-api"
+    - name: SECRETS_PATH
+      value: "/vault/secrets"
+    - name: EVENTBUS_HOST
+      value: "rabbitmq"
+    - name: EVENTBUS_SUBSCRIPTION_CLIENT_NAME
+      value: Basket
+    - name: ALLOWED_ORIGINS
+      value: "eshop.ghantas.com"
+    - name: ALLOWED_HEADERS
+      value: "*"
+    - name: ALLOWED_METHODS
+      value: "*"
+    - name: ISSUER_URL
+      value: "http://keycloak:8085/keycloak/realms/eshoponcontainers"
+    - name: REDIS_HOST_NAME
+      value: "basket-data"
+    - name: REDIS_HOST_PORT
+      value: "6379"
+    - name: REDIS_TIMEOUT
+      value: "5000"
   
 
 probes:
   liveness:
-    path: /liveness
-    initialDelaySeconds: 10
-    periodSeconds: 15
-    port: 80
-  readiness:
-    path: /hc
+    path: /basket-api/actuator/health/liveness
+    initialDelaySeconds: 30
     timeoutSeconds: 5
-    initialDelaySeconds: 90
-    periodSeconds: 60
-    port: 80
+    periodSeconds: 15
+    port: 8080
+  readiness:
+    path: /basket-api/actuator/health/readiness
+    timeoutSeconds: 5
+    initialDelaySeconds: 15
+    periodSeconds: 15
+    port: 8080
 

@@ -28,20 +28,14 @@ spec:
           volumeMounts:
             - name: log-volume
               mountPath: /app/logs
-          env:
-            {{- range .Values.env.configmap }}
-            - name: {{ .name }}
-              valueFrom: 
-                configMapKeyRef:
-                  name: "{{ $cfgname }}"
-                  key: {{ .key }}
-            {{- end }}
-            {{- if .Values.env.values -}}
+                      
+          {{- if .Values.env.values -}}
+          env:  
             {{- range .Values.env.values }}
             - name: {{ .name }}
               value: {{ .value | quote }}
             {{- end }}
-            {{- end }}
+          {{- end }}
           ports:
           - name: http
             containerPort: 8080
