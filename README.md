@@ -2,8 +2,7 @@
 
 Sample spring boot applicaton, powered by spring boot framework, based on a simplified microservices architecture and Docker containers.
 
-I forked this repo and changing to learn Git,ci/cd,docker and k8s.
-
+If you’re using this demo, please ★Star this repository to show your interest!
 
 ## SPA Application (Angular)
 
