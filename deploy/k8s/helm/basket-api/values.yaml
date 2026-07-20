@@ -98,7 +98,7 @@ env:
     - name: ALLOWED_METHODS
       value: "*"
     - name: ISSUER_URL
-      value: "http://keycloak:8085/keycloak/realms/eshoponcontainers"
+      value: "http://auth.ghantas.com/keycloak/realms/eshoponcontainers"
     - name: REDIS_HOST_NAME
       value: "basket-data"
     - name: REDIS_HOST_PORT

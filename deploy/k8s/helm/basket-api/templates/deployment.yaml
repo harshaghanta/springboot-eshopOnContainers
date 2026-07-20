@@ -1,4 +1,4 @@
-{{ $name:= include "basket-api.fullname" .}}
+{{ $name:= include "basket-api.fullname" . }}
 {{ $cfgname:= printf "%s-%s" $name "cm" }}
 apiVersion: apps/v1
 kind: Deployment
@@ -66,5 +66,5 @@ spec:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
-              secretProviderClass: "spc-{{$name}}"
+              secretProviderClass: "spc-{{ $name }}"
           
