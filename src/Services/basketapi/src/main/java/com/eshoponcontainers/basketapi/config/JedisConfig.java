@@ -59,10 +59,14 @@ public class JedisConfig {
         Assert.notNull(timeout, "REDIS_TIMEOUT environment variable must be set");
 
         log.info("Creating JedisPool bean for host: {}", env.getProperty("REDIS_HOST_NAME"));
-        String secretsPath = env.getProperty("SECRETS_PATH", "/vault/secrets");
-        String password = readSecret(secretsPath + "/REDIS_PASSWORD");
+        // String secretsPath = env.getProperty("SECRETS_PATH", "/vault/secrets");
+        // String password = readSecret(secretsPath + "/REDIS_PASSWORD");
 
-        return new JedisPool(poolConfig, host, Integer.parseInt(port), Integer.parseInt(timeout), password);
+        // return new JedisPool(poolConfig, host, Integer.parseInt(port), Integer.parseInt(timeout), password);
+        return new JedisPool(poolConfig, host, Integer.parseInt(port), Integer.parseInt(timeout));
+
+
+        
     }
 
     private String readSecret(String filePath) {

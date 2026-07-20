@@ -21,7 +21,10 @@ service:
   adminPort: 8083
   name: webshoppingapigw
 
-resources: {}
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
 
 env: {}
 

@@ -41,6 +41,10 @@ spec:
               mountPath: "/etc/envoy/"
             - name: logpath
               mountPath: "/var/log/envoy/"
+          {{- if .Values.resources }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- end }}
           env:
             {{- if .Values.env.values -}}
             {{- range .Values.env.values }}
