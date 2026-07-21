@@ -5,9 +5,24 @@ metadata:
 spec:
   hosts:
   - eshop.ghantas.com
+  - catalog-api.eshop.svc.cluster.local
   gateways:
   - eshop-gateway
   http:
+  - name: catalog-grpc-route
+  # GRPC API ROUTES FOLLOW THE CONVENTION OF <service_name>.<package_name>/<method_name>
+  # For example, the Catalog service has a method called GetCatalogItems, so the route for that method would be /Catalog.Catalog/GetCatalogItems
+  # The gRPC route is configured to route all requests that start with /Catalog.Catalog/ or /eshop.catalog.Catalog
+
+    match:
+    - uri:
+        prefix: /CatalogAPI.Catalog/
+    route:
+    - destination:
+        host: catalog-api.eshop.svc.cluster.local
+        port:
+          number: 9081    # Default gRPC port configured on catalog-api service
+        subset: catalog-service-subset
   - name: catalog-service-short-routing
     match:
     - uri:

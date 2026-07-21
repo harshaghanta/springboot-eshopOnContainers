@@ -87,6 +87,8 @@ spec:
           ports:
             - name: http
               containerPort: 8080
+            - name: grpc
+              containerPort: 50001
           livenessProbe:
             httpGet:
               path: {{ .Values.env.probes.liveness.path }}

@@ -70,6 +70,7 @@ ingress:
 service:
   type: ClusterIP
   port: 8081
+  grpcPort: 9081
   name: catalog-api
 
 resources:
