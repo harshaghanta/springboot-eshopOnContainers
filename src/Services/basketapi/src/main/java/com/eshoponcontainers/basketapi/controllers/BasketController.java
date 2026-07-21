@@ -43,7 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BasketController {
 
-    private static final long CATALOG_GRPC_DEADLINE_SECONDS = 2;
+    private static final long CATALOG_GRPC_DEADLINE_SECONDS = 30;
 
     private final RedisBasketDataRepository basketDataRepository;
     private final BasketNotificationStateRepository notificationStateRepository;
@@ -60,7 +60,12 @@ public class BasketController {
         }
 
         notificationStateRepository.saveUserContext(identityService.getUserId(), identityService.getUsername());
-        enrichBasket(basket);
+        boolean enriched = enrichBasket(basket);
+        if(!enriched)  {
+            log.error("Fetching catalog item details using GRPC failed");
+            return ResponseEntity.status(500).build();
+        } 
+
         applyPriceNotifications(basket);
 
         return ResponseEntity.ok(basket);
@@ -141,7 +146,14 @@ public class BasketController {
                 .getItemsByIds(request);
             return enrichBasketItems(basket, itemsByIds);
         } catch (StatusRuntimeException exception) {
-            log.warn("Catalog gRPC enrichment failed for buyer {} and products {}. Returning basket without enrichment.",
+            log.error("Catalog gRPC enrichment failed for buyer {} and products {}. Returning basket without enrichment.",
+                basket.getBuyerId(),
+                basket.getItems().stream().map(BasketItem::getProductId).distinct().toList(),
+                exception);
+            return false;
+        }
+        catch (Exception exception) {
+            log.error("Unexpected error during catalog gRPC enrichment for buyer {} and products {}. Returning basket without enrichment.",
                 basket.getBuyerId(),
                 basket.getItems().stream().map(BasketItem::getProductId).distinct().toList(),
                 exception);
