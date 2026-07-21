@@ -13,7 +13,6 @@ spec:
   # GRPC API ROUTES FOLLOW THE CONVENTION OF <service_name>.<package_name>/<method_name>
   # For example, the Catalog service has a method called GetCatalogItems, so the route for that method would be /Catalog.Catalog/GetCatalogItems
   # The gRPC route is configured to route all requests that start with /Catalog.Catalog/ or /eshop.catalog.Catalog
-
     match:
     - uri:
         prefix: /CatalogAPI.Catalog/
@@ -34,6 +33,8 @@ spec:
     route:
     - destination:
         host: catalog-api.eshop.svc.cluster.local
+        port:
+          number: 8081
         subset: catalog-service-subset
   - name: catalog-service-long-routing
     match:
@@ -46,6 +47,8 @@ spec:
     route:
     - destination:
         host: catalog-api.eshop.svc.cluster.local
+        port:
+          number: 8081
         subset: catalog-service-subset
 
   

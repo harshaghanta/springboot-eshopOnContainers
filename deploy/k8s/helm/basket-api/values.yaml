@@ -108,7 +108,7 @@ env:
     - name: CATALOG_GRPC_HOST
       value: "catalog-api"
     - name: CATALOG_GRPC_PORT
-      value: "50001"
+      value: "9081"
   
 
 probes:
