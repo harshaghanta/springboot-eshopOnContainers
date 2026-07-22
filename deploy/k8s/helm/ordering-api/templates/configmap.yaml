@@ -9,6 +9,7 @@ metadata:
     heritage: {{ .Release.Service }}
     chart: {{ template "ordering-api.chart" . }}
 data:
+{{/*
   eventbus__host: {{ .Values.eventbus.svc }}
   eventbus__username: {{ .Values.eventbus.user }}
   eventbus__password: {{ .Values.eventbus.pwd }}
@@ -18,3 +19,4 @@ data:
   ordering__dataSourceUsername: {{ .Values.sql.common.user }}
   ordering__dataSourcePassword: {{ .Values.sql.common.pwd }}
   allowed__origins: "{{ .Values.allowedOrigins }}"
+*/}}

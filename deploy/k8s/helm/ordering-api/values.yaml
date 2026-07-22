@@ -50,29 +50,49 @@ issuer:
   internalIssuerUrl: "http://keycloak:8085/keycloak/realms/eshoponcontainers"
 
 env:
-  configmap:
-  - name: "eventbus.host"
-    key: eventbus__host
-  - name: "eventbus.username"
-    key: eventbus__username
-  - name: "eventbus.password"
-    key: eventbus__password
-  - name: "eventbus.retryCount"
-    key: eventbus__retryCount  
-  - name: "orderapi.datasource.url"
-    key: ordering__dataSourceUrl
-  - name: "orderapi.datasource.username"
-    key: ordering__dataSourceUsername
-  - name: "orderapi.datasource.password"
-    key: ordering__dataSourcePassword
-  - name: "issuer.url"
-    key: issuer__url
-  - name: "webspa.allowedCorsOrigin"
-    key: allowed__origins
+  # configmap:
+  # - name: "eventbus.host"
+  #   key: eventbus__host
+  # - name: "eventbus.username"
+  #   key: eventbus__username
+  # - name: "eventbus.password"
+  #   key: eventbus__password
+  # - name: "eventbus.retryCount"
+  #   key: eventbus__retryCount  
+  # - name: "orderapi.datasource.url"
+  #   key: ordering__dataSourceUrl
+  # - name: "orderapi.datasource.username"
+  #   key: ordering__dataSourceUsername
+  # - name: "orderapi.datasource.password"
+  #   key: ordering__dataSourcePassword
+  # - name: "issuer.url"
+  #   key: issuer__url
+  # - name: "webspa.allowedCorsOrigin"
+  #   key: allowed__origins
 
   values:
     - name: SERVER_SERVLET_CONTEXT_PATH
       value: "/ordering-api"
+    - name: SECRETS_PATH
+      value: "/vault/secrets"
+    - name: DB_HOST_NAME
+      value: "sql-data"
+    - name: DB_HOST_PORT
+      value: "1433"
+    - name: ORDER_DB_NAME
+      value: "OrderDB"
+    - name: EVENTBUS_HOST
+      value: "rabbitmq"
+    - name: EVENTBUS_SUBSCRIPTION_CLIENT_NAME
+      value: "Ordering"
+    - name: ALLOWED_ORIGINS
+      value: "eshop.ghantas.com"
+    - name: ALLOWED_HEADERS
+      value: "*"
+    - name: ALLOWED_METHODS
+      value: "*"
+    - name: ISSUER_URL
+      value: "http://auth.ghantas.com/keycloak/realms/eshoponcontainers"
 
 resources: {}
 
