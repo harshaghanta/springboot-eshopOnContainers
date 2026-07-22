@@ -25,6 +25,12 @@ eventbus:
   pwd: "guest"
   retryCount: "5"
 
+vault:
+  address: http://vault.vault.svc:8200
+  roleName: eshop-vault-role
+  mountPath: kv
+  dbSecretPath: database/config
+
 sql:
   common:
     user: "sa"
@@ -34,19 +40,33 @@ sql:
 
 
 env:
-  configmap:
-  - name: "eventbus.host"
-    key: eventbus__host
-  - name: "eventbus.username"
-    key: eventbus__username
-  - name: "eventbus.password"
-    key: eventbus__password  
-  - name: "orderapi.datasource.url"
-    key: ordering__dataSourceUrl
-  - name: "orderapi.datasource.username"
-    key: ordering__dataSourceUsername
-  - name: "orderapi.datasource.password"
-    key: ordering__dataSourcePassword
+  # configmap:
+  # - name: "eventbus.host"
+  #   key: eventbus__host
+  # - name: "eventbus.username"
+  #   key: eventbus__username
+  # - name: "eventbus.password"
+  #   key: eventbus__password  
+  # - name: "orderapi.datasource.url"
+  #   key: ordering__dataSourceUrl
+  # - name: "orderapi.datasource.username"
+  #   key: ordering__dataSourceUsername
+  # - name: "orderapi.datasource.password"
+  #   key: ordering__dataSourcePassword
+  values:
+    - name: SECRETS_PATH
+      value: "/vault/secrets"
+    - name: DB_HOST_NAME
+      value: "sql-data"
+    - name: DB_HOST_PORT
+      value: "1433"
+    - name: ORDER_DB_NAME
+      value: "OrderDB"
+    - name: EVENTBUS_HOST
+      value: "rabbitmq"
+    - name: EVENTBUS_SUBSCRIPTION_CLIENT_NAME
+      value: "BackgroundTasks"
+    
 
 
 
