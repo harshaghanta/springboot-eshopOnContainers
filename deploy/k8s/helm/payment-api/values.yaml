@@ -24,6 +24,12 @@ ingress:
   enabled: true
   tls: false
 
+vault:
+  address: http://vault.vault.svc:8200
+  roleName: eshop-vault-role
+  mountPath: kv
+  dbSecretPath: database/config
+
 service:
   type: ClusterIP
   port: 8087
