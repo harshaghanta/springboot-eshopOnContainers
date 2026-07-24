@@ -28,6 +28,8 @@ spec:
           volumeMounts:
             - name: log-volume
               mountPath: /app/logs
+            - name: secrets-store
+              mountPath: "/vault/secrets"
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -39,15 +41,13 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
-          {{- if .Values.env.configmap }}
-          {{- range .Values.env.configmap }}
+            {{- if .Values.env.values }}
+            {{- range .Values.env.values }}
             - name: {{ .name }}
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ $cfgname }}
-                  key: {{ .key }}
-          {{- end }}
-          {{- end }}      
+              value: {{ .value | quote }}
+            {{- end }}
+            {{- end }}
+          
         {{- if .Values.fluentbit.enabled }}
         - name: fluentbit-sidecar
           image: {{ .Values.fluentbit.image.repository }}:{{ .Values.fluentbit.image.tag }}
@@ -68,7 +68,12 @@ spec:
           configMap:
             name: fluentbit-cm-paymentapi
         {{- end }}
-      
+        - name: secrets-store
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "spc-{{ $name }}"
       
       {{- with .Values.nodeSelector }}
       nodeSelector:

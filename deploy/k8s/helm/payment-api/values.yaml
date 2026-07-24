@@ -35,15 +35,23 @@ eventbus:
   retryCount: "5"
 
 env:
-  configmap:
-  - name: "eventbus.host"
-    key: eventbus__host
-  - name: "eventbus.username"
-    key: eventbus__username
-  - name: "eventbus.password"
-    key: eventbus__password
-  - name: "eventbus.retryCount"
-    key: eventbus__retryCount
+  # configmap:
+  # - name: "eventbus.host"
+  #   key: eventbus__host
+  # - name: "eventbus.username"
+  #   key: eventbus__username
+  # - name: "eventbus.password"
+  #   key: eventbus__password
+  # - name: "eventbus.retryCount"
+  #   key: eventbus__retryCount
+  values:
+  - name: SECRETS_PATH
+    value: "/vault/secrets"
+  - name: EVENTBUS_HOST
+    value: "rabbitmq"
+  - name: EVENTBUS_SUBSCRIPTION_CLIENT_NAME
+    value: Payment
+
 
 
 resources: {}
