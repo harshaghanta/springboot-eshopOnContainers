@@ -75,6 +75,16 @@ resource "helm_release" "istio_ingress" {
           effect   = "NoSchedule"
         }
       ]
+      service = {
+        type = "LoadBalancer"
+        annotations = {
+            # Forces AWS to create a modern Network Load Balancer (NLB) instead of a CLB
+          "service.beta.kubernetes.io/aws-load-balancer-type"   = "nlb"
+          "service.beta.kubernetes.io/aws-load-balancer-scheme" = "internet-facing"
+
+        }
+      }  
+
     })
   ]
 
