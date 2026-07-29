@@ -1,0 +1,9 @@
+aws_region           = "ap-south-2"
+eks_cluster_name     = "eshop-eks-cluster"
+db_identifier        = "eshop-sqlserver-db"
+db_allocated_storage = 20
+db_engine_version    = "16.00"
+db_instance_class    = "db.t3.micro"
+db_username          = "admin"
+db_password          = "HighRadius1234"
+sql_script_path  = "../../../src/DBSetup/scripts/EShopDB.sql"
