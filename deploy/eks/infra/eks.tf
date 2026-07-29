@@ -5,6 +5,12 @@ module "eks" {
   cluster_name    = var.cluster_name
   cluster_version = var.cluster_version
 
+  # Force EKS (and its node groups/addons) to depend directly on the entire VPC module.
+  # This guarantees the NAT Gateways & IGW stay alive until EKS is completely torn down.
+  depends_on = [
+    module.vpc
+  ]
+
   cluster_addons = {
     coredns = {
       most_recent                 = true
@@ -47,6 +53,7 @@ module "eks" {
       })
     }
   }
+  
 
   vpc_id                         = module.vpc.vpc_id
   subnet_ids                     = module.vpc.private_subnets
