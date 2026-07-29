@@ -2,8 +2,12 @@ apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
   name: argocd-destinationrule
+  namespace: argocd
 spec:
   host: argocd-server.argocd.svc.cluster.local
+  trafficPolicy:
+    tls:
+      mode: DISABLE
   subsets:
   - name: argocd-service-subset
     labels:

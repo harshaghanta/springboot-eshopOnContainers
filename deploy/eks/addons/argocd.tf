@@ -26,6 +26,11 @@ resource "helm_release" "argocd" {
             effect   = "NoSchedule"
           }
         ]
+      },
+      configs = {
+        params = {
+          "server.insecure" = "true"
+        }
       }
     })
   ]
