@@ -1,0 +1,51 @@
+name: "Terraform EKS Deployment"
+
+on:
+  workflow_dispatch: # Manual run trigger
+    inputs:
+      action:
+        description: "Terraform Action to run"
+        required: true
+        default: "plan"
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
+jobs:
+  terraform:
+    name: "Terraform Init, Plan & Apply"
+    runs-on: ubuntu-latest
+
+    env:
+      WORKING_DIR: "./terraform/infra"
+      TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.0"
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve tfplan
+        working-directory: ${{ env.WORKING_DIR }}
