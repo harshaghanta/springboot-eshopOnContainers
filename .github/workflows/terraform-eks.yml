@@ -1,7 +1,7 @@
 name: "Terraform EKS Deployment"
 
 on:
-  workflow_dispatch: # Manual run trigger
+  workflow_dispatch:
     inputs:
       action:
         description: "Terraform Action to run"
@@ -12,9 +12,10 @@ on:
           - plan
           - apply
           - destroy
+
 jobs:
   terraform:
-    name: "Terraform Init, Plan & Apply"
+    name: "Terraform Execution"
     runs-on: ubuntu-latest
 
     env:
@@ -35,17 +36,26 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.7.0"
+          terraform_version: "1.10.0"
 
       - name: Terraform Init
         run: terraform init
         working-directory: ${{ env.WORKING_DIR }}
 
+      # Runs ONLY when 'plan' is selected
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
+        if: ${{ github.event.inputs.action == 'plan' }}
+        run: terraform plan
         working-directory: ${{ env.WORKING_DIR }}
 
+      # Runs ONLY when 'apply' is selected
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
-        run: terraform apply -auto-approve tfplan
+        if: ${{ github.event.inputs.action == 'apply' }}
+        run: terraform apply -auto-approve
+        working-directory: ${{ env.WORKING_DIR }}
+
+      # Runs ONLY when 'destroy' is selected
+      - name: Terraform Destroy
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        run: terraform destroy -auto-approve
         working-directory: ${{ env.WORKING_DIR }}
