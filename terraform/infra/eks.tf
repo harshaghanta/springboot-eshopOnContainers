@@ -1,3 +1,7 @@
+data "aws_kms_alias" "eshop_kms_alias" {
+  name = var.kms_alias_name
+}
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 20.0"
@@ -6,12 +10,11 @@ module "eks" {
   cluster_version = var.cluster_version
 
 
-  create_kms_key      = true
-
-  kms_key_description             =  "Dynamic KMS key for EKS cluster ${var.cluster_name} and its node groups"
-  kms_key_deletion_window_in_days = 7
-  enable_kms_key_rotation         = true
-  
+  create_kms_key      = false
+  cluster_encryption_config = {
+    provider_key_arn = data.aws_kms_alias.eshop_kms_alias.target_key_arn
+    resources        = ["secrets"]
+  }  
 
   # Force EKS (and its node groups/addons) to depend directly on the entire VPC module.
   # This guarantees the NAT Gateways & IGW stay alive until EKS is completely torn down.

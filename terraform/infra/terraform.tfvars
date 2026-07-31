@@ -4,6 +4,8 @@ environment  = "prod"
 cluster_version = "1.32"
 vpc_cidr = "10.0.0.0/16"
 
+kms_alias_name = "alias/eks/eshop-eks-cluster"
+
 subnets_config = {
   # --- PUBLIC SUBNETS ---
   "public-2a" = {

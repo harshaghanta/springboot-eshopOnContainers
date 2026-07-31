@@ -29,6 +29,12 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/16"
 }
 
+variable "kms_alias_name" {
+  type        = string
+  default     = "alias/eks/eshop-eks-cluster"
+  description = "The alias name for the shared EKS KMS Key"
+}
+
 # Unified data structure holding subnet mapping
 variable "subnets_config" {
   description = "Single map containing all public and private subnets, AZs, CIDRs, and names"
