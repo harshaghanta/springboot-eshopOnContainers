@@ -10,13 +10,20 @@ variable "environment" {
   description = "Deployment environment (e.g., dev, prod)"
 }
 
+variable "eks_encryption_key_alias" {
+  type        = string
+  default     = "alias/eks/eshop-eks-cluster"
+  description = "The alias name for the shared EKS KMS Key"
+}
+
+variable "vault_unseal_kms_alias" {
+  type        = string
+  default     = "alias/vault-auto-unseal"
+  description = "KMS Key alias for Vault Auto-Unseal"
+}
+
 variable "s3-bucket-name" {
   type        = string
   description = "Name of the S3 bucket for Terraform remote state"
 }
 
-variable "kms_alias_name" {
-  type        = string
-  default     = "alias/eks/eshop-eks-cluster"
-  description = "The alias name for the shared EKS KMS Key"
-}
