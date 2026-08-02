@@ -1,0 +1,58 @@
+name: "Terraform Install addons in EKS Cluster"
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Terraform Action to run"
+        required: true
+        default: "plan"
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
+
+defaults:
+  run:
+    working-directory: ./terraform/addons
+
+jobs:
+  terraform:
+    name: "Terraform Execution"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Update Kubeconfig
+        run: |
+          aws eks update-kubeconfig --region ${{ vars.AWS_REGION }} --name ${{ vars.EKS_CLUSTER_NAME }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.10.0"
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        if: ${{ github.event.inputs.action == 'plan' }}
+        run: terraform plan
+
+      - name: Terraform Apply
+        if: ${{ github.event.inputs.action == 'apply' }}
+        run: terraform apply -auto-approve
+
+      - name: Terraform Destroy
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        run: terraform destroy -auto-approve
