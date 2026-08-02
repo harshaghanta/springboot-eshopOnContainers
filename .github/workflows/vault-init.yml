@@ -1,0 +1,45 @@
+name: "Vault One-Time Initialization"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  init-vault:
+    name: "Initialize Vault"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Update Kubeconfig
+        run: |
+          aws eks update-kubeconfig --region ${{ vars.AWS_REGION }} --name ${{ vars.EKS_CLUSTER_NAME }}
+
+      - name: Check Status, Initialize, and Save to AWS Secrets Manager
+        run: |
+          # 1. Check if Vault is already initialized
+          INIT_STATUS=$(kubectl exec -n vault vault-0 -- vault status -format=json | jq -r '.initialized')
+
+          if [ "$INIT_STATUS" = "true" ]; then
+            echo "Vault is already initialized!"
+            exit 0
+          fi
+
+          echo "Initializing Vault..."
+          
+          # 2. Run initialization and capture directly into a shell variable (not saved to disk)
+          INIT_JSON=$(kubectl exec -n vault vault-0 -- vault operator init -format=json)
+
+          # 3. Create/Update a secret in AWS Secrets Manager containing the output
+          aws secretsmanager create-secret \
+            --name "/vault/cluster-keys" \
+            --description "Vault initial root token and recovery keys" \
+            --secret-string "$INIT_JSON" \
+            --region ${{ vars.AWS_REGION }}
+
+          echo "Vault successfully initialized! Keys stored securely in AWS Secrets Manager under '/vault/cluster-keys'."
