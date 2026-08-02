@@ -21,9 +21,16 @@ jobs:
           aws eks update-kubeconfig --region ${{ vars.AWS_REGION }} --name ${{ vars.EKS_CLUSTER_NAME }}
 
       - name: Check Status, Initialize, and Save to AWS Secrets Manager
+        env:
+          AWS_REGION: ${{ vars.AWS_REGION }}
         run: |
-          # 1. Check if Vault is already initialized
-          INIT_STATUS=$(kubectl exec -n vault vault-0 -- vault status -format=json | jq -r '.initialized')
+          # 1. Wait until the Vault pod exists and is in the 'Running' state
+          echo "Waiting for vault-0 pod to be running..."
+          kubectl wait --namespace vault --for=condition=Ready pod/vault-0 --timeout=120s
+
+          # 2. Safely fetch Vault status using the explicit container name '-c vault'
+          STATUS_JSON=$(kubectl exec -n vault vault-0 -c vault -- vault status -format=json 2>/dev/null || true)
+          INIT_STATUS=$(echo "$STATUS_JSON" | jq -r '.initialized // false')
 
           if [ "$INIT_STATUS" = "true" ]; then
             echo "Vault is already initialized!"
@@ -31,15 +38,26 @@ jobs:
           fi
 
           echo "Initializing Vault..."
-          
-          # 2. Run initialization and capture directly into a shell variable (not saved to disk)
-          INIT_JSON=$(kubectl exec -n vault vault-0 -- vault operator init -format=json)
 
-          # 3. Create/Update a secret in AWS Secrets Manager containing the output
-          aws secretsmanager create-secret \
-            --name "/vault/cluster-keys" \
-            --description "Vault initial root token and recovery keys" \
-            --secret-string "$INIT_JSON" \
-            --region ${{ vars.AWS_REGION }}
+          # 3. Run initialization targeting the explicit 'vault' container
+          INIT_JSON=$(kubectl exec -n vault vault-0 -c vault -- vault operator init -format=json)
 
-          echo "Vault successfully initialized! Keys stored securely in AWS Secrets Manager under '/vault/cluster-keys'."
+          # 4. Put/Create secret in Secrets Manager dynamically using the AWS_REGION environment variable
+          SECRET_NAME="/vault/cluster-keys"
+
+          if aws secretsmanager describe-secret --secret-id "$SECRET_NAME" --region "$AWS_REGION" >/dev/null 2>&1; then
+            echo "Updating existing secret in Secrets Manager..."
+            aws secretsmanager put-secret-value \
+              --secret-id "$SECRET_NAME" \
+              --secret-string "$INIT_JSON" \
+              --region "$AWS_REGION"
+          else
+            echo "Creating new secret in Secrets Manager..."
+            aws secretsmanager create-secret \
+              --name "$SECRET_NAME" \
+              --description "Vault initial root token and recovery keys" \
+              --secret-string "$INIT_JSON" \
+              --region "$AWS_REGION"
+          fi
+
+          echo "Vault successfully initialized! Keys stored in AWS Secrets Manager under '$SECRET_NAME'."
