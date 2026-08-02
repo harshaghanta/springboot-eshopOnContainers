@@ -43,10 +43,6 @@ module "vault_kms_irsa_role" {
   }
 }
 
-data "aws_kms_alias" "vault" {
-  name = var.vault_unseal_kms_alias
-}
-
 resource "helm_release" "vault" {
   name             = "vault"
   repository       = "https://helm.releases.hashicorp.com"
