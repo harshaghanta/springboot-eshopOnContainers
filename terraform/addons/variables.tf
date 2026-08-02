@@ -15,3 +15,9 @@ variable "cluster_name" {
   type        = string
   default     = "eshop-eks-cluster"
 }
+
+variable "vault_unseal_kms_alias" {
+  description = "KMS Key alias for Vault Auto-Unseal"
+  type        = string
+  default     = "alias/vault-auto-unseal"
+}

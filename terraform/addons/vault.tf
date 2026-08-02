@@ -1,13 +1,6 @@
-# 1. AWS KMS Key for Vault Auto-Unseal
-resource "aws_kms_key" "vault" {
-  description             = "KMS Key for Vault Auto-Unseal"
-  deletion_window_in_days = 10
-  enable_key_rotation     = true
-}
-
-resource "aws_kms_alias" "vault" {
-  name          = "alias/vault-auto-unseal"
-  target_key_id = aws_kms_key.vault.key_id
+# 1. Fetch the KMS Key ARN using the alias
+data "aws_kms_alias" "vault" {
+  name = var.vault_unseal_kms_alias
 }
 
 # 2. IAM Policy granting KMS Encrypt/Decrypt
@@ -25,7 +18,7 @@ resource "aws_iam_policy" "vault_kms" {
           "kms:Decrypt",
           "kms:DescribeKey"
         ]
-        Resource = aws_kms_key.vault.arn
+        Resource = data.aws_kms_alias.vault.arn
       }
     ]
   })
@@ -48,6 +41,10 @@ module "vault_kms_irsa_role" {
       namespace_service_accounts = ["vault:vault"]
     }
   }
+}
+
+data "aws_kms_alias" "vault" {
+  name = var.vault_unseal_kms_alias
 }
 
 resource "helm_release" "vault" {
@@ -126,8 +123,8 @@ resource "helm_release" "vault" {
 
               # AWS KMS Auto-Unseal Configuration
               seal "awskms" {
-                region     = "us-east-1" # Update to your AWS region
-                kms_key_id = "${aws_kms_key.vault.key_id}"
+                region     = "${var.aws_region}"
+                kms_key_id = "${data.aws_kms_alias.vault.name}"
               }
 
               service_registration "kubernetes" {}
