@@ -3,6 +3,11 @@ data "aws_kms_alias" "vault" {
   name = var.vault_unseal_kms_alias
 }
 
+# Resolve the actual KMS Key from the alias so IAM policies can target the key ARN
+data "aws_kms_key" "vault_key" {
+  key_id = data.aws_kms_alias.vault.target_key_id
+}
+
 # 2. IAM Policy granting KMS Encrypt/Decrypt
 resource "aws_iam_policy" "vault_kms" {
   name        = "VaultKMSAutoUnsealPolicy"
@@ -16,9 +21,11 @@ resource "aws_iam_policy" "vault_kms" {
         Action = [
           "kms:Encrypt",
           "kms:Decrypt",
-          "kms:DescribeKey"
+          "kms:DescribeKey",
+          "kms:GenerateDataKey",
+          "kms:GenerateDataKeyWithoutPlaintext"
         ]
-        Resource = data.aws_kms_alias.vault.arn
+        Resource = data.aws_kms_key.vault_key.arn
       }
     ]
   })
