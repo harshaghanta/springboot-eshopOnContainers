@@ -17,7 +17,7 @@
 
 	<properties>
 		<java.version>25</java.version>
-		<springdoc.version>2.8.0</springdoc.version>
+		<springdoc.version>3.0.0</springdoc.version>
 		<!-- <hibernate.version>6.4.4.Final</hibernate.version> -->
 		<shared.proto.dir>${project.basedir}/../../proto</shared.proto.dir>
 		<protobuf.version>4.29.3</protobuf.version>
