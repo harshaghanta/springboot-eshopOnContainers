@@ -22,7 +22,7 @@ variable "vault_unseal_kms_alias" {
   description = "KMS Key alias for Vault Auto-Unseal"
 }
 
-variable "s3-bucket-name" {
+variable "s3_bucket_name" {
   type        = string
   description = "Name of the S3 bucket for Terraform remote state"
 }

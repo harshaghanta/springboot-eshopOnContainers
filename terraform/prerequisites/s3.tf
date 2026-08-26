@@ -18,7 +18,7 @@ provider "aws" {
 
 
 resource "aws_s3_bucket" "tf_state" {
-  bucket        = var.s3-bucket-name
+  bucket        = var.s3_bucket_name
   force_destroy = false
 
   lifecycle {
@@ -52,6 +52,66 @@ resource "aws_s3_bucket_public_access_block" "tf_state" {
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
+}
+
+# S3 bucket for storing access logs
+resource "aws_s3_bucket" "logs-bucket" {
+  bucket        = "${var.s3_bucket_name}-logs"
+  force_destroy = true
+}
+
+# Block public access to logs bucket
+resource "aws_s3_bucket_public_access_block" "logs_public_access_block" {
+  bucket                  = aws_s3_bucket.logs_bucket.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# Enable server-side encryption for logs bucket
+resource "aws_s3_bucket_server_side_encryption_configuration" "logs_bucket_encryption" {
+  bucket = aws_s3_bucket.logs_bucket.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+# Enable access logging on the state bucket
+resource "aws_s3_bucket_logging" "tf_state" {
+  bucket = aws_s3_bucket.tf_state.id
+
+  target_bucket = aws_s3_bucket.logs_bucket.id
+  target_prefix = "access-logs/"
+}
+
+# Enforce HTTPS-only access to logs bucket
+resource "aws_s3_bucket_policy" "tf_state_logs_https_only" {
+  bucket = aws_s3_bucket.logs_bucket.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "EnforceSSLOnly"
+        Effect    = "Deny"
+        Principal = "*"
+        Action    = "s3:*"
+        Resource = [
+          aws_s3_bucket.logs_bucket.arn,
+          "${aws_s3_bucket.logs_bucket.arn}/*"
+        ]
+        Condition = {
+          Bool = {
+            "aws:SecureTransport" = "false"
+          }
+        }
+      }
+    ]
+  })
 }
 
 # Enforce HTTPS-only access
