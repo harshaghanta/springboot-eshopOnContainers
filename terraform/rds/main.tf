@@ -80,17 +80,19 @@ resource "aws_security_group" "rds_sg" {
 
 # 4. Provision RDS SQL Server Instance
 resource "aws_db_instance" "sqlserver" {
-  identifier             = var.db_identifier
-  allocated_storage      = var.db_allocated_storage
-  engine                 = "sqlserver-ex"
-  engine_version         = var.db_engine_version
-  instance_class         = var.db_instance_class
-  username               = var.db_username
-  password               = var.db_password
-  db_subnet_group_name   = aws_db_subnet_group.rds_subnet_group.name
-  vpc_security_group_ids = [aws_security_group.rds_sg.id]
-  publicly_accessible    = false
-  skip_final_snapshot    = true
+  identifier              = var.db_identifier
+  allocated_storage       = var.db_allocated_storage
+  engine                  = "sqlserver-ex"
+  engine_version          = var.db_engine_version
+  instance_class          = var.db_instance_class
+  username                = var.db_username
+  password                = var.db_password
+  db_subnet_group_name    = aws_db_subnet_group.rds_subnet_group.name
+  vpc_security_group_ids  = [aws_security_group.rds_sg.id]
+  publicly_accessible     = false
+  skip_final_snapshot     = true
+  storage_encrypted       = true
+  backup_retention_period = 7
 }
 
 locals {
