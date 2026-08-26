@@ -53,3 +53,29 @@ resource "aws_s3_bucket_public_access_block" "tf_state" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
+
+# Enforce HTTPS-only access
+resource "aws_s3_bucket_policy" "tf_state_https_only" {
+  bucket = aws_s3_bucket.tf_state.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "EnforceSSLOnly"
+        Effect    = "Deny"
+        Principal = "*"
+        Action    = "s3:*"
+        Resource = [
+          aws_s3_bucket.tf_state.arn,
+          "${aws_s3_bucket.tf_state.arn}/*"
+        ]
+        Condition = {
+          Bool = {
+            "aws:SecureTransport" = "false"
+          }
+        }
+      }
+    ]
+  })
+}
