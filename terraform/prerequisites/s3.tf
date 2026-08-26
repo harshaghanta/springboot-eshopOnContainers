@@ -55,7 +55,7 @@ resource "aws_s3_bucket_public_access_block" "tf_state" {
 }
 
 # S3 bucket for storing access logs
-resource "aws_s3_bucket" "logs-bucket" {
+resource "aws_s3_bucket" "logs_bucket" {
   bucket        = "${var.s3_bucket_name}-logs"
   force_destroy = true
 }
@@ -86,6 +86,14 @@ resource "aws_s3_bucket_logging" "tf_state" {
 
   target_bucket = aws_s3_bucket.logs_bucket.id
   target_prefix = "access-logs/"
+}
+
+# Enable access logging on the logs bucket (logs to itself)
+resource "aws_s3_bucket_logging" "logs_bucket" {
+  bucket = aws_s3_bucket.logs_bucket.id
+
+  target_bucket = aws_s3_bucket.logs_bucket.id
+  target_prefix = "logs-bucket-access-logs/"
 }
 
 # Enforce HTTPS-only access to logs bucket
