@@ -34,7 +34,6 @@ public class SecurityConfig {
 						.requestMatchers("/subscriptions").permitAll()
 						.requestMatchers("/api/v1/buyers/addbuyer").permitAll()
 						.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-						.requestMatchers("/actuator/**").permitAll()
 						.anyRequest().authenticated())
 				.sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.oauth2ResourceServer((oauth2) -> oauth2

@@ -2,3 +2,7 @@
 logging:
   level:
     com.eshoponcontainers: DEBUG
+
+management:
+  server:
+    port: 8081
